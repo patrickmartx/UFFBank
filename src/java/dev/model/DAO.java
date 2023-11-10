@@ -47,6 +47,4 @@ public class DAO {
                     + "Procure acertar a informação: " + e.getMessage());
         }
     }
-
-    // Resto da sua classe...
 }

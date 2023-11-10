@@ -1,7 +1,6 @@
 package dev.controller;
 
 import dev.exceptions.NonExistingURLException;
-import dev.model.DAO;
 import dev.model.complements.DAOUser;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
@@ -50,7 +49,7 @@ public class Controller extends HttpServlet {
         switch (action) {
             case "/Login/Auth" -> {
                 /*
-                Validar conta
+                TODO: Validar conta
                 */
                 String username = (String) request.getParameter("username");
                 String password = (String) request.getParameter("password");
@@ -66,14 +65,9 @@ public class Controller extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

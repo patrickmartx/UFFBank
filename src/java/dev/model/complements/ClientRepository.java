@@ -17,7 +17,6 @@ import dev.model.DAO;
 
 public class ClientRepository extends DAO {
 
-    // Método para criar a tabela de cliente
     private void createClientTable() throws NoConnectException {
         String createTableSQL = 
                 "CREATE TABLE IF NOT EXISTS tb_client ("
@@ -44,9 +43,8 @@ public class ClientRepository extends DAO {
         }
     }
 
-    // Método para inserir um cliente no banco de dados
     public void insertClient(Client client) throws NoConnectException {
-        createClientTable(); // Chama o método para criar a tabela
+        createClientTable();
 
         String sql = "INSERT INTO tb_client (cpf, nome, telefone, cep, email, password, numero_casa, data_nascimento, bank_account_id) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -54,7 +52,6 @@ public class ClientRepository extends DAO {
         try (Connection connection = this.connect(); 
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            // Defina os parâmetros da consulta com base no objeto Client
             preparedStatement.setString(1, client.getCpf());
             preparedStatement.setString(2, client.getNome());
             preparedStatement.setString(3, client.getTelefone());
@@ -63,10 +60,8 @@ public class ClientRepository extends DAO {
             preparedStatement.setString(6, client.getPassword());
             preparedStatement.setInt(7, client.getNumeroCasa());
             preparedStatement.setDate(8, new java.sql.Date(client.getDataNascimento().getTimeInMillis()));
-            // Defina o bank_account_id com base no objeto BankAccount
             preparedStatement.setLong(9, client.getContaId());
 
-            // Execute a consulta de inserção
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {

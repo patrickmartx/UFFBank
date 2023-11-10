@@ -42,7 +42,7 @@ public class ClientController extends HttpServlet {
         switch (action) {
             case "/Deposit" -> {
                 
-                /*
+                /* TESTE DE INSERÇÃO
                 * bankAccountService.save(10.00, 1234, "1213-23");
                 *
                 * Calendar dataNascimento = Calendar.getInstance();
@@ -66,14 +66,6 @@ public class ClientController extends HttpServlet {
         }
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -85,7 +77,7 @@ public class ClientController extends HttpServlet {
                 String value = (String) request.getParameter("value");
                 System.out.println(value);
                 /*
-                Tratar depósito
+                TODO: Tratar depósito
                  */
                 response.sendRedirect("/UFFBank/Deposit");
             }
@@ -93,7 +85,7 @@ public class ClientController extends HttpServlet {
                 String value = (String) request.getParameter("value");
                 System.out.println(value);
                 /*
-                Tratar depósito
+                TODO: Tratar depósito
                  */
                 response.sendRedirect("/UFFBank/Investment");
             }
@@ -107,7 +99,7 @@ public class ClientController extends HttpServlet {
                 System.out.println(value);
 
                 /*
-                Tratar depósito
+                TODO: Tratar depósito
                  */
                 response.sendRedirect("/UFFBank/Transfer");
             }
@@ -116,14 +108,10 @@ public class ClientController extends HttpServlet {
         }
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

@@ -15,7 +15,6 @@ import dev.entity.BankAccount;
 import dev.exceptions.NoConnectException;
 import dev.model.DAO;
 
-// BankAccountRepository
 public class BankAccountRepository extends DAO {
 
     private void createBankAccountTable() throws NoConnectException {
@@ -37,7 +36,7 @@ public class BankAccountRepository extends DAO {
     }
 
     public void insertBankAccount(BankAccount bankAccount) throws NoConnectException {
-        createBankAccountTable(); // Chama o método para criar a tabela
+        createBankAccountTable();
 
         String sql = "INSERT INTO tb_bankaccount (saldo, agencia, num_conta) "
                 + "VALUES (?, ?, ?)";
@@ -45,12 +44,10 @@ public class BankAccountRepository extends DAO {
         try (Connection connection = this.connect(); 
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            // Defina os parâmetros da consulta com base no objeto BankAccount
             preparedStatement.setDouble(1, bankAccount.getSaldo());
             preparedStatement.setInt(2, bankAccount.getAgencia());
             preparedStatement.setString(3, bankAccount.getNumConta());
 
-            // Execute a consulta de inserção
             int rowsAffected = preparedStatement.executeUpdate();
 
             if (rowsAffected > 0) {
