@@ -30,6 +30,7 @@ public class ClientRepository extends DAO {
                 + "numero_casa INT NOT NULL,"
                 + "data_nascimento DATE NOT NULL,"
                 + "bank_account_id INT UNIQUE,"
+                + "status VARCHAR(10) NOT NULL,"
                 + "FOREIGN KEY (bank_account_id) REFERENCES tb_bankaccount(id)"
                 + ")";
 
@@ -46,8 +47,10 @@ public class ClientRepository extends DAO {
     public void insertClient(Client client) throws NoConnectException {
         createClientTable();
 
-        String sql = "INSERT INTO tb_client (cpf, nome, telefone, cep, email, password, numero_casa, data_nascimento, bank_account_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO tb_client (cpf, nome, telefone, "
+                + "cep, email, password, "
+                + "numero_casa, data_nascimento, bank_account_id, status) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = this.connect(); 
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -61,6 +64,7 @@ public class ClientRepository extends DAO {
             preparedStatement.setInt(7, client.getNumeroCasa());
             preparedStatement.setDate(8, new java.sql.Date(client.getDataNascimento().getTimeInMillis()));
             preparedStatement.setLong(9, client.getContaId());
+            preparedStatement.setString(10, client.getStatus().getValue());
 
             int rowsAffected = preparedStatement.executeUpdate();
 
