@@ -4,6 +4,7 @@
  */
 package dev.entity;
 
+import dev.utils.Status;
 import java.util.Calendar;
 
 /**
@@ -21,11 +22,15 @@ public class Client {
     private Integer numeroCasa;
     private Calendar dataNascimento;
     private Long contaId;
+    private Status status;
 
     public Client() {
     }
 
-    public Client(Long id, String cpf, String nome, String telefone, String cep, String email, String password, Integer numeroCasa, Calendar dataNascimento, Long contaId) {
+    public Client(Long id, String cpf, String nome,
+            String telefone, String cep, String email,
+            String password, Integer numeroCasa, Calendar dataNascimento,
+            Long contaId, Status status) {
         this.id = id;
         this.cpf = cpf;
         this.nome = nome;
@@ -36,6 +41,7 @@ public class Client {
         this.numeroCasa = numeroCasa;
         this.dataNascimento = dataNascimento;
         this.contaId = contaId;
+        this.status = status;
     }
 
     public Long getId() {
@@ -53,7 +59,7 @@ public class Client {
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
-    
+
     public String getNome() {
         return nome;
     }
@@ -117,5 +123,12 @@ public class Client {
     public void setConta(Long contaId) {
         this.contaId = contaId;
     }
-    
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 }
