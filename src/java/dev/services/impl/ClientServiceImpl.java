@@ -7,6 +7,7 @@ package dev.services.impl;
 import dev.entity.Client;
 import dev.model.complements.ClientRepository;
 import dev.services.ClientService;
+import dev.utils.Status;
 import java.util.Calendar;
 
 /**
@@ -25,7 +26,6 @@ public class ClientServiceImpl implements ClientService{
     public void save(String cpf, String nome, String telefone, 
             String cep, String email, String password, 
             Integer numeroCasa, Calendar dataNascimento, Long contaId) {
-        
         try {
             Client client = new Client();
 
@@ -44,6 +44,7 @@ public class ClientServiceImpl implements ClientService{
             client.setNumeroCasa(numeroCasa);
             client.setDataNascimento(dataNascimento);
             client.setConta(contaId);
+            client.setStatus(Status.INATIVO);
 
             clientRepository.insertClient(client);
         } catch(Exception e) {
