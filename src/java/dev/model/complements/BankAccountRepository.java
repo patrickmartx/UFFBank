@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import dev.entity.BankAccount;
 import dev.exceptions.NoConnectException;
 import dev.model.DAO;
+import java.sql.ResultSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BankAccountRepository extends DAO {
 
@@ -58,5 +61,27 @@ public class BankAccountRepository extends DAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    
+    public Long idByNumber(Integer agencia, String number) throws NoConnectException {
+        String getSQL = "SELECT id FROM tb_bankaccount WHERE agencia = ? AND num_conta = ?";
+        
+        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
+        
+        preparedStatement.setInt(1, agencia);
+        preparedStatement.setString(2, number);
+        
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+                return resultSet.getLong("id");
+            } else {
+                System.out.println("Conta não encontrada");
+                return null;
+            }
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }
