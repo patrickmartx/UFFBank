@@ -7,6 +7,9 @@ package dev.services.impl;
 import dev.model.complements.BankAccountRepository;
 import dev.services.BankAccountService;
 import dev.entity.BankAccount;
+import dev.exceptions.NoConnectException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,10 +17,10 @@ import dev.entity.BankAccount;
  */
 public class BankAccountServiceImpl implements BankAccountService {
     
-    BankAccountRepository bankAccountRepository;
+    BankAccountRepository repository;
     
     public BankAccountServiceImpl(BankAccountRepository bankAccountRepository) {
-        this.bankAccountRepository = bankAccountRepository;
+        this.repository = bankAccountRepository;
     }
 
     @Override
@@ -29,10 +32,19 @@ public class BankAccountServiceImpl implements BankAccountService {
             conta.setAgencia(agencia);
             conta.setNumConta(numConta);
 
-            bankAccountRepository.insertBankAccount(conta);
+            repository.insertBankAccount(conta);
         } catch (Exception e) {
             System.out.println("Não foi possível criar a conta\nmessage: " + e.getMessage());
         }
     }
-    
+
+    @Override
+    public Long idByNumber(Integer agencia, String number) {
+        try {
+            return repository.idByNumber(agencia, number);
+        } catch (NoConnectException ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

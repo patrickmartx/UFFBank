@@ -11,4 +11,5 @@ package dev.services;
 public interface BankAccountService {
     
     public void save(Double saldo, Integer agencia, String numConta);
+    public Long idByNumber(Integer agencia, String number);
 }
