@@ -122,7 +122,7 @@ public class ClientFilter implements Filter {
         if (client != null)
             chain.doFilter(request, response);
         else
-            ((HttpServletResponse) response).sendRedirect("UnauthorizedPage.jsp");
+            ((HttpServletResponse) response).sendRedirect("/UFFBank/Login");
     }
 
     /**

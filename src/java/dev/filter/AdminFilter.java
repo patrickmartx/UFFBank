@@ -30,7 +30,7 @@ import dev.entity.Admin;
  *
  * @author Patrick
  */
-@WebFilter(filterName = "AdminFilter", urlPatterns = {"/admin/*"})
+@WebFilter(filterName = "AdminFilter", urlPatterns = {"/Admin/*"})
 public class AdminFilter implements Filter {
     
     private AdminRepository adminRepository = new AdminRepository();
@@ -116,7 +116,7 @@ public class AdminFilter implements Filter {
         if (admin != null)
             chain.doFilter(request, response);
         else
-            ((HttpServletResponse) response).sendRedirect("UnauthorizedPage.jsp");
+            ((HttpServletResponse) response).sendRedirect("/UFFBank/Login");
     }
 
     /**
