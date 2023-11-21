@@ -47,6 +47,16 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
         return null;
     }
+    
+    @Override
+    public Double getSaldoById(Long id) {
+        try {
+            return repository.getSaldoById(id);
+        } catch (Exception ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     @Override
     public void transfer(Double value, Integer bankNumberSender, String accountNumberSender, 
