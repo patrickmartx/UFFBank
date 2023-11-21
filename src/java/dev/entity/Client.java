@@ -14,33 +14,33 @@ import java.util.Calendar;
 public class Client {
     private Long id;
     private String cpf;
-    private String nome;
-    private String telefone;
+    private String name;
+    private String phone;
     private String cep;
     private String email;
     private String password;
-    private Integer numeroCasa;
-    private Calendar dataNascimento;
-    private Long contaId;
+    private Integer houseNumber;
+    private Calendar birthDate;
+    private Long bankAccountId;
     private Status status;
 
     public Client() {
     }
 
-    public Client(Long id, String cpf, String nome,
-            String telefone, String cep, String email,
-            String password, Integer numeroCasa, Calendar dataNascimento,
-            Long contaId, Status status) {
+    public Client(Long id, String cpf, String name,
+            String phone, String cep, String email,
+            String password, Integer houseNumber, Calendar birthDate,
+            Long bankAccountId, Status status) {
         this.id = id;
         this.cpf = cpf;
-        this.nome = nome;
-        this.telefone = telefone;
+        this.name = name;
+        this.phone = phone;
         this.cep = cep;
         this.email = email;
         this.password = password;
-        this.numeroCasa = numeroCasa;
-        this.dataNascimento = dataNascimento;
-        this.contaId = contaId;
+        this.houseNumber = houseNumber;
+        this.birthDate = birthDate;
+        this.bankAccountId = bankAccountId;
         this.status = status;
     }
 
@@ -60,20 +60,20 @@ public class Client {
         this.cpf = cpf;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCep() {
@@ -100,28 +100,28 @@ public class Client {
         this.password = password;
     }
 
-    public Integer getNumeroCasa() {
-        return numeroCasa;
+    public Integer getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setNumeroCasa(Integer numeroCasa) {
-        this.numeroCasa = numeroCasa;
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
-    public Calendar getDataNascimento() {
-        return dataNascimento;
+    public Calendar getBirthDate() {
+        return birthDate;
     }
 
-    public void setDataNascimento(Calendar dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBirthDate(Calendar birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public Long getContaId() {
-        return contaId;
+    public Long getBankAccountId() {
+        return bankAccountId;
     }
 
     public void setConta(Long contaId) {
-        this.contaId = contaId;
+        this.bankAccountId = contaId;
     }
 
     public Status getStatus() {

@@ -14,30 +14,30 @@ import java.util.Calendar;
 public class Admin {
     private Long id;
     private String cpf;
-    private String nome;
-    private String telefone;
+    private String name;
+    private String phone;
     private String cep;
     private String email;
     private String password;
-    private Integer numeroCasa;
-    private Calendar dataNascimento;
+    private Integer houseNumber;
+    private Calendar birthDate;
     private Status status;
     
     public Admin() {
     }
 
-    public Admin(Long id, String cpf, String nome, 
-            String telefone, String cep, String email, 
-            String password, Integer numeroCasa, Calendar dataNascimento, Status status) {
+    public Admin(Long id, String cpf, String name, 
+            String phone, String cep, String email, 
+            String password, Integer houseNumber, Calendar birthDate, Status status) {
         this.id = id;
         this.cpf = cpf;
-        this.nome = nome;
-        this.telefone = telefone;
+        this.name = name;
+        this.phone = phone;
         this.cep = cep;
         this.email = email;
         this.password = password;
-        this.numeroCasa = numeroCasa;
-        this.dataNascimento = dataNascimento;
+        this.houseNumber = houseNumber;
+        this.birthDate = birthDate;
         this.status = status;
     }
 
@@ -57,20 +57,20 @@ public class Admin {
         this.cpf = cpf;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getCep() {
@@ -97,20 +97,20 @@ public class Admin {
         this.password = password;
     }
 
-    public Integer getNumeroCasa() {
-        return numeroCasa;
+    public Integer getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setNumeroCasa(Integer numeroCasa) {
-        this.numeroCasa = numeroCasa;
+    public void setHouseNumber(Integer houseNumber) {
+        this.houseNumber = houseNumber;
     }
 
-    public Calendar getDataNascimento() {
-        return dataNascimento;
+    public Calendar getBirthDate() {
+        return birthDate;
     }
 
-    public void setDataNascimento(Calendar dataNascimento) {
-        this.dataNascimento = dataNascimento;
+    public void setBirthDate(Calendar birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Status getStatus() {

@@ -11,18 +11,18 @@ package dev.entity;
 public class BankAccount {
     
     private Long id;
-    private Double saldo;
-    private Integer agencia;
-    private String numConta;
+    private Double accountBalance;
+    private Integer bankNumber;
+    private String accountNumber;
 
     public BankAccount() {
     }
 
-    public BankAccount(Long id, Double saldo, Integer agencia, String numConta) {
+    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber) {
         this.id = id;
-        this.saldo = saldo;
-        this.agencia = agencia;
-        this.numConta = numConta;
+        this.accountBalance = accountBalance;
+        this.bankNumber = bankNumber;
+        this.accountNumber = accountNumber;
     }
 
     
@@ -34,28 +34,28 @@ public class BankAccount {
         this.id = id;
     }
 
-    public Double getSaldo() {
-        return saldo;
+    public Double getAccountBalance() {
+        return accountBalance;
     }
 
-    public void setSaldo(Double saldo) {
-        this.saldo = saldo;
+    public void setAccountBalance(Double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
-    public Integer getAgencia() {
-        return agencia;
+    public Integer getBankNumber() {
+        return bankNumber;
     }
 
-    public void setAgencia(Integer agencia) {
-        this.agencia = agencia;
+    public void setBankNumber(Integer bankNumber) {
+        this.bankNumber = bankNumber;
     }
 
-    public String getNumConta() {
-        return numConta;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setNumConta(String numConta) {
-        this.numConta = numConta;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
     
     
