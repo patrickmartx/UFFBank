@@ -84,8 +84,9 @@ public class ClientServiceImpl implements ClientService {
     public Client login(String cpf, String password) {
         try {
             return repository.Login(cpf, password);
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Erro durante o login do cliente.", e);
+        } catch (Exception ex) {
+            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE,
+                    "Erro durante o login do cliente. {0}", ex.getMessage());
         }
         return null;
     }
