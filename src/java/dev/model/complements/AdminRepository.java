@@ -166,7 +166,7 @@ public class AdminRepository extends DAO {
         }
     }
 
-    public Admin Login(String cpf, String password) throws SQLException {
+    public Admin login(String cpf, String password) throws SQLException {
         String getSQL = "SELECT * FROM tb_admin WHERE cpf = ? AND password = ?";
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
             preparedStatement.setString(1, cpf);

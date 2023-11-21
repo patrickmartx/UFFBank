@@ -21,8 +21,8 @@ public interface AdminService {
     
     public Admin findByCpf(String Cpf);
     
-    public void ativateClient(Long id, Integer bankNumber, String accountNumber);
+    public void activateClient(Long id, Integer bankNumber, String accountNumber);
     
-    public Admin Login(String cpf, String password);
+    public Admin login(String cpf, String password);
     
 }
