@@ -19,13 +19,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class BankAccountRepository extends DAO {
+    
+    private final String col_id = "id";
+    private final String col_accountBalance = "account_balance";
+    private final String col_bankNumber = "bank_number";
+    private final String col_accountNumber = "account_number";
 
     private void createBankAccountTable() throws NoConnectException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS tb_bankaccount ("
-                + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                + "account_balance DOUBLE NOT NULL,"
-                + "bank_number INT NOT NULL,"
-                + "account_number VARCHAR(255) NOT NULL"
+                + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
+                + col_accountBalance + " DOUBLE NOT NULL,"
+                + col_bankNumber + " INT NOT NULL,"
+                + col_accountNumber + " VARCHAR(255) NOT NULL"
                 + ")";
 
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
@@ -40,7 +45,7 @@ public class BankAccountRepository extends DAO {
     public void insertBankAccount(BankAccount bankAccount) throws NoConnectException {
         createBankAccountTable();
 
-        String sql = "INSERT INTO tb_bankaccount (account_balance, bank_number, account_number) "
+        String sql = "INSERT INTO tb_bankaccount ("+col_accountBalance+", "+col_bankNumber+", "+col_accountNumber+") "
                 + "VALUES (?, ?, ?)";
 
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -62,7 +67,7 @@ public class BankAccountRepository extends DAO {
     }
     
     public BankAccount getAccountById(Long id) throws NoConnectException {
-        String getSQL = "SELECT * FROM tb_bankaccount WHERE id = ?";
+        String getSQL = "SELECT * FROM tb_bankaccount WHERE "+col_id+" = ?";
 
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -73,10 +78,10 @@ public class BankAccountRepository extends DAO {
             if (resultSet.next()) {
                 BankAccount bankAccount =  new BankAccount();
                 
-                bankAccount.setId(resultSet.getLong("id"));
-                bankAccount.setAccountNumber(resultSet.getString("account_number"));
-                bankAccount.setBankNumber(resultSet.getInt("bank_number"));
-                bankAccount.setAccountBalance(resultSet.getDouble("account_balance"));
+                bankAccount.setId(resultSet.getLong(col_id));
+                bankAccount.setAccountNumber(resultSet.getString(col_accountNumber));
+                bankAccount.setBankNumber(resultSet.getInt(col_bankNumber));
+                bankAccount.setAccountBalance(resultSet.getDouble(col_accountBalance));
                 
                 return bankAccount;
             } else {
@@ -90,7 +95,7 @@ public class BankAccountRepository extends DAO {
     }
 
     public Long getIdByAccount(Integer agencia, String number) throws NoConnectException {
-        String getSQL = "SELECT id FROM tb_bankaccount WHERE bank_number = ? AND account_number = ?";
+        String getSQL = "SELECT "+col_id+" FROM tb_bankaccount WHERE "+col_bankNumber+" = ? AND "+col_accountNumber+" = ?";
 
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
 
@@ -111,14 +116,14 @@ public class BankAccountRepository extends DAO {
     }
 
     public Double getSaldoById(Long id) throws NoConnectException, SQLException {
-        String getSQL = "SELECT account_balance FROM tb_bankaccount WHERE id = ?";
+        String getSQL = "SELECT "+col_accountBalance+" FROM tb_bankaccount WHERE "+col_id+" = ?";
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
 
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getDouble("account_balance");
+                return resultSet.getDouble(col_accountBalance);
             } else {
                 System.out.println("Conta não encontrada");
                 return null;
@@ -141,7 +146,7 @@ public class BankAccountRepository extends DAO {
             Long idReceiverAccount = getIdByAccount(bankAccountReceiver, accountNumberReceiver);
             Double idReceiverBallance = getSaldoById(idReceiverAccount);
 
-            String updateSQL = "UPDATE tb_bankaccount SET account_balance = ? WHERE id = ?";
+            String updateSQL = "UPDATE tb_bankaccount SET "+col_accountBalance+" = ? WHERE "+col_id+" = ?";
             try (PreparedStatement preparedStatementRemetente = connection.prepareStatement(updateSQL); PreparedStatement preparedStatementDestino = connection.prepareStatement(updateSQL)) {
 
                 preparedStatementRemetente.setDouble(1, balanceSenderAccount - value);
@@ -172,7 +177,7 @@ public class BankAccountRepository extends DAO {
             Long idAccount = getIdByAccount(bankNumber, numberAccount);
             Double BalanceAccount = getSaldoById(idAccount);
 
-            String updateSQL = "UPDATE tb_bankaccount SET account_balance = ? WHERE id = ?";
+            String updateSQL = "UPDATE tb_bankaccount SET "+col_accountBalance+" = ? WHERE "+col_id+" = ?";
             try (PreparedStatement preparedStatementRemetente = connection.prepareStatement(updateSQL); PreparedStatement preparedStatementDestino = connection.prepareStatement(updateSQL)) {
 
                 preparedStatementRemetente.setDouble(1, BalanceAccount + value);

@@ -17,20 +17,31 @@ import dev.utils.Status;
  * @author Patrick
  */
 public class AdminRepository extends DAO {
+    
+    private final String col_id = "id";
+    private final String col_cpf = "cpf";
+    private final String col_name = "name";
+    private final String col_phone = "phone";
+    private final String col_cep = "cep";
+    private final String col_email = "email";
+    private final String col_password = "user_password";
+    private final String col_houseNumber = "house_number";
+    private final String col_birthDate = "birth_date";
+    private final String col_status = "status";
 
     private void createAdminTable() throws NoConnectException {
         String createTableSQL
-                = "CREATE TABLE IF NOT EXISTS tb_admin ("
-                + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                + "cpf VARCHAR(15) NOT NULL UNIQUE,"
-                + "name VARCHAR(255) NOT NULL,"
-                + "phone VARCHAR(15) NOT NULL UNIQUE,"
-                + "cep VARCHAR(10) NOT NULL,"
-                + "email VARCHAR(255) NOT NULL UNIQUE,"
-                + "password VARCHAR(255) NOT NULL,"
-                + "house_number INT NOT NULL,"
-                + "birth_date DATE NOT NULL,"
-                + "status VARCHAR(10) NOT NULL"
+                = "CREATE TABLE IF NOT EXISTS tb_client ("
+                + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
+                + col_cpf + " VARCHAR(15) NOT NULL UNIQUE,"
+                + col_name + " VARCHAR(255) NOT NULL,"
+                + col_phone + " VARCHAR(15) NOT NULL UNIQUE,"
+                + col_cep + " VARCHAR(10) NOT NULL,"
+                + col_email + " VARCHAR(255) NOT NULL UNIQUE,"
+                + col_password + " VARCHAR(255) NOT NULL,"
+                + col_houseNumber + " INT NOT NULL,"
+                + col_birthDate + " DATE NOT NULL,"
+                + col_status + " VARCHAR(10) NOT NULL,"
                 + ")";
 
         try (Connection connection = this.connect(); 
@@ -46,9 +57,9 @@ public class AdminRepository extends DAO {
     public void insertAdmin(Admin admin) throws NoConnectException {
         createAdminTable();
 
-        String sql = "INSERT INTO tb_admin (cpf, name, phone, "
-                + "cep, email, password, "
-                + "house_number, birth_date, status) "
+        String sql = "INSERT INTO tb_admin ("+col_cpf+", "+col_name+", "+col_phone+", "
+                + ""+col_cep+", "+col_email+", "+col_password+", "
+                + ""+col_houseNumber+", "+col_birthDate+", "+col_status+") "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = this.connect(); 
@@ -77,7 +88,7 @@ public class AdminRepository extends DAO {
     }
 
     public Admin findById(Long id) throws NoConnectException {
-        String getSQL = "SELECT * FROM tb_admin WHERE id = ?";
+        String getSQL = "SELECT * FROM tb_admin WHERE "+col_id+" = ?";
 
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -87,20 +98,20 @@ public class AdminRepository extends DAO {
 
             if (resultSet.next()) {
                 Admin admin = new Admin();
-                admin.setId(resultSet.getLong("id"));
-                admin.setCpf(resultSet.getString("cpf"));
-                admin.setName(resultSet.getString("name"));
-                admin.setPhone(resultSet.getString("phone"));
-                admin.setCep(resultSet.getString("cep"));
-                admin.setEmail(resultSet.getString("email"));
-                admin.setPassword(resultSet.getString("password"));
-                admin.setHouseNumber(resultSet.getInt("house_number"));
+                admin.setId(resultSet.getLong(col_id));
+                admin.setCpf(resultSet.getString(col_cpf));
+                admin.setName(resultSet.getString(col_name));
+                admin.setPhone(resultSet.getString(col_phone));
+                admin.setCep(resultSet.getString(col_cep));
+                admin.setEmail(resultSet.getString(col_email));
+                admin.setPassword(resultSet.getString(col_password));
+                admin.setHouseNumber(resultSet.getInt(col_houseNumber));
 
                 Calendar birthDate = Calendar.getInstance();
-                birthDate.setTime(resultSet.getDate("birth_date"));
+                birthDate.setTime(resultSet.getDate(col_birthDate));
                 admin.setBirthDate(birthDate);
 
-                admin.setStatus(Status.valueOf(resultSet.getString("status")));
+                admin.setStatus(Status.valueOf(resultSet.getString(col_status)));
 
                 return admin;
             } else {
@@ -114,7 +125,7 @@ public class AdminRepository extends DAO {
     }
 
     public Admin findByCpf(String cpf) throws NoConnectException {
-        String getSQL = "SELECT * FROM tb_admin WHERE cpf = ?";
+        String getSQL = "SELECT * FROM tb_admin WHERE "+col_cpf+" = ?";
 
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -124,20 +135,20 @@ public class AdminRepository extends DAO {
 
             if (resultSet.next()) {
                 Admin admin = new Admin();
-                admin.setId(resultSet.getLong("id"));
-                admin.setCpf(resultSet.getString("cpf"));
-                admin.setName(resultSet.getString("name"));
-                admin.setPhone(resultSet.getString("phone"));
-                admin.setCep(resultSet.getString("cep"));
-                admin.setEmail(resultSet.getString("email"));
-                admin.setPassword(resultSet.getString("password"));
-                admin.setHouseNumber(resultSet.getInt("house_number"));
+                admin.setId(resultSet.getLong(col_id));
+                admin.setCpf(resultSet.getString(col_cpf));
+                admin.setName(resultSet.getString(col_name));
+                admin.setPhone(resultSet.getString(col_phone));
+                admin.setCep(resultSet.getString(col_cep));
+                admin.setEmail(resultSet.getString(col_email));
+                admin.setPassword(resultSet.getString(col_password));
+                admin.setHouseNumber(resultSet.getInt(col_houseNumber));
 
-                Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birth_date"));
-                admin.setBirthDate(dataNascimento);
+                Calendar birthDate = Calendar.getInstance();
+                birthDate.setTime(resultSet.getDate(col_birthDate));
+                admin.setBirthDate(birthDate);
 
-                admin.setStatus(Status.valueOf(resultSet.getString("status")));
+                admin.setStatus(Status.valueOf(resultSet.getString(col_status)));
 
                 return admin;
             } else {
@@ -151,8 +162,9 @@ public class AdminRepository extends DAO {
     }
 
     public void activateClient(Long clientId, Long accountId, String status) throws SQLException {
+        
         String getSQL = "UPDATE tb_client "
-                + "SET bankAccountId = ?, status = ? "
+                + "SET bank_account_id = ?, status = ? "
                 + "WHERE id = ?";
 
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -167,7 +179,7 @@ public class AdminRepository extends DAO {
     }
 
     public Admin login(String cpf, String password) throws SQLException {
-        String getSQL = "SELECT * FROM tb_admin WHERE cpf = ? AND password = ?";
+        String getSQL = "SELECT * FROM tb_admin WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
             preparedStatement.setString(1, cpf);
             preparedStatement.setString(2, password);

@@ -21,22 +21,34 @@ import java.util.logging.Level;
 import dev.utils.Status;
 
 public class ClientRepository extends DAO {
+    
+    private final String col_id = "id";
+    private final String col_cpf = "cpf";
+    private final String col_name = "name";
+    private final String col_phone = "phone";
+    private final String col_cep = "cep";
+    private final String col_email = "email";
+    private final String col_password = "user_password";
+    private final String col_houseNumber = "house_number";
+    private final String col_birthDate = "birth_date";
+    private final String col_bankAccountId = "bank_account_id";
+    private final String col_status = "status";
 
     private void createClientTable() throws NoConnectException {
         String createTableSQL
                 = "CREATE TABLE IF NOT EXISTS tb_client ("
-                + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                + "cpf VARCHAR(15) NOT NULL UNIQUE,"
-                + "name VARCHAR(255) NOT NULL,"
-                + "phone VARCHAR(15) NOT NULL UNIQUE,"
-                + "cep VARCHAR(10) NOT NULL,"
-                + "email VARCHAR(255) NOT NULL UNIQUE,"
-                + "password VARCHAR(255) NOT NULL,"
-                + "house_number INT NOT NULL,"
-                + "birth_date DATE NOT NULL,"
-                + "bank_account_id INT UNIQUE,"
-                + "status VARCHAR(10) NOT NULL,"
-                + "FOREIGN KEY (bankAccountId) REFERENCES tb_bankaccount(id)"
+                + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
+                + col_cpf + " VARCHAR(15) NOT NULL UNIQUE,"
+                + col_name + " VARCHAR(255) NOT NULL,"
+                + col_phone + " VARCHAR(15) NOT NULL UNIQUE,"
+                + col_cep + " VARCHAR(10) NOT NULL,"
+                + col_email + " VARCHAR(255) NOT NULL UNIQUE,"
+                + col_password + " VARCHAR(255) NOT NULL,"
+                + col_houseNumber + " INT NOT NULL,"
+                + col_birthDate + " DATE NOT NULL,"
+                + col_bankAccountId + " INT UNIQUE,"
+                + col_status + " VARCHAR(10) NOT NULL,"
+                + "FOREIGN KEY (" + col_bankAccountId + ") REFERENCES tb_bankaccount(id)"
                 + ")";
 
         try (Connection connection = this.connect(); 
@@ -52,9 +64,9 @@ public class ClientRepository extends DAO {
     public void insertClient(Client client) throws NoConnectException {
         createClientTable();
 
-        String sql = "INSERT INTO tb_client (cpf, name, phone, "
-                + "cep, email, password, "
-                + "house_number, birth_date, bank_account_id, status) "
+        String sql = "INSERT INTO tb_client ("+col_cpf+", "+col_name+", "+col_phone+", "
+                + ""+col_cep+", "+col_email+", "+col_password+", "
+                + ""+col_houseNumber+", "+col_birthDate+", "+col_bankAccountId+", "+col_status+") "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = this.connect(); 
@@ -84,7 +96,7 @@ public class ClientRepository extends DAO {
     }
     
     public Client findById(Long id) throws NoConnectException {
-        String getSQL = "SELECT * FROM tb_client WHERE id = ?";
+        String getSQL = "SELECT * FROM tb_client WHERE "+col_id+" = ?";
 
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -94,21 +106,21 @@ public class ClientRepository extends DAO {
 
             if (resultSet.next()) {
                 Client client = new Client();
-                client.setId(resultSet.getLong("id"));
-                client.setCpf(resultSet.getString("cpf"));
-                client.setName(resultSet.getString("name"));
-                client.setPhone(resultSet.getString("phone"));
-                client.setCep(resultSet.getString("cep"));
-                client.setEmail(resultSet.getString("email"));
-                client.setPassword(resultSet.getString("password"));
-                client.setHouseNumber(resultSet.getInt("house_number"));
+                client.setId(resultSet.getLong(col_id));
+                client.setCpf(resultSet.getString(col_cpf));
+                client.setName(resultSet.getString(col_name));
+                client.setPhone(resultSet.getString(col_phone));
+                client.setCep(resultSet.getString(col_cep));
+                client.setEmail(resultSet.getString(col_email));
+                client.setPassword(resultSet.getString(col_password));
+                client.setHouseNumber(resultSet.getInt(col_houseNumber));
 
                 Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birth_date"));
+                dataNascimento.setTime(resultSet.getDate(col_birthDate));
                 client.setBirthDate(dataNascimento);
                 
-                client.setConta(resultSet.getLong("bank_account_id"));
-                client.setStatus(Status.valueOf(resultSet.getString("status")));
+                client.setConta(resultSet.getLong(col_bankAccountId));
+                client.setStatus(Status.valueOf(resultSet.getString(col_status)));
 
                 return client;
             } else {
@@ -122,7 +134,7 @@ public class ClientRepository extends DAO {
     }
     
     public Client findByCpf(String cpf) throws NoConnectException {
-        String getSQL = "SELECT * FROM tb_client WHERE cpf = ?";
+        String getSQL = "SELECT * FROM tb_client WHERE "+col_cpf+" = ?";
 
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
@@ -132,21 +144,21 @@ public class ClientRepository extends DAO {
 
             if (resultSet.next()) {
                 Client client = new Client();
-                client.setId(resultSet.getLong("id"));
-                client.setCpf(resultSet.getString("cpf"));
-                client.setName(resultSet.getString("name"));
-                client.setPhone(resultSet.getString("phone"));
-                client.setCep(resultSet.getString("cep"));
-                client.setEmail(resultSet.getString("email"));
-                client.setPassword(resultSet.getString("password"));
-                client.setHouseNumber(resultSet.getInt("house_number"));
+                client.setId(resultSet.getLong(col_id));
+                client.setCpf(resultSet.getString(col_cpf));
+                client.setName(resultSet.getString(col_name));
+                client.setPhone(resultSet.getString(col_phone));
+                client.setCep(resultSet.getString(col_cep));
+                client.setEmail(resultSet.getString(col_email));
+                client.setPassword(resultSet.getString(col_password));
+                client.setHouseNumber(resultSet.getInt(col_houseNumber));
 
                 Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birth_date"));
+                dataNascimento.setTime(resultSet.getDate(col_birthDate));
                 client.setBirthDate(dataNascimento);
                 
-                client.setConta(resultSet.getLong("bank_account_id"));
-                client.setStatus(Status.valueOf(resultSet.getString("status")));
+                client.setConta(resultSet.getLong(col_bankAccountId));
+                client.setStatus(Status.valueOf(resultSet.getString(col_status)));
 
                 return client;
             } else {
@@ -160,7 +172,7 @@ public class ClientRepository extends DAO {
     }
 
     public Client Login(String cpf, String password) throws SQLException {
-        String getSQL = "SELECT * FROM tb_cliente WHERE cpf = ? AND password = ?";
+        String getSQL = "SELECT * FROM tb_client WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
         try (Connection connection = this.connect(); 
                 PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
 
