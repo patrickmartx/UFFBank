@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import dev.entity.Admin;
 import dev.entity.Client;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -75,12 +76,22 @@ public class Controller extends HttpServlet {
                 admin = adminService.login(cpf, password);
                 
                 if (admin != null) {
-                    response.sendRedirect("/UFFBank/Admin/Home");
+                    HttpSession sessao = request.getSession();
+                    sessao.setAttribute("cpf", request.getParameter("cpf")) ;
+                    sessao.setAttribute("cpf", request.getParameter("password"));
+                    System.out.println("Logado como admnistrador!");
+                    RequestDispatcher rd = request.getRequestDispatcher("/Admin/Home") ;
+                    rd.forward(request, response) ;
                 }
-                if (client != null) {
-                    response.sendRedirect("/UFFBank/Client/Home");
+                else if (client != null) {
+                    HttpSession sessao = request.getSession();
+                    sessao.setAttribute("cpf", request.getParameter("cpf")) ;
+                    sessao.setAttribute("cpf", request.getParameter("password"));
+                    System.out.println("Logado como cliente!");
+                    RequestDispatcher rd = request.getRequestDispatcher("/views/Home.jsp") ;
+                    rd.forward(request, response) ;
                 }
-                if (admin == null && client == null) {
+                else if (admin == null && client == null) {
                     response.sendRedirect("/UFFBank/Login");
                 }
                 
