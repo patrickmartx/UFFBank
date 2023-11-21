@@ -31,7 +31,7 @@ public class AdminRepository extends DAO {
 
     private void createAdminTable() throws NoConnectException {
         String createTableSQL
-                = "CREATE TABLE IF NOT EXISTS tb_client ("
+                = "CREATE TABLE IF NOT EXISTS tb_admin ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
                 + col_cpf + " VARCHAR(15) NOT NULL UNIQUE,"
                 + col_name + " VARCHAR(255) NOT NULL,"
@@ -41,7 +41,7 @@ public class AdminRepository extends DAO {
                 + col_password + " VARCHAR(255) NOT NULL,"
                 + col_houseNumber + " INT NOT NULL,"
                 + col_birthDate + " DATE NOT NULL,"
-                + col_status + " VARCHAR(10) NOT NULL,"
+                + col_status + " VARCHAR(10) NOT NULL"
                 + ")";
 
         try (Connection connection = this.connect(); 
