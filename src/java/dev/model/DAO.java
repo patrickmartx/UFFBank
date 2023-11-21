@@ -22,7 +22,7 @@ public class DAO {
     private void loadDatabaseProperties() {
         try {
             properties = new Properties();
-            InputStream input = getClass().getClassLoader().getResourceAsStream("resources/databaseTest.properties");
+            InputStream input = getClass().getClassLoader().getResourceAsStream("resources/database.properties");
             properties.load(input);
         } catch (IOException e) {
             throw new RuntimeException("Falha ao carregar as configurações do banco de dados: " + e.getMessage(), e);
