@@ -10,6 +10,9 @@ package dev.services;
  */
 public interface BankAccountService {
     
-    public void save(Double saldo, Integer agencia, String numConta);
-    public Long idByNumber(Integer agencia, String number);
+    public void save(Double accountBalance, Integer bankNumber, String accountNumber);
+    public Long getIdByAccount(Integer bankNumber, String accountNumber);
+    public void transferByAccount(Double accountBalance, Integer bankNumberSender, String accountNumberSender, 
+                                  Integer bankNumberReceiver, String accountNumberReceiver);
+    public void deposit(Double accountBalance, Integer bankNumber, String accountNumber);
 }

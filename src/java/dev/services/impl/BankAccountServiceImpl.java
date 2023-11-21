@@ -24,13 +24,13 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void save(Double saldo, Integer agencia, String numConta) {
+    public void save(Double accountBalance, Integer bankNumber, String accountNumber) {
         try{
             BankAccount conta = new BankAccount();
 
-            conta.setSaldo(saldo);
-            conta.setAgencia(agencia);
-            conta.setNumConta(numConta);
+            conta.setAccountBalance(accountBalance);
+            conta.setBankNumber(bankNumber);
+            conta.setAccountNumber(accountNumber);
 
             repository.insertBankAccount(conta);
         } catch (Exception e) {
@@ -39,12 +39,39 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public Long idByNumber(Integer agencia, String number) {
+    public Long getIdByAccount(Integer bankNumber, String accountNumber) {
         try {
-            return repository.idByNumber(agencia, number);
+            return repository.getIdByAccount(bankNumber, accountNumber);
         } catch (NoConnectException ex) {
             Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    @Override
+    public void transferByAccount(Double value, Integer bankNumberSender, String accountNumberSender, 
+                                  Integer bankNumberReceiver, String accountNumberReceiver) {
+        try {
+            Long idSenderAccount = repository.getIdByAccount(bankNumberSender, accountNumberSender);
+            Double balanceSenderAccount = repository.getSaldoById(idSenderAccount);
+            
+            if (value > balanceSenderAccount) {
+                throw new IllegalArgumentException("Valor de transferência maior do que o saldo!");
+            }
+            
+            repository.transfer(value, bankNumberSender, accountNumberSender, bankNumberReceiver, accountNumberReceiver);
+        } catch (Exception ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void deposit(Double value, Integer bankNumber, String accountNumber) {
+        try {
+            repository.deposit(value, bankNumber, accountNumber);
+        }
+        catch(NoConnectException ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
