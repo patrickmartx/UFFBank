@@ -23,13 +23,12 @@ public class BankAccountRepository extends DAO {
     private void createBankAccountTable() throws NoConnectException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS tb_bankaccount ("
                 + "id INT AUTO_INCREMENT PRIMARY KEY,"
-                + "saldo DOUBLE NOT NULL,"
-                + "agencia INT NOT NULL,"
-                + "num_conta VARCHAR(255) NOT NULL"
+                + "accountBalance DOUBLE NOT NULL,"
+                + "bankNumber INT NOT NULL,"
+                + "accountNumber VARCHAR(255) NOT NULL"
                 + ")";
 
-        try (Connection connection = this.connect(); 
-             PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
+        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(createTableSQL)) {
 
             preparedStatement.executeUpdate();
             System.out.println("Tabela de conta bancária criada ou já existente.");
@@ -41,15 +40,14 @@ public class BankAccountRepository extends DAO {
     public void insertBankAccount(BankAccount bankAccount) throws NoConnectException {
         createBankAccountTable();
 
-        String sql = "INSERT INTO tb_bankaccount (saldo, agencia, num_conta) "
+        String sql = "INSERT INTO tb_bankaccount (accountBalance, bankNumber, accountNumber) "
                 + "VALUES (?, ?, ?)";
 
-        try (Connection connection = this.connect(); 
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
-            preparedStatement.setDouble(1, bankAccount.getSaldo());
-            preparedStatement.setInt(2, bankAccount.getAgencia());
-            preparedStatement.setString(3, bankAccount.getNumConta());
+            preparedStatement.setDouble(1, bankAccount.getAccountBalance());
+            preparedStatement.setInt(2, bankAccount.getBankNumber());
+            preparedStatement.setString(3, bankAccount.getAccountNumber());
 
             int rowsAffected = preparedStatement.executeUpdate();
 
@@ -62,26 +60,106 @@ public class BankAccountRepository extends DAO {
             e.printStackTrace();
         }
     }
-    
-    public Long idByNumber(Integer agencia, String number) throws NoConnectException {
-        String getSQL = "SELECT id FROM tb_bankaccount WHERE agencia = ? AND num_conta = ?";
-        
+
+    public Long getIdByAccount(Integer agencia, String number) throws NoConnectException {
+        String getSQL = "SELECT id FROM tb_bankaccount WHERE bankNumber = ? AND accountNumber = ?";
+
         try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-        
-        preparedStatement.setInt(1, agencia);
-        preparedStatement.setString(2, number);
-        
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
+
+            preparedStatement.setInt(1, agencia);
+            preparedStatement.setString(2, number);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
                 return resultSet.getLong("id");
             } else {
                 System.out.println("Conta não encontrada");
                 return null;
             }
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public Double getSaldoById(Long id) throws NoConnectException, SQLException {
+        String getSQL = "SELECT accountBalance FROM tb_bankaccount WHERE id = ?";
+        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
+
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getDouble("accountBalance");
+            } else {
+                System.out.println("Conta não encontrada");
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void transfer(Double value, Integer bankNumberSender, String accountNumberSender,
+            Integer bankAccountReceiver, String accountNumberReceiver) throws NoConnectException {
+
+        try (Connection connection = this.connect()) {
+            connection.setAutoCommit(false);
+
+            Long idSenderAccount = getIdByAccount(bankNumberSender, accountNumberSender);
+            Double balanceSenderAccount = getSaldoById(idSenderAccount);
+
+            Long idReceiverAccount = getIdByAccount(bankAccountReceiver, accountNumberReceiver);
+            Double idReceiverBallance = getSaldoById(idReceiverAccount);
+
+            String updateSQL = "UPDATE tb_bankaccount SET accountBalance = ? WHERE id = ?";
+            try (PreparedStatement preparedStatementRemetente = connection.prepareStatement(updateSQL); PreparedStatement preparedStatementDestino = connection.prepareStatement(updateSQL)) {
+
+                preparedStatementRemetente.setDouble(1, balanceSenderAccount - value);
+                preparedStatementRemetente.setLong(2, idSenderAccount);
+                preparedStatementRemetente.executeUpdate();
+
+                preparedStatementDestino.setDouble(1, idReceiverBallance + value);
+                preparedStatementDestino.setLong(2, idReceiverAccount);
+                preparedStatementDestino.executeUpdate();
+
+                connection.commit();
+            } catch (SQLException ex) {
+                connection.rollback();
+                Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException | NoConnectException ex) {
+            Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void deposit(Double value, Integer bankNumber, String numberAccount) throws NoConnectException {
+
+        try (Connection connection = this.connect()) {
+            connection.setAutoCommit(false);
+
+            Long idAccount = getIdByAccount(bankNumber, numberAccount);
+            Double BalanceAccount = getSaldoById(idAccount);
+
+            String updateSQL = "UPDATE tb_bankaccount SET accountBalance = ? WHERE id = ?";
+            try (PreparedStatement preparedStatementRemetente = connection.prepareStatement(updateSQL); PreparedStatement preparedStatementDestino = connection.prepareStatement(updateSQL)) {
+
+                preparedStatementRemetente.setDouble(1, BalanceAccount + value);
+                preparedStatementRemetente.setLong(2, idAccount);
+                preparedStatementRemetente.executeUpdate();
+
+                connection.commit();
+            } catch (SQLException ex) {
+                connection.rollback();
+                Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+        } catch (SQLException | NoConnectException ex) {
+            Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
