@@ -30,9 +30,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void save(String cpf, String nome, String telefone,
+    public void save(String cpf, String name, String phone,
             String cep, String email, String password,
-            Integer numeroCasa, Calendar dataNascimento, String status) {
+            Integer houseNumber, Calendar birthDate, String status) {
         try {
             Admin admin = new Admin();
 
@@ -40,17 +40,17 @@ public class AdminServiceImpl implements AdminService {
                 throw new IllegalArgumentException("CPF inválido!");
             }
             admin.setCpf(cpf);
-            admin.setNome(nome);
+            admin.setName(name);
             if (cpf.length() < 11) {
                 throw new IllegalArgumentException("telefone inválido!");
             }
-            admin.setTelefone(telefone);
+            admin.setPhone(phone);
             admin.setCep(cep);
             admin.setEmail(email);
             admin.setPassword(password);
-            admin.setNumeroCasa(numeroCasa);
-            admin.setDataNascimento(dataNascimento);
-            admin.setStatus(Status.ATIVO);
+            admin.setHouseNumber(houseNumber);
+            admin.setBirthDate(birthDate);
+            admin.setStatus(Status.ACTIVE);
 
             repository.insertAdmin(admin);
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin findByCpf(String Cpf) {
         try {
-            return repository.findByCPF(Cpf);
+            return repository.findByCpf(Cpf);
         } catch (NoConnectException ex) {
             Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,14 +79,24 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void ativateClient(Long id, Integer account, String number) {
-        Long accountId = bankService.idByNumber(account, number);
+    public void ativateClient(Long id, Integer bankNumber, String accountNumber) {
+        Long accountId = bankService.getIdByAccount(bankNumber, accountNumber);
         
         try {
-            repository.ativateClient(id, accountId, Status.ATIVO.getValue());
+            repository.activateClient(id, accountId, Status.ACTIVE.getValue());
         } catch (SQLException ex) {
             Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+    }
+
+    @Override
+    public Admin Login(String cpf, String password) {
+        try {
+            return repository.Login(cpf, password);
+        }
+        catch(Exception ex){
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

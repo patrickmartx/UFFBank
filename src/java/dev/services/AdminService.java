@@ -6,7 +6,6 @@ package dev.services;
 
 import java.util.Calendar;
 import dev.entity.Admin;
-import dev.entity.Client;
 
 /**
  *
@@ -14,14 +13,16 @@ import dev.entity.Client;
  */
 public interface AdminService {
     
-    public void save(String cpf, String nome, String telefone, 
+    public void save(String cpf, String name, String phone, 
             String cep, String email, String password, 
-            Integer numeroCasa, Calendar dataNascimento, String status);
+            Integer houseNumber, Calendar birthDate, String status);
     
     public Admin findById(Long id);
     
     public Admin findByCpf(String Cpf);
     
-    public void ativateClient(Long id, Integer account, String number);
+    public void ativateClient(Long id, Integer bankNumber, String accountNumber);
+    
+    public Admin Login(String cpf, String password);
     
 }
