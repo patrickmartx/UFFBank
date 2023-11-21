@@ -7,10 +7,8 @@ package dev.model;
 import dev.exceptions.NoConnectException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Properties;
 import java.sql.Connection;
 import java.sql.DriverManager;
-
 import java.util.Properties;
 
 public class DAO {
