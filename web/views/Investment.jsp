@@ -9,7 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <link rel="stylesheet" type="text/css" href="estilo.css" />
+        
+        <title>Investimentos | UFFBANK </title>
     </head>
     <body>
         <!-- <form action="/UFFBank/Investment/Send" method="post">
@@ -25,7 +27,7 @@
               <div class="Frame15" style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 24px; display: flex">
                 
                 <div class="LOGO" style="padding-bottom: 10px; padding-right: 38px; justify-content: flex-start; align-items: flex-end; gap: 11px; display: inline-flex">
-                  <img class="BancoUffLogo1" style="width: 26px; height: 26px" src="banco_uff_logo 1.png" />
+                  <img class="BancoUffLogo1" style="width: 26px; height: 26px" src="contents/imgs/logo.png" />
                   <div class="UffBank"><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 300; word-wrap: break-word">UFF </span><span style="color: black; font-size: 20px; font-family: Inter; font-weight: 700; word-wrap: break-word">BANK</span></div>
                 </div>
                 <div class="Frame13" style="align-self: stretch; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 8px; display: flex">

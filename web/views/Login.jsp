@@ -9,6 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="estilo.css" />
+        
         <title>Login| UFFBANK</title>
     </head>
     <body>
@@ -24,7 +26,7 @@
             </div>
             <div style="padding-top: 10%; display: flex; justify-content: center; width: 100%;">
             <div style="flex-direction: column; justify-content: flex-start; align-items: center; gap: 56px; display: inline-flex">
-              <img style="width: 80px; height: 80px" src="banco_uff_logo 1.png" />
+              <img style="width: 80px; height: 80px" src="contents/imgs/logo.png 1.png" />
 
               <form action="/UFFBank/Login/Auth" method="post" style="flex-direction: column; justify-content: center; align-items: center; gap: 24px; display: flex">
                 <div style="width: 454px; height: 88px; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 5px; display: flex">
