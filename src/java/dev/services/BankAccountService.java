@@ -12,7 +12,7 @@ public interface BankAccountService {
     
     public void save(Double accountBalance, Integer bankNumber, String accountNumber);
     public Long getIdByAccount(Integer bankNumber, String accountNumber);
-    public void transferByAccount(Double accountBalance, Integer bankNumberSender, String accountNumberSender, 
+    public void transfer(Double accountBalance, Integer bankNumberSender, String accountNumberSender, 
                                   Integer bankNumberReceiver, String accountNumberReceiver);
     public void deposit(Double accountBalance, Integer bankNumber, String accountNumber);
 }
