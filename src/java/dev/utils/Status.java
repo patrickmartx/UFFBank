@@ -9,9 +9,9 @@ package dev.utils;
  * @author Patrick
  */
 public enum Status {
-    ATIVO("ATIVO"),
-    INATIVO("INATIVO"),
-    DESATIVADO("DESATIVADO");
+    ACTIVE("ACTIVE"),
+    INACTIVE("INACTIVE"),
+    DISACTIVATE("DISACTIVATE");
 
     private final String value;
 
