@@ -37,6 +37,16 @@ public class BankAccountServiceImpl implements BankAccountService {
             Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Não foi possível criar a conta. Mensagem: {0}", e.getMessage());
         }
     }
+    
+    @Override
+    public BankAccount getAccountById(Long id) {
+        try {
+            return repository.getAccountById(id);
+        } catch (NoConnectException ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     @Override
     public Long getIdByAccount(Integer bankNumber, String accountNumber) {

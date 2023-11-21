@@ -60,6 +60,34 @@ public class BankAccountRepository extends DAO {
             e.printStackTrace();
         }
     }
+    
+    public BankAccount getAccountById(Long id) throws NoConnectException {
+        String getSQL = "SELECT * FROM tb_bankaccount WHERE id = ?";
+
+        try (Connection connection = this.connect(); 
+                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
+
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                BankAccount bankAccount =  new BankAccount();
+                
+                bankAccount.setId(resultSet.getLong("id"));
+                bankAccount.setAccountNumber(resultSet.getString("account_number"));
+                bankAccount.setBankNumber(resultSet.getInt("bank_number"));
+                bankAccount.setAccountBalance(resultSet.getDouble("account_balance"));
+                
+                return bankAccount;
+            } else {
+                System.out.println("Conta bancária não encontrada");
+                return null;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
     public Long getIdByAccount(Integer agencia, String number) throws NoConnectException {
         String getSQL = "SELECT id FROM tb_bankaccount WHERE bank_number = ? AND account_number = ?";
