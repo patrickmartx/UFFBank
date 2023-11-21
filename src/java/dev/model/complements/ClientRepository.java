@@ -83,6 +83,44 @@ public class ClientRepository extends DAO {
         }
     }
     
+    public Client findById(Long id) throws NoConnectException {
+        String getSQL = "SELECT * FROM tb_client WHERE id = ?";
+
+        try (Connection connection = this.connect(); 
+                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
+
+            preparedStatement.setLong(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Client client = new Client();
+                client.setId(resultSet.getLong("id"));
+                client.setCpf(resultSet.getString("cpf"));
+                client.setName(resultSet.getString("name"));
+                client.setPhone(resultSet.getString("phone"));
+                client.setCep(resultSet.getString("cep"));
+                client.setEmail(resultSet.getString("email"));
+                client.setPassword(resultSet.getString("password"));
+                client.setHouseNumber(resultSet.getInt("house_number"));
+
+                Calendar dataNascimento = Calendar.getInstance();
+                dataNascimento.setTime(resultSet.getDate("birth_date"));
+                client.setBirthDate(dataNascimento);
+                
+                client.setConta(resultSet.getLong("bank_account_id"));
+                client.setStatus(Status.valueOf(resultSet.getString("status")));
+
+                return client;
+            } else {
+                System.out.println("Administrador não encontrado com o CPF: " + id);
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     public Client findByCpf(String cpf) throws NoConnectException {
         String getSQL = "SELECT * FROM tb_client WHERE cpf = ?";
 

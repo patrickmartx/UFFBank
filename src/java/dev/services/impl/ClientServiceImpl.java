@@ -57,9 +57,20 @@ public class ClientServiceImpl implements ClientService {
                     "Não foi possível criar Cliente. Mensagem: {0}", ex.getMessage());
         }
     }
-
+    
     @Override
-    public Client clientByCpf(String cpf) {
+    public Client findById(Long id) {
+        try {
+            return repository.findById(id);
+        } catch (NoConnectException ex) {
+            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
+                    "Erro ao buscar cliente por Id. Mensagem: {0}", ex.getMessage());
+        }
+        return null;
+    }
+    
+    @Override
+    public Client findByCpf(String cpf) {
         try {
             return repository.findByCpf(cpf);
         } catch (NoConnectException ex) {

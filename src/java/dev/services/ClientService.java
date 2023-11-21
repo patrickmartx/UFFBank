@@ -17,7 +17,9 @@ public interface ClientService {
                      String cep, String email, String password,
                      Integer houseNumber, Calendar birthDate, Long bankAccountId);
     
-    public Client clientByCpf(String cpf);
+    public Client findById(Long id);
+    
+    public Client findByCpf(String cpf);
     
     public Client Login(String cpf, String password);
 }
