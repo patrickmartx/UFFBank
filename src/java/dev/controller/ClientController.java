@@ -24,13 +24,14 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Patrick
  */
-@WebServlet(name = "ClientController", urlPatterns = {"/Deposit", "/Transfer", "/Investment",
-    "/Deposit/Send", "/Transfer/Send", "/Investment/Send"})
+@WebServlet(name = "ClientController", urlPatterns = {"/Client/*"})
 public class ClientController extends HttpServlet {
     
-
-    private ClientService clientService = new ClientServiceImpl(new ClientRepository());
-    private BankAccountService bankAccountService = new BankAccountServiceImpl(new BankAccountRepository());
+    private BankAccountRepository bankAccountRepository = new BankAccountRepository();
+    private BankAccountService bankService = new BankAccountServiceImpl(bankAccountRepository);
+    
+    private ClientRepository clientRepository = new ClientRepository();
+    private ClientService clientService = new ClientServiceImpl(clientRepository);
             
     
     @Override
@@ -40,24 +41,15 @@ public class ClientController extends HttpServlet {
         String action = request.getServletPath();
 
         switch (action) {
-            case "/Deposit" -> {
-                
-                /* TESTE DE INSERÇÃO
-                * bankAccountService.save(10.00, 1234, "1213-23");
-                *
-                * Calendar dataNascimento = Calendar.getInstance();
-                * dataNascimento.set(1999, Calendar.JUNE, 3); // 3 de junho de 1999
-                * clientService.save("111222333-44", "Patrick", "21933334444", "24753-800", "pkxavier@gmail.com", "123", 12, dataNascimento, 1L);
-                
-                */
+            case "/Client/Deposit" -> {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Deposit.jsp");
                 rd.forward(request, response);
             }
-            case "/Investment" -> {
+            case "/Client/Investment" -> {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
                 rd.forward(request, response);
             }
-            case "/Transfer" -> {
+            case "/Client/Transfer" -> {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Transfer.jsp");
                 rd.forward(request, response);
             }
@@ -73,7 +65,7 @@ public class ClientController extends HttpServlet {
         String action = request.getServletPath();
 
         switch (action) {
-            case "/Deposit/Send" -> {
+            case "/Client/Deposit/Send" -> {
                 String value = (String) request.getParameter("value");
                 System.out.println(value);
                 /*
@@ -81,7 +73,7 @@ public class ClientController extends HttpServlet {
                  */
                 response.sendRedirect("/UFFBank/Deposit");
             }
-            case "/Investment/Send" -> {
+            case "/Client/Investment/Send" -> {
                 String value = (String) request.getParameter("value");
                 System.out.println(value);
                 /*
@@ -89,14 +81,9 @@ public class ClientController extends HttpServlet {
                  */
                 response.sendRedirect("/UFFBank/Investment");
             }
-            case "/Transfer/Send" -> {
+            case "/Client/Transfer/Send" -> {
                 String account = (String) request.getParameter("account");
-                String pix = (String) request.getParameter("pix");
                 String value = (String) request.getParameter("value");
-
-                System.out.println(account);
-                System.out.println(pix);
-                System.out.println(value);
 
                 /*
                 TODO: Tratar depósito
