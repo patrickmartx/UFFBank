@@ -41,6 +41,10 @@ public class ClientController extends HttpServlet {
         String action = request.getServletPath();
 
         switch (action) {
+            case "/Client/Home" -> {
+                RequestDispatcher rd = request.getRequestDispatcher("/views/Home.jsp");
+                rd.forward(request, response);
+            }
             case "/Client/Deposit" -> {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Deposit.jsp");
                 rd.forward(request, response);
@@ -65,6 +69,7 @@ public class ClientController extends HttpServlet {
         String action = request.getServletPath();
 
         switch (action) {
+            
             case "/Client/Deposit/Send" -> {
                 String value = (String) request.getParameter("value");
                 System.out.println(value);
