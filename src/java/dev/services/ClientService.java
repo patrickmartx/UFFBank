@@ -21,5 +21,5 @@ public interface ClientService {
     
     public Client findByCpf(String cpf);
     
-    public Client Login(String cpf, String password);
+    public Client login(String cpf, String password);
 }

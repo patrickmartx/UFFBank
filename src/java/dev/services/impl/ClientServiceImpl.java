@@ -81,7 +81,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client Login(String cpf, String password) {
+    public Client login(String cpf, String password) {
         try {
             return repository.Login(cpf, password);
         } catch (Exception e) {
