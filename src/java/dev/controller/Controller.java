@@ -1,7 +1,6 @@
 package dev.controller;
 
 import dev.exceptions.NonExistingURLException;
-import dev.model.complements.DAOUser;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,8 +17,6 @@ import javax.servlet.http.HttpServletResponse;
                                                 "/Home"})
 public class Controller extends HttpServlet {
 
-    DAOUser dao = new DAOUser();
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -27,7 +24,6 @@ public class Controller extends HttpServlet {
 
         switch (action) {
             case "/Login" -> {
-                dao.testeConexao();
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
                 rd.forward(request, response);
             }
