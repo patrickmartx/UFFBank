@@ -28,8 +28,8 @@ public class AdminRepository extends DAO {
                 + "cep VARCHAR(10) NOT NULL,"
                 + "email VARCHAR(255) NOT NULL UNIQUE,"
                 + "password VARCHAR(255) NOT NULL,"
-                + "houseNumber INT NOT NULL,"
-                + "birthDate DATE NOT NULL,"
+                + "house_number INT NOT NULL,"
+                + "birth_date DATE NOT NULL,"
                 + "status VARCHAR(10) NOT NULL"
                 + ")";
 
@@ -48,7 +48,7 @@ public class AdminRepository extends DAO {
 
         String sql = "INSERT INTO tb_admin (cpf, name, phone, "
                 + "cep, email, password, "
-                + "houseNumber, birthDate, status) "
+                + "house_number, birth_date, status) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = this.connect(); 
@@ -94,11 +94,11 @@ public class AdminRepository extends DAO {
                 admin.setCep(resultSet.getString("cep"));
                 admin.setEmail(resultSet.getString("email"));
                 admin.setPassword(resultSet.getString("password"));
-                admin.setHouseNumber(resultSet.getInt("houseNumber"));
+                admin.setHouseNumber(resultSet.getInt("house_number"));
 
-                Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birthDate"));
-                admin.setBirthDate(dataNascimento);
+                Calendar birthDate = Calendar.getInstance();
+                birthDate.setTime(resultSet.getDate("birth_date"));
+                admin.setBirthDate(birthDate);
 
                 admin.setStatus(Status.valueOf(resultSet.getString("status")));
 
@@ -131,10 +131,10 @@ public class AdminRepository extends DAO {
                 admin.setCep(resultSet.getString("cep"));
                 admin.setEmail(resultSet.getString("email"));
                 admin.setPassword(resultSet.getString("password"));
-                admin.setHouseNumber(resultSet.getInt("houseNumber"));
+                admin.setHouseNumber(resultSet.getInt("house_number"));
 
                 Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birthDate"));
+                dataNascimento.setTime(resultSet.getDate("birth_date"));
                 admin.setBirthDate(dataNascimento);
 
                 admin.setStatus(Status.valueOf(resultSet.getString("status")));
@@ -155,12 +155,11 @@ public class AdminRepository extends DAO {
                 + "SET bankAccountId = ?, status = ? "
                 + "WHERE id = ?";
 
-        try (Connection connection = this.connect(); 
-                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
+        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
             preparedStatement.setLong(1, accountId);
             preparedStatement.setString(2, status);
             preparedStatement.setLong(3, clientId);
-            
+
             preparedStatement.executeQuery();
         } catch (NoConnectException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);

@@ -32,9 +32,9 @@ public class ClientRepository extends DAO {
                 + "cep VARCHAR(10) NOT NULL,"
                 + "email VARCHAR(255) NOT NULL UNIQUE,"
                 + "password VARCHAR(255) NOT NULL,"
-                + "houseNumber INT NOT NULL,"
-                + "birthDate DATE NOT NULL,"
-                + "bankAccountId INT UNIQUE,"
+                + "house_number INT NOT NULL,"
+                + "birth_date DATE NOT NULL,"
+                + "bank_account_id INT UNIQUE,"
                 + "status VARCHAR(10) NOT NULL,"
                 + "FOREIGN KEY (bankAccountId) REFERENCES tb_bankaccount(id)"
                 + ")";
@@ -54,7 +54,7 @@ public class ClientRepository extends DAO {
 
         String sql = "INSERT INTO tb_client (cpf, name, phone, "
                 + "cep, email, password, "
-                + "houseNumber, birthDate, bankAccountId, status) "
+                + "house_number, birth_date, bank_account_id, status) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = this.connect(); 
@@ -101,13 +101,13 @@ public class ClientRepository extends DAO {
                 client.setCep(resultSet.getString("cep"));
                 client.setEmail(resultSet.getString("email"));
                 client.setPassword(resultSet.getString("password"));
-                client.setHouseNumber(resultSet.getInt("houseNumber"));
+                client.setHouseNumber(resultSet.getInt("house_number"));
 
                 Calendar dataNascimento = Calendar.getInstance();
-                dataNascimento.setTime(resultSet.getDate("birthDate"));
+                dataNascimento.setTime(resultSet.getDate("birth_date"));
                 client.setBirthDate(dataNascimento);
                 
-                client.setConta(resultSet.getLong("bankAccountId"));
+                client.setConta(resultSet.getLong("bank_account_id"));
                 client.setStatus(Status.valueOf(resultSet.getString("status")));
 
                 return client;
