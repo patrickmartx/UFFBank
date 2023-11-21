@@ -53,6 +53,10 @@ public class ClientController extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Transfer.jsp");
                 rd.forward(request, response);
             }
+            case "/Client/Saque" -> {
+                RequestDispatcher rd = request.getRequestDispatcher("/views/Saque.jsp");
+                rd.forward(request, response);
+            }
             default ->
                 throw new NonExistingURLException("Essa URL não é aceita: " + action);
         }
