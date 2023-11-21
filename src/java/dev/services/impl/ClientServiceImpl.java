@@ -17,18 +17,20 @@ import java.util.logging.Logger;
  *
  * @author Patrick
  */
-public class ClientServiceImpl implements ClientService{
-    
+public class ClientServiceImpl implements ClientService {
+
+    private static final Logger LOGGER = Logger.getLogger(ClientServiceImpl.class.getName());
+
     private final ClientRepository repository;
-    
+
     public ClientServiceImpl(ClientRepository clientRepository) {
         this.repository = clientRepository;
     }
 
     @Override
-    public void save(String cpf, String name, String phone, 
-            String cep, String email, String password, 
-            Integer houseNumber, Calendar birthDate, Long bankAccountId) {
+    public void save(String cpf, String name, String phone,
+                     String cep, String email, String password,
+                     Integer houseNumber, Calendar birthDate, Long bankAccountId) {
         try {
             Client client = new Client();
 
@@ -37,8 +39,8 @@ public class ClientServiceImpl implements ClientService{
             }
             client.setCpf(cpf);
             client.setName(name);
-            if (cpf.length() < 11) {
-                throw new IllegalArgumentException("telefone inválido!");
+            if (phone.length() < 11) {
+                throw new IllegalArgumentException("Telefone inválido!");
             }
             client.setPhone(phone);
             client.setCep(cep);
@@ -50,17 +52,19 @@ public class ClientServiceImpl implements ClientService{
             client.setStatus(Status.INACTIVE);
 
             repository.insertClient(client);
-        } catch(Exception e) {
-            System.out.println("Não foi possível criar Clente.\n messege: " + e.getMessage());
+        } catch (NoConnectException | IllegalArgumentException ex) {
+            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
+                    "Não foi possível criar Cliente. Mensagem: {0}", ex.getMessage());
         }
     }
-    
+
     @Override
     public Client clientByCpf(String cpf) {
         try {
             return repository.findByCpf(cpf);
         } catch (NoConnectException ex) {
-            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
+                    "Erro ao buscar cliente por CPF. Mensagem: {0}", ex.getMessage());
         }
         return null;
     }
@@ -69,11 +73,9 @@ public class ClientServiceImpl implements ClientService{
     public Client Login(String cpf, String password) {
         try {
             return repository.Login(cpf, password);
-        }
-        catch(Exception ex){
-            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Erro durante o login do cliente.", e);
         }
         return null;
     }
-    
 }

@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class BankAccountServiceImpl implements BankAccountService {
     
-    BankAccountRepository repository;
+    private final BankAccountRepository repository;
     
     public BankAccountServiceImpl(BankAccountRepository bankAccountRepository) {
         this.repository = bankAccountRepository;
@@ -34,7 +34,7 @@ public class BankAccountServiceImpl implements BankAccountService {
 
             repository.insertBankAccount(conta);
         } catch (Exception e) {
-            System.out.println("Não foi possível criar a conta\nmessage: " + e.getMessage());
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Não foi possível criar a conta. Mensagem: {0}", e.getMessage());
         }
     }
 
@@ -49,7 +49,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void transferByAccount(Double value, Integer bankNumberSender, String accountNumberSender, 
+    public void transfer(Double value, Integer bankNumberSender, String accountNumberSender, 
                                   Integer bankNumberReceiver, String accountNumberReceiver) {
         try {
             Long idSenderAccount = repository.getIdByAccount(bankNumberSender, accountNumberSender);
@@ -61,7 +61,7 @@ public class BankAccountServiceImpl implements BankAccountService {
             
             repository.transfer(value, bankNumberSender, accountNumberSender, bankNumberReceiver, accountNumberReceiver);
         } catch (Exception ex) {
-            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Erro durante a transferência. Mensagem: {0}", ex.getMessage());
         }
     }
 
@@ -71,7 +71,7 @@ public class BankAccountServiceImpl implements BankAccountService {
             repository.deposit(value, bankNumber, accountNumber);
         }
         catch(NoConnectException ex) {
-            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Erro durante o depósito. Mensagem: {0}", ex.getMessage());
         }
     }
 }

@@ -21,12 +21,12 @@ import java.sql.SQLException;
  */
 public class AdminServiceImpl implements AdminService {
 
-    AdminRepository repository;
-    
-    BankAccountService bankService;
+    private final AdminRepository repository;
+    private final BankAccountService bankService;
 
-    public AdminServiceImpl(AdminRepository repository) {
+    public AdminServiceImpl(AdminRepository repository, BankAccountService bankService) {
         this.repository = repository;
+        this.bankService = bankService;
     }
 
     @Override
@@ -36,13 +36,13 @@ public class AdminServiceImpl implements AdminService {
         try {
             Admin admin = new Admin();
 
-            if (cpf.length() < 11) {
+            if (cpf.length() != 11) {
                 throw new IllegalArgumentException("CPF inválido!");
             }
             admin.setCpf(cpf);
             admin.setName(name);
-            if (cpf.length() < 11) {
-                throw new IllegalArgumentException("telefone inválido!");
+            if (phone.length() < 11) {
+                throw new IllegalArgumentException("Telefone inválido!");
             }
             admin.setPhone(phone);
             admin.setCep(cep);
@@ -54,7 +54,7 @@ public class AdminServiceImpl implements AdminService {
 
             repository.insertAdmin(admin);
         } catch (Exception e) {
-            System.out.println("Não foi possível criar Clente.\n messege: " + e.getMessage());
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Não foi possível criar Cliente. Mensagem: {0}", e.getMessage());
         }
     }
 
@@ -69,9 +69,9 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Admin findByCpf(String Cpf) {
+    public Admin findByCpf(String cpf) {
         try {
-            return repository.findByCpf(Cpf);
+            return repository.findByCpf(cpf);
         } catch (NoConnectException ex) {
             Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -79,23 +79,22 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void ativateClient(Long id, Integer bankNumber, String accountNumber) {
+    public void activateClient(Long id, Integer bankNumber, String accountNumber) {
         Long accountId = bankService.getIdByAccount(bankNumber, accountNumber);
-        
+
         try {
             repository.activateClient(id, accountId, Status.ACTIVE.getValue());
         } catch (SQLException ex) {
-            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Erro ao ativar cliente. Mensagem: {0}", ex.getMessage());
         }
     }
 
     @Override
-    public Admin Login(String cpf, String password) {
+    public Admin login(String cpf, String password) {
         try {
-            return repository.Login(cpf, password);
-        }
-        catch(Exception ex){
-            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            return repository.login(cpf, password);
+        } catch (Exception ex) {
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Erro durante o login. Mensagem: {0}", ex.getMessage());
         }
         return null;
     }
