@@ -13,7 +13,11 @@ import dev.entity.Client;
  */
 public interface ClientService {
     
-    public void save(String cpf, String nome, String telefone, 
+    public void save(String cpf, String name, String phone, 
                      String cep, String email, String password,
-                     Integer numeroCasa, Calendar dataNascimento, Long contaId);
+                     Integer houseNumber, Calendar birthDate, Long bankAccountId);
+    
+    public Client clientByCpf(String cpf);
+    
+    public Client Login(String cpf, String password);
 }
