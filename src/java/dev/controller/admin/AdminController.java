@@ -26,11 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "AdminController", urlPatterns = {"/Admin/*"})
 public class AdminController extends HttpServlet {
     
-    private BankAccountRepository bankAccountRepository = new BankAccountRepository();
-    private BankAccountService bankService = new BankAccountServiceImpl(bankAccountRepository);
-    
-    private AdminRepository adminRepository = new AdminRepository();
-    private AdminService adminService = new AdminServiceImpl(adminRepository, bankService);
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

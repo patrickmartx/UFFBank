@@ -4,6 +4,8 @@
  */
 package dev.services;
 import dev.entity.BankAccount;
+import dev.utils.Status;
+import java.util.ArrayList;
 
 /**
  *
@@ -11,11 +13,9 @@ import dev.entity.BankAccount;
  */
 public interface BankAccountService {
     
-    public void save(Double accountBalance, Integer bankNumber, String accountNumber);
-    public BankAccount getAccountById(Long id);
-    public Long getIdByAccount(Integer bankNumber, String accountNumber);
-    public Double getSaldoById(Long id);
-    public void transfer(Double accountBalance, Integer bankNumberSender, String accountNumberSender, 
-                                  Integer bankNumberReceiver, String accountNumberReceiver);
-    public void deposit(Double accountBalance, Integer bankNumber, String accountNumber);
+    public BankAccount getById(Long id);
+    public ArrayList<BankAccount> getAll();
+    public void insert(Integer bankNumber, String accountNumber, Long idHistoric, Status status);
+    public void update(Integer bankNumber, String accountNumber, Long idHistoric, Status status);
+    public void deleteById(Long id);
 }

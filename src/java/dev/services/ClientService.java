@@ -4,8 +4,10 @@
  */
 package dev.services;
 
-import java.util.Calendar;
 import dev.entity.Client;
+import dev.utils.Status;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -13,13 +15,13 @@ import dev.entity.Client;
  */
 public interface ClientService {
     
-    public void save(String cpf, String name, String phone, 
-                     String cep, String email, String password,
-                     Integer houseNumber, Calendar birthDate, Long bankAccountId);
-    
-    public Client findById(Long id);
-    
-    public Client findByCpf(String cpf);
-    
-    public Client login(String cpf, String password);
+    public Client getById(Long id);
+    public ArrayList<Client> getAll();
+    public void insert(String name, String phone, String cep, 
+                       String email, String password, Integer houseNumber, 
+                       Date birthDate, Long idBankAccount, Status status);
+    public void update(String name, String phone, String cep, 
+                       String email, String password, Integer houseNumber, 
+                       Date birthDate, Long idBankAccount, Status status);
+    public void deleteById(Long id);
 }

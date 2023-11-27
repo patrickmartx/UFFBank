@@ -28,16 +28,7 @@ import javax.servlet.http.HttpSession;
 @WebServlet(name = "Controller", urlPatterns = {"/Controller", "/Login", "/Login/Auth",
                                                 "/Home"})
 public class Controller extends HttpServlet {
-    
-    
-    private BankAccountRepository bankAccountRepository = new BankAccountRepository();
-    private BankAccountService bankService = new BankAccountServiceImpl(bankAccountRepository);
-    
-    private ClientRepository clientRepository = new ClientRepository();
-    private ClientService clientService = new ClientServiceImpl(clientRepository);
-    
-    private AdminRepository adminRepository = new AdminRepository();
-    private AdminService adminService = new AdminServiceImpl(adminRepository, bankService);
+
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,35 +59,6 @@ public class Controller extends HttpServlet {
             case "/Login/Auth" -> {
                 String cpf = (String) request.getParameter("cpf");
                 String password = (String) request.getParameter("password");
-                
-                Client client = new Client();
-                Admin admin = new Admin();
-                
-                client = clientService.login(cpf, password);
-                admin = adminService.login(cpf, password);
-                
-                if (admin != null) {
-                    HttpSession sessao = request.getSession();
-                    sessao.setAttribute("cpf", request.getParameter("cpf")) ;
-                    sessao.setAttribute("cpf", request.getParameter("password"));
-                    System.out.println("Logado como admnistrador!");
-                    RequestDispatcher rd = request.getRequestDispatcher("/Admin/Home") ;
-                    rd.forward(request, response) ;
-                }
-                else if (client != null) {
-                    HttpSession sessao = request.getSession();
-                    sessao.setAttribute("cpf", request.getParameter("cpf")) ;
-                    sessao.setAttribute("cpf", request.getParameter("password"));
-                    System.out.println("Logado como cliente!");
-                    RequestDispatcher rd = request.getRequestDispatcher("/views/Home.jsp") ;
-                    rd.forward(request, response) ;
-                }
-                else if (admin == null && client == null) {
-                    response.sendRedirect("/UFFBank/Login");
-                }
-                
-
-                
             }
             case "" -> {
             }
