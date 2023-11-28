@@ -4,8 +4,25 @@
     Author     : Patrick
 --%>
 
+<%@page import="java.text.DecimalFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ page import="dev.model.complements.DAOUser" %>
+<%@ page import="dev.services.ClientService" %>
+<%@ page import="dev.services.impl.ClientServiceImpl" %>
+<%@ page import="dev.entity.Client" %>
+<%@ page import="dev.entity.BankAccount" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="dev.utils.Status" %>
+
+<%! SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); %>
+<%! DecimalFormat decimalFormat = new DecimalFormat("#,###.##"); %>
+<%! BankAccount bankAccount = new BankAccount(1L, 1225.99, 22, "2224-5", 1L, Status.valueOf("ACTIVE")); %>
+
+<%
+    ClientService service = new ClientServiceImpl();
+    Date date = dateFormat.parse("20/02/2002");
+    Client client = new Client(1L, "123", "Pk", "999", "222", "@gmail.com", "123", 500, date, 1L, Status.valueOf("ACTIVE"));
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,9 +30,14 @@
         <title>Home</title>
     </head>
     <body>
-        <h1>Bem vindo, Usuario!</h1>
+        <h1>Bem vindo, <%=client.getName()%>!</h1>
         <a href="/UFFBank/Deposit"><button>Depositar</button></a>
         <a href="/UFFBank/Investment"><button>Investir</button></a>
         <a href="/UFFBank/Transfer"><button>Transferir</button></a>
+        <% if (client.getBankAccountId() == bankAccount.getId()) { %>
+            <h3>Seu saldo: R$<%=decimalFormat.format(bankAccount.getAccountBalance())%></h3>
+        <% } else {%>
+            <h3>Conta desconhecida.</h3>
+        <% } %>
     </body>
 </html>
