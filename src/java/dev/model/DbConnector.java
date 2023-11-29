@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package dev.model;
+
 import dev.exceptions.NoConnectException;
 import dev.services.impl.AdminServiceImpl;
 import java.io.IOException;
@@ -19,10 +20,13 @@ import java.util.logging.Logger;
  * @author Patrick
  */
 public class DbConnector {
-    
+
     private Connection connection;
+    private Properties properties;
 
     public DbConnector() throws NoConnectException {
+        loadDatabaseProperties();
+
         Connection doConnection = null;
         try {
             String driver = properties.getProperty("db.driver");
@@ -38,9 +42,6 @@ public class DbConnector {
                     + "Procure acertar a informação: " + e.getMessage());
         }
     }
-    
-    private Properties properties;
-    private Connection connect;
 
     private void loadDatabaseProperties() {
         try {
@@ -70,12 +71,12 @@ public class DbConnector {
     }
 
     public Connection getConnect() {
-        return this.connect;
+        return this.connection;
     }
 
     public void closeConnection() {
         try {
-            this.connect.close();
+            this.connection.close();
         } catch (SQLException ex) {
             Logger.getLogger(DbConnector.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
         }
