@@ -4,6 +4,7 @@
     Author     : Patrick
 --%>
 
+<%@page import="dev.model.complements.BankAccountRepository"%>
 <%@page import="java.text.DecimalFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="dev.services.ClientService" %>
@@ -16,13 +17,13 @@
 
 <%! SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); %>
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,###.##"); %>
-<%! BankAccount bankAccount = new BankAccount(1L, 1225.99, 22, "2224-5", 1L, Status.valueOf("ACTIVE")); %>
-
+<%! ClientServiceImpl service = new ClientServiceImpl(); %>
 <%
-    ClientService service = new ClientServiceImpl();
-    Date date = dateFormat.parse("20/02/2002");
-    Client client = new Client(1L, "123", "Pk", "999", "222", "@gmail.com", "123", 500, date, 1L, Status.valueOf("ACTIVE"));
+    Client client = new Client();
+    client = (Client) session.getAttribute("client");
 %>
+<%! Double saldo = service.getSaldo(); %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -34,8 +35,8 @@
         <a href="/UFFBank/Deposit"><button>Depositar</button></a>
         <a href="/UFFBank/Investment"><button>Investir</button></a>
         <a href="/UFFBank/Transfer"><button>Transferir</button></a>
-        <% if (client.getBankAccountId() == bankAccount.getId()) { %>
-            <h3>Seu saldo: R$<%=decimalFormat.format(bankAccount.getAccountBalance())%></h3>
+        <% if (!client.getBankAccountId().equals(null)) { %>
+            <h3>Seu saldo: R$<%=decimalFormat.format(saldo)%></h3>
         <% } else {%>
             <h3>Conta desconhecida.</h3>
         <% } %>

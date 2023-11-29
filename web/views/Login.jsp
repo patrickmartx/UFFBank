@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form action="/UFFBank/Login/Auth" method="post">
+        <form action="Login" method="post">
             <label for="cpf">cpf</label>
             <input type="text" id="cpf" name="cpf" />
 
@@ -20,6 +20,12 @@
             <input type="password" id="password" name="password" />
 
             <input type="submit" value="Login" />
+            
+             <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+                <div style="color: red;"><%= errorMessage %></div>
+            <% } %>
         </form>
     </body>
 </html>
