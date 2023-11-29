@@ -27,9 +27,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ClientRepository implements DAO<Client> {
+
     private final DbConnector connection;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+
     private final String table_name = "tb_client";
     private final String col_id = "id";
     private final String col_cpf = "cpf";
@@ -42,7 +43,7 @@ public class ClientRepository implements DAO<Client> {
     private final String col_birthDate = "birth_date";
     private final String col_bankAccountId = "bank_account_id";
     private final String col_status = "status";
-    
+
     public ClientRepository() {
         try {
             this.connection = new DbConnector();
@@ -54,7 +55,7 @@ public class ClientRepository implements DAO<Client> {
 
     private void createClientTable() throws NoConnectException {
         String createTableSQL
-                = "CREATE TABLE IF NOT EXISTS "+table_name+" ("
+                = "CREATE TABLE IF NOT EXISTS " + table_name + " ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
                 + col_cpf + " VARCHAR(15) NOT NULL UNIQUE,"
                 + col_name + " VARCHAR(255) NOT NULL,"
@@ -78,10 +79,10 @@ public class ClientRepository implements DAO<Client> {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
         }
     }
-    
-        @Override
+
+    @Override
     public Client get(Long id) {
-        String getSQL = "SELECT * FROM "+table_name+" WHERE ID = ?";
+        String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_id+" = ?";
         try {
             PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
@@ -98,7 +99,7 @@ public class ClientRepository implements DAO<Client> {
                     client.setEmail(result.getString(col_email));
                     client.setPassword(result.getString(col_password));
                     client.setHouseNumber(Integer.valueOf(result.getString(col_houseNumber)));
-                    Date birthDate = dateFormat.parse(result.getString(col_birthDate));
+                    Date birthDate = result.getDate(col_birthDate);
                     client.setBirthDate(birthDate);
                     client.setBankAccountId(Long.valueOf(result.getString(col_bankAccountId)));
                     client.setStatus(Status.valueOf(result.getString(col_status)));
@@ -109,9 +110,6 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } catch (ParseException ex) {
-            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException();
         } finally {
             connection.closeConnection();
         }
@@ -119,8 +117,8 @@ public class ClientRepository implements DAO<Client> {
 
     @Override
     public ArrayList<Client> getAll() {
-         ArrayList<Client> clientList = new ArrayList();
-         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != " + Status.DISACTIVATE.getValue();
+        ArrayList<Client> clientList = new ArrayList();
+        String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " != " + Status.DISACTIVATE.getValue();
         try {
             PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
             ResultSet result = preparedStatement.executeQuery();
@@ -154,13 +152,13 @@ public class ClientRepository implements DAO<Client> {
 
     @Override
     public void insert(Client client) {
-        String insertionSQL = "INSERT INTO "+table_name+" ("+col_cpf+", "+col_name+", "+col_phone+", "+ col_cep
-                                                           +", "+col_email+", "+col_password+", "+col_houseNumber
-                                                           +", "+col_birthDate+", "+col_bankAccountId+", "+col_status+") "
-                                                           + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+        String insertionSQL = "INSERT INTO " + table_name + " (" + col_cpf + ", " + col_name + ", " + col_phone + ", " + col_cep
+                + ", " + col_email + ", " + col_password + ", " + col_houseNumber
+                + ", " + col_birthDate + ", " + col_bankAccountId + ", " + col_status + ") "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             createClientTable();
-            
+
             PreparedStatement sql = connection.getConnect().prepareStatement(insertionSQL);
             sql.setString(1, client.getCpf());
             sql.setString(2, client.getName());
@@ -172,7 +170,7 @@ public class ClientRepository implements DAO<Client> {
             sql.setDate(8, (java.sql.Date) client.getBirthDate());
             sql.setLong(9, client.getBankAccountId());
             sql.setString(10, client.getStatus().getValue());
-            
+
             sql.executeUpdate();
 
         } catch (SQLException ex) {
@@ -187,9 +185,9 @@ public class ClientRepository implements DAO<Client> {
 
     @Override
     public void update(Client client) {
-        String updateSQL = "UPDATE "+table_name+" SET "+col_cpf+" = ?, "+col_name+" = ?, "+col_phone+" = ?, "+ col_cep
-                                                           +" = ?, "+col_email+" = ?, "+col_password+" = ?, "+col_houseNumber
-                                                           +" = ?, "+col_birthDate+" = ?, "+col_bankAccountId+" = ?, "+col_status+" = ?";
+        String updateSQL = "UPDATE " + table_name + " SET " + col_cpf + " = ?, " + col_name + " = ?, " + col_phone + " = ?, " + col_cep
+                + " = ?, " + col_email + " = ?, " + col_password + " = ?, " + col_houseNumber
+                + " = ?, " + col_birthDate + " = ?, " + col_bankAccountId + " = ?, " + col_status + " = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setString(1, client.getCpf());
@@ -215,7 +213,7 @@ public class ClientRepository implements DAO<Client> {
 
     @Override
     public void delete(Long id) {
-        String updateSQL = "UPDATE "+table_name+" SET "+col_status+" = ? WHERE "+col_id+" = ?" ;
+        String updateSQL = "UPDATE " + table_name + " SET " + col_status + " = ? WHERE " + col_id + " = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setString(1, Status.DISACTIVATE.getValue());
@@ -228,136 +226,65 @@ public class ClientRepository implements DAO<Client> {
             throw new RuntimeException();
         } finally {
             connection.closeConnection();
-        }  
-   }
+        }
+    }
+    
+    public Client getByLogin(String cpf, String password) {
+        String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
+        try {
+            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            sql.setString(1, cpf);
+            sql.setString(2, password);
+            ResultSet result = sql.executeQuery();
+            Client client = new Client();
 
-//    public void insertClient(Client client) throws NoConnectException {
-//        createClientTable();
-//
-//        String sql = "INSERT INTO tb_client ("+col_cpf+", "+col_name+", "+col_phone+", "
-//                + ""+col_cep+", "+col_email+", "+col_password+", "
-//                + ""+col_houseNumber+", "+col_birthDate+", "+col_bankAccountId+", "+col_status+") "
-//                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//
-//            preparedStatement.setString(1, client.getCpf());
-//            preparedStatement.setString(2, client.getName());
-//            preparedStatement.setString(3, client.getPhone());
-//            preparedStatement.setString(4, client.getCep());
-//            preparedStatement.setString(5, client.getEmail());
-//            preparedStatement.setString(6, client.getPassword());
-//            preparedStatement.setInt(7, client.getHouseNumber());
-//            preparedStatement.setDate(8, new java.sql.Date(client.getBirthDate().getTimeInMillis()));
-//            preparedStatement.setLong(9, client.getBankAccountId());
-//            preparedStatement.setString(10, client.getStatus().getValue());
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                System.out.println("Cliente inserido com sucesso!");
-//            } else {
-//                System.out.println("Falha ao inserir o cliente.");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    
-//    public Client findById(Long id) throws NoConnectException {
-//        String getSQL = "SELECT * FROM tb_client WHERE "+col_id+" = ?";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//
-//            preparedStatement.setLong(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                Client client = new Client();
-//                client.setId(resultSet.getLong(col_id));
-//                client.setCpf(resultSet.getString(col_cpf));
-//                client.setName(resultSet.getString(col_name));
-//                client.setPhone(resultSet.getString(col_phone));
-//                client.setCep(resultSet.getString(col_cep));
-//                client.setEmail(resultSet.getString(col_email));
-//                client.setPassword(resultSet.getString(col_password));
-//                client.setHouseNumber(resultSet.getInt(col_houseNumber));
-//
-//                Calendar dataNascimento = Calendar.getInstance();
-//                dataNascimento.setTime(resultSet.getDate(col_birthDate));
-//                client.setBirthDate(dataNascimento);
-//                
-//                client.setConta(resultSet.getLong(col_bankAccountId));
-//                client.setStatus(Status.valueOf(resultSet.getString(col_status)));
-//
-//                return client;
-//            } else {
-//                System.out.println("Administrador não encontrado com o CPF: " + id);
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//    
-//    public Client findByCpf(String cpf) throws NoConnectException {
-//        String getSQL = "SELECT * FROM tb_client WHERE "+col_cpf+" = ?";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//
-//            preparedStatement.setString(1, cpf);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                Client client = new Client();
-//                client.setId(resultSet.getLong(col_id));
-//                client.setCpf(resultSet.getString(col_cpf));
-//                client.setName(resultSet.getString(col_name));
-//                client.setPhone(resultSet.getString(col_phone));
-//                client.setCep(resultSet.getString(col_cep));
-//                client.setEmail(resultSet.getString(col_email));
-//                client.setPassword(resultSet.getString(col_password));
-//                client.setHouseNumber(resultSet.getInt(col_houseNumber));
-//
-//                Calendar dataNascimento = Calendar.getInstance();
-//                dataNascimento.setTime(resultSet.getDate(col_birthDate));
-//                client.setBirthDate(dataNascimento);
-//                
-//                client.setConta(resultSet.getLong(col_bankAccountId));
-//                client.setStatus(Status.valueOf(resultSet.getString(col_status)));
-//
-//                return client;
-//            } else {
-//                System.out.println("Administrador não encontrado com o CPF: " + cpf);
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public Client Login(String cpf, String password) throws SQLException {
-//        String getSQL = "SELECT * FROM tb_client WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//
-//            preparedStatement.setString(1, cpf);
-//            preparedStatement.setString(2, password);
-//
-//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-//                if (resultSet.next()) {
-//                    return findByCpf(cpf);
-//                }
-//            }
-//        } catch (NoConnectException ex) {
-//            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
+            if (result != null) {
+                while (result.next()) {
+                    client.setId(result.getLong(col_id));
+                    client.setCpf(result.getString(col_cpf));
+                    client.setName(result.getString(col_name));
+                    client.setPhone(result.getString(col_phone));
+                    client.setCep(result.getString(col_cep));
+                    client.setEmail(result.getString(col_email));
+                    client.setPassword(result.getString(col_password));
+                    client.setHouseNumber(result.getInt(col_houseNumber));
+                    Date birthDate = result.getDate(col_birthDate);
+                    client.setBirthDate(birthDate);
+                    client.setBankAccountId(result.getLong(col_bankAccountId));
+                    client.setStatus(Status.valueOf(result.getString(col_status)));
+                }
+            }
+            return client;
 
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } finally {
+            connection.closeConnection();
+        }
+    }
+    
+    public Double getAccountBalance() {
+        String getSQL = "SELECT a.account_balance \n" +
+                        "FROM tb_bankaccount a \n" +
+                        "INNER JOIN "+table_name+" tc ON a.id = tc."+col_bankAccountId+" ";
+        try {
+            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            ResultSet result = sql.executeQuery();
+            Double saldo = 0.00;
+
+            if (result != null) {
+                if (result.next()) {
+                    saldo = result.getDouble("account_balance");
+                }
+            }
+            return saldo;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } finally {
+            connection.closeConnection();
+        }
+    }
 }
