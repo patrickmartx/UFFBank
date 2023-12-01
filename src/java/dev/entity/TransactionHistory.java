@@ -18,19 +18,21 @@ public class TransactionHistory {
     private Double value;
     private Date transactionDate;
     private TransactionType transactionType;
-    private Long idOtherAccount;
+    private Long senderAccountId;
+    private Long receiverAccountId;
     private Status status;
 
     public TransactionHistory() {
     }
 
     public TransactionHistory(Long id, Double value, Date transactionDate,
-            TransactionType transactionType, Long idOtherAccount, Status status) {
+            TransactionType transactionType, Long senderAccountId, Long receiverAccountId, Status status) {
         this.id = id;
         this.value = value;
         this.transactionDate = transactionDate;
         this.transactionType = transactionType;
-        this.idOtherAccount = idOtherAccount;
+        this.senderAccountId = senderAccountId;
+        this.receiverAccountId = receiverAccountId;
         this.status = status;
     }
 
@@ -66,12 +68,20 @@ public class TransactionHistory {
         this.transactionType = transactionType;
     }
 
-    public Long getIdOtherAccount() {
-        return idOtherAccount;
+    public Long getSenderAccountId() {
+        return senderAccountId;
     }
 
-    public void setIdOtherAccount(Long idOtherAccount) {
-        this.idOtherAccount = idOtherAccount;
+    public void setSenderAccountId(Long senderAccountId) {
+        this.senderAccountId = senderAccountId;
+    }
+
+    public Long getReceiverAccountId() {
+        return receiverAccountId;
+    }
+
+    public void setReceiverAccountId(Long receiverAccountId) {
+        this.receiverAccountId = receiverAccountId;
     }
 
     public Status getStatus() {

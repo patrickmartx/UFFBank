@@ -16,18 +16,16 @@ public class BankAccount {
     private Double accountBalance;
     private Integer bankNumber;
     private String accountNumber;
-    private Long idHistoric;
     private Status status;
 
     public BankAccount() {
     }
 
-    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber, Long idHistoric, Status status) {
+    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber, Status status) {
         this.id = id;
         this.accountBalance = accountBalance;
         this.bankNumber = bankNumber;
         this.accountNumber = accountNumber;
-        this.idHistoric = idHistoric;
         this.status = status;
     }
     
@@ -61,14 +59,6 @@ public class BankAccount {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
-    }
-    
-    public Long getIdHistoric() {
-        return idHistoric;
-    }
-
-    public void setIdHistoric(Long idHistoric) {
-        this.idHistoric = idHistoric;
     }
 
     public Status getStatus() {
