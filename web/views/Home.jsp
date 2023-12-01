@@ -22,7 +22,7 @@
     Client client = new Client();
     client = (Client) session.getAttribute("client");
 %>
-<%! Double saldo = service.getSaldo(); %>
+<%! Double saldo = service.getAccountBalance(); %>
 
 <!DOCTYPE html>
 <html>
@@ -40,5 +40,17 @@
         <% } else {%>
             <h3>Conta desconhecida.</h3>
         <% } %>
+        
+        <br><!-- comment -->
+        <br><!-- comment -->
+        
+        <% 
+            for (int i = 0; i < service.getAll().size(); i++) { %>
+                <h3>Nome do cliente: <%= service.getAll().get(i).getName() %></h3>
+                <h3>CPF do cliente: <%= service.getAll().get(i).getCpf()%></h3>
+                <br>
+        <% 
+            }
+        %>
     </body>
 </html>
