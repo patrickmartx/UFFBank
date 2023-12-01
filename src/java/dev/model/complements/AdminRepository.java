@@ -23,7 +23,6 @@ import java.util.Date;
  */
 public class AdminRepository implements DAO<Admin>{
     private final DbConnector connection;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     private final String table_name = "tb_admin";
     private final String col_id = "id";
@@ -73,7 +72,7 @@ public class AdminRepository implements DAO<Admin>{
     
     @Override
     public Admin get(Long id) {
-        String getSQL = "SELECT * FROM "+table_name+" WHERE ID = ?";
+        String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_id+" = ?";
         try {
             PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
@@ -82,15 +81,15 @@ public class AdminRepository implements DAO<Admin>{
 
             if (result != null) {
                 while (result.next()) {
-                    admin.setId(Long.valueOf(result.getString(col_id)));
+                    admin.setId(result.getLong(col_id));
                     admin.setCpf(result.getString(col_cpf));
                     admin.setName(result.getString(col_name));
                     admin.setPhone(result.getString(col_phone));
                     admin.setCep(result.getString(col_cep));
                     admin.setEmail(result.getString(col_email));
                     admin.setPassword(result.getString(col_password));
-                    admin.setHouseNumber(Integer.valueOf(result.getString(col_houseNumber)));
-                    Date birthDate = dateFormat.parse(result.getString(col_birthDate));
+                    admin.setHouseNumber(result.getInt(col_houseNumber));
+                    Date birthDate = result.getDate(col_birthDate);
                     admin.setBirthDate(birthDate);
                     admin.setStatus(Status.valueOf(result.getString(col_status)));
                 }
@@ -98,9 +97,6 @@ public class AdminRepository implements DAO<Admin>{
             return admin;
 
         } catch (SQLException ex) {
-            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException();
-        } catch (ParseException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
         } finally {
@@ -125,8 +121,8 @@ public class AdminRepository implements DAO<Admin>{
                             result.getString(col_cep),
                             result.getString(col_email),
                             result.getString(col_password),
-                            Integer.valueOf(result.getString(col_houseNumber)),
-                            dateFormat.parse(result.getString(col_birthDate)),
+                            result.getInt(col_houseNumber),
+                            result.getDate(col_birthDate),
                             Status.valueOf(result.getString(col_status)));
                     adminList.add(admin);
                 }
@@ -134,8 +130,6 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } catch (ParseException ex) {
-            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             connection.closeConnection();
         }
@@ -218,146 +212,38 @@ public class AdminRepository implements DAO<Admin>{
             connection.closeConnection();
         }  
     }
+    
+    public Admin getByLogin(String cpf, String password) {
+        String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
+        try {
+            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            sql.setString(1, cpf);
+            sql.setString(1, password);
+            ResultSet result = sql.executeQuery();
+            Admin admin = new Admin();
 
-//    public void insertAdmin(Admin admin) throws NoConnectException {
-//        createAdminTable();
-//
-//        String sql = "INSERT INTO tb_admin ("+col_cpf+", "+col_name+", "+col_phone+", "
-//                + ""+col_cep+", "+col_email+", "+col_password+", "
-//                + ""+col_houseNumber+", "+col_birthDate+", "+col_status+") "
-//                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-//
-//            preparedStatement.setString(1, admin.getCpf());
-//            preparedStatement.setString(2, admin.getName());
-//            preparedStatement.setString(3, admin.getPhone());
-//            preparedStatement.setString(4, admin.getCep());
-//            preparedStatement.setString(5, admin.getEmail());
-//            preparedStatement.setString(6, admin.getPassword());
-//            preparedStatement.setInt(7, admin.getHouseNumber());
-//            preparedStatement.setDate(8, new java.sql.Date(admin.getBirthDate().getTimeInMillis()));
-//            preparedStatement.setString(9, admin.getStatus().getValue());
-//
-//            int rowsAffected = preparedStatement.executeUpdate();
-//
-//            if (rowsAffected > 0) {
-//                System.out.println("Administrador inserido com sucesso!");
-//            } else {
-//                System.out.println("Falha ao inserir o Administrador.");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    public Admin findById(Long id) throws NoConnectException {
-//        String getSQL = "SELECT * FROM tb_admin WHERE "+col_id+" = ?";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//
-//            preparedStatement.setLong(1, id);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                Admin admin = new Admin();
-//                admin.setId(resultSet.getLong(col_id));
-//                admin.setCpf(resultSet.getString(col_cpf));
-//                admin.setName(resultSet.getString(col_name));
-//                admin.setPhone(resultSet.getString(col_phone));
-//                admin.setCep(resultSet.getString(col_cep));
-//                admin.setEmail(resultSet.getString(col_email));
-//                admin.setPassword(resultSet.getString(col_password));
-//                admin.setHouseNumber(resultSet.getInt(col_houseNumber));
-//
-//                Calendar birthDate = Calendar.getInstance();
-//                birthDate.setTime(resultSet.getDate(col_birthDate));
-//                admin.setBirthDate(birthDate);
-//
-//                admin.setStatus(Status.valueOf(resultSet.getString(col_status)));
-//
-//                return admin;
-//            } else {
-//                System.out.println("Administrador não encontrado com o ID: " + id);
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public Admin findByCpf(String cpf) throws NoConnectException {
-//        String getSQL = "SELECT * FROM tb_admin WHERE "+col_cpf+" = ?";
-//
-//        try (Connection connection = this.connect(); 
-//                PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//
-//            preparedStatement.setString(1, cpf);
-//            ResultSet resultSet = preparedStatement.executeQuery();
-//
-//            if (resultSet.next()) {
-//                Admin admin = new Admin();
-//                admin.setId(resultSet.getLong(col_id));
-//                admin.setCpf(resultSet.getString(col_cpf));
-//                admin.setName(resultSet.getString(col_name));
-//                admin.setPhone(resultSet.getString(col_phone));
-//                admin.setCep(resultSet.getString(col_cep));
-//                admin.setEmail(resultSet.getString(col_email));
-//                admin.setPassword(resultSet.getString(col_password));
-//                admin.setHouseNumber(resultSet.getInt(col_houseNumber));
-//
-//                Calendar birthDate = Calendar.getInstance();
-//                birthDate.setTime(resultSet.getDate(col_birthDate));
-//                admin.setBirthDate(birthDate);
-//
-//                admin.setStatus(Status.valueOf(resultSet.getString(col_status)));
-//
-//                return admin;
-//            } else {
-//                System.out.println("Administrador não encontrado com o CPF: " + cpf);
-//                return null;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
-//    public void activateClient(Long clientId, Long accountId, String status) throws SQLException {
-//        
-//        String getSQL = "UPDATE tb_client "
-//                + "SET bank_account_id = ?, status = ? "
-//                + "WHERE id = ?";
-//
-//        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//            preparedStatement.setLong(1, accountId);
-//            preparedStatement.setString(2, status);
-//            preparedStatement.setLong(3, clientId);
-//
-//            preparedStatement.executeQuery();
-//        } catch (NoConnectException ex) {
-//            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//
-//    public Admin login(String cpf, String password) throws SQLException {
-//        String getSQL = "SELECT * FROM tb_admin WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
-//        try (Connection connection = this.connect(); PreparedStatement preparedStatement = connection.prepareStatement(getSQL)) {
-//            preparedStatement.setString(1, cpf);
-//            preparedStatement.setString(2, password);
-//
-//            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-//                if (resultSet.next()) {
-//                    return findByCpf(cpf);
-//                }
-//            }
-//        } catch (NoConnectException ex) {
-//            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return null;
-//    }
+            if (result != null) {
+                while (result.next()) {
+                    admin.setId(result.getLong(col_id));
+                    admin.setCpf(result.getString(col_cpf));
+                    admin.setName(result.getString(col_name));
+                    admin.setPhone(result.getString(col_phone));
+                    admin.setCep(result.getString(col_cep));
+                    admin.setEmail(result.getString(col_email));
+                    admin.setPassword(result.getString(col_password));
+                    admin.setHouseNumber(result.getInt(col_houseNumber));
+                    Date birthDate = result.getDate(col_birthDate);
+                    admin.setBirthDate(birthDate);
+                    admin.setStatus(Status.valueOf(result.getString(col_status)));
+                }
+            }
+            return admin;
 
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } finally {
+            connection.closeConnection();
+        }
+    }
 }

@@ -35,7 +35,8 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     private final String col_value = "value";
     private final String col_transaction_date = "transaction_date";
     private final String col_transaction_type = "transaction_type";
-    private final String col_id_other_account = "id_other_account";
+    private final String col_sender_account_id = "sender_account_id";
+    private final String col_receiver_account_id = "receiver_account_id";
     private final String col_status = "status";
     
 
@@ -50,11 +51,12 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     
     private void createTransactionHistoryTable() throws NoConnectException {
         String createTableSQL = "CREATE TABLE IF NOT EXISTS "+table_name+" ("
-                + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
-                + col_value + " DOUBLE,"
-                + col_transaction_date + " DATETIME,"
-                + col_transaction_type + " VARCHAR(10),"
-                + col_id_other_account + " INT,"
+                + col_id + " INT AUTO_INCREMENT PRIMARY KEY, "
+                + col_value + " DOUBLE, "
+                + col_transaction_date + " DATETIME, "
+                + col_transaction_type + " VARCHAR(10), "
+                + col_sender_account_id + " INT, "
+                + col_receiver_account_id + " INT, "
                 + col_status + " VARCHAR(10) NOT NULL"
                 + ")";
 
@@ -79,21 +81,19 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
 
             if (result != null) {
                 while (result.next()) {
-                    transactionHistory.setId(Long.valueOf(result.getString(col_id)));
-                    transactionHistory.setValue(Double.valueOf(result.getString(col_value)));
-                    Date transactionDate = dateFormat.parse(result.getString(col_transaction_date));
+                    transactionHistory.setId(result.getLong(col_id));
+                    transactionHistory.setValue(result.getDouble(col_value));
+                    Date transactionDate = result.getDate(col_transaction_date);
                     transactionHistory.setTransactionDate(transactionDate);
                     transactionHistory.setTransactionType(TransactionType.valueOf(result.getString(col_transaction_type)));
-                    transactionHistory.setIdOtherAccount(Long.valueOf(result.getString(col_id_other_account)));
+                    transactionHistory.setSenderAccountId(result.getLong(col_sender_account_id));
+                    transactionHistory.setReceiverAccountId(result.getLong(col_receiver_account_id));
                     transactionHistory.setStatus(Status.valueOf(result.getString(col_status)));
                 }
             }
             return transactionHistory;
 
         } catch (SQLException ex) {
-            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException();
-        } catch (ParseException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
         } finally {
@@ -115,7 +115,8 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
                             result.getDouble(col_value),
                             result.getDate(col_transaction_date),
                             TransactionType.valueOf(result.getString(col_transaction_type)),
-                            result.getLong(col_id_other_account),
+                            result.getLong(col_sender_account_id),
+                            result.getLong(col_receiver_account_id),
                             Status.valueOf(result.getString(col_status)));
                     transactionHistoryList.add(transactionHistory);
                 }
@@ -132,8 +133,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     @Override
     public void insert(TransactionHistory transactionHistory) {
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_value+", "+col_transaction_date+", "
-                                                           +col_transaction_type+", "+col_id_other_account+", "+col_status+") "
-                                                           + "VALUES (?,?,?,?,?)";
+                                                           +col_transaction_type+", "+col_sender_account_id+", "
+                                                           +col_receiver_account_id+", "+col_status+") "
+                                                           + "VALUES (?,?,?,?,?,?)";
         try {
             createTransactionHistoryTable();
             
@@ -141,8 +143,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             sql.setDouble(1, transactionHistory.getValue());
             sql.setDate(2, (java.sql.Date) transactionHistory.getTransactionDate());
             sql.setString(3, transactionHistory.getTransactionType().getValue());
-            sql.setLong(4, transactionHistory.getIdOtherAccount());
-            sql.setString(5, transactionHistory.getStatus().getValue());
+            sql.setLong(4, transactionHistory.getSenderAccountId());
+            sql.setLong(5, transactionHistory.getReceiverAccountId());
+            sql.setString(6, transactionHistory.getStatus().getValue());
             
             sql.executeUpdate();
 
@@ -160,14 +163,15 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     public void update(TransactionHistory transactionHistory) {
         
         String updateSQL = "UPDATE "+table_name+" SET "+col_value+" = ?, "+
-                           col_transaction_date+" = ?, "+col_transaction_type+" = ?, "+col_id_other_account+" = ?, "+col_status+" = ?";
+                           col_transaction_date+" = ?, "+col_transaction_type+" = ?, "+col_receiver_account_id+" = ?, "+col_status+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setDouble(1, transactionHistory.getValue());
             sql.setDate(2, (java.sql.Date) transactionHistory.getTransactionDate());
             sql.setString(3, transactionHistory.getTransactionType().getValue());
-            sql.setLong(4, transactionHistory.getIdOtherAccount());
-            sql.setString(5, transactionHistory.getStatus().getValue());
+            sql.setLong(4, transactionHistory.getSenderAccountId());
+            sql.setLong(5, transactionHistory.getReceiverAccountId());
+            sql.setString(6, transactionHistory.getStatus().getValue());
             
             sql.executeUpdate();
         } catch (SQLException ex) {

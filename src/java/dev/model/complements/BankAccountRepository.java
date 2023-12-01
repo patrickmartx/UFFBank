@@ -31,7 +31,6 @@ public class BankAccountRepository implements DAO<BankAccount> {
     private final String col_accountBalance = "account_balance";
     private final String col_bankNumber = "bank_number";
     private final String col_accountNumber = "account_number";
-    private final String col_id_historic = "id_historic";
     private final String col_status = "status";
     
     public BankAccountRepository() {
@@ -49,9 +48,7 @@ public class BankAccountRepository implements DAO<BankAccount> {
                 + col_accountBalance + " DOUBLE NOT NULL,"
                 + col_bankNumber + " INT NOT NULL,"
                 + col_accountNumber + " VARCHAR(255) NOT NULL,"
-                + col_id_historic + " INT UNIQUE,"
                 + col_status + " VARCHAR(10) NOT NULL, "
-                + "FOREIGN KEY (" + col_id_historic + ") REFERENCES tb_transactionhistory(id)"
                 + ")";
 
        try {
@@ -79,7 +76,6 @@ public class BankAccountRepository implements DAO<BankAccount> {
                     bankAccount.setAccountBalance(Double.valueOf(result.getString(col_accountBalance)));
                     bankAccount.setBankNumber(Integer.valueOf(result.getString(col_bankNumber)));
                     bankAccount.setAccountNumber(result.getString(col_accountNumber));
-                    bankAccount.setIdHistoric(Long.valueOf(result.getString(col_id_historic)));
                     bankAccount.setStatus(Status.valueOf(result.getString(col_status)));
                 }
             }
@@ -107,7 +103,6 @@ public class BankAccountRepository implements DAO<BankAccount> {
                             result.getDouble(col_accountBalance),
                             result.getInt(col_bankNumber),
                             result.getString(col_accountNumber),
-                            result.getLong(col_id_historic),
                             Status.valueOf(result.getString(col_status)));
                     bankAccountList.add(bankAccount);
                 }
@@ -125,7 +120,7 @@ public class BankAccountRepository implements DAO<BankAccount> {
     public void insert(BankAccount bankAccount) {
         
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_accountBalance+", "+col_bankNumber+", "
-                                                           +col_accountNumber+", "+col_id_historic+", "+col_status+") "
+                                                           +col_accountNumber+", "+col_status+") "
                                                            + "VALUES (?,?,?,?,?)";
         try {
             createBankAccountTable();
@@ -134,7 +129,6 @@ public class BankAccountRepository implements DAO<BankAccount> {
             sql.setDouble(1, bankAccount.getAccountBalance());
             sql.setInt(2, bankAccount.getBankNumber());
             sql.setString(3, bankAccount.getAccountNumber());
-            sql.setLong(4, bankAccount.getIdHistoric());
             sql.setString(5, bankAccount.getStatus().getValue());
             
             sql.executeUpdate();
@@ -152,13 +146,12 @@ public class BankAccountRepository implements DAO<BankAccount> {
     @Override
     public void update(BankAccount bankAccount) {
         String updateSQL = "UPDATE "+table_name+" SET "+col_accountBalance+" = ?, "+
-                           col_bankNumber+" = ?, "+col_accountNumber+" = ?, "+col_id_historic+" = ?, "+col_status+" = ?";
+                           col_bankNumber+" = ?, "+col_accountNumber+" = ?, "+col_status+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setDouble(1, bankAccount.getAccountBalance());
             sql.setInt(2, bankAccount.getBankNumber());
             sql.setString(3, bankAccount.getAccountNumber());
-            sql.setLong(4, bankAccount.getIdHistoric());
             sql.setString(5, bankAccount.getStatus().getValue());
 
             sql.executeUpdate();
