@@ -57,26 +57,32 @@ public class Login extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
                 request.setAttribute("errorMessage", "Cpf ou senha inválidos");
                 rd.forward(request, response);
-                return;
             }
-            Client client = new Client();
-            client = service.getClientByLogin(cpf, password);
             
-            if (client.getCpf() == null) {
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
-                request.setAttribute("errorMessage", "Cpf ou senha inválidos");
-                rd.forward(request, response);
-                throw  new NoEntityFoundException();
-            } else {
+            Client client = new Client();
+            
+            try{
+                client = service.getClientByLogin(cpf, password);
+            } catch(Exception ex) {
+                throw new NoEntityFoundException();
+            }
+            
+            if (client.getId() != 0) {
                 HttpSession session = request.getSession();
                 session.setAttribute("client", client);
             
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Home.jsp");
                 rd.forward(request, response);
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+                request.setAttribute("errorMessage", "Cpf ou senha inválidos");
+                rd.forward(request, response);
+                throw  new NoEntityFoundException();
             }
         } catch(NoEntityFoundException ex) {
-            PrintWriter out = response.getWriter();
-            out.println("<h3>Usuário não encontrado</h3>");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+            request.setAttribute("errorMessage", "Cpf ou senha inválidos");
+            rd.forward(request, response);
         } catch(Exception ex) {
             PrintWriter out = response.getWriter();
             out.println("<h3>Erro não identificado. Cheque o log</h3>");

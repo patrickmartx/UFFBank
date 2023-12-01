@@ -21,20 +21,51 @@ import dev.exceptions.NoEntityFoundException;
  * @author Patrick
  */
 public class ClientServiceImpl implements ClientService {
+
     private ClientRepository repository;
-    
+
     public ClientServiceImpl() {
         this.repository = new ClientRepository();
     }
 
     @Override
     public Client getById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            Client client = repository.get(id);
+            
+            if (client == null || client.getId() == 0) {
+                throw new NoEntityFoundException("Cliente não encontrado");
+            } else {
+//                repository.closeConnection();
+                return client;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+        }
     }
 
     @Override
     public ArrayList<Client> getAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            ArrayList<Client> clientList = repository.getAll();
+            
+            if(clientList.isEmpty() || clientList == null){
+                throw new NoEntityFoundException("Não há clientes no banco.");
+            } else {
+//                repository.closeConnection();
+                return clientList;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+        }
     }
 
     @Override
@@ -51,24 +82,41 @@ public class ClientServiceImpl implements ClientService {
     public void deleteById(Long id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
+
     public Client getClientByLogin(String cpf, String password) {
         try {
-            Client existingClient = new Client();
-            existingClient = repository.getByLogin(cpf, password);
-            if (!existingClient.equals(null)) {
+            Client existingClient = repository.getByLogin(cpf, password);
+
+            if (existingClient == null || existingClient.getCpf() == null) {
+                throw new NoEntityFoundException("Cliente não encontrado");
+            } else {
+//                repository.closeConnection();
                 return existingClient;
             }
-            else
-                throw new NoEntityFoundException();
-        } catch(Exception ex) {
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            throw  new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
         }
     }
-    
-    public Double getAccountBalance(){
-        Double accountBalance = repository.getAccountBalance();
-        return accountBalance;
+
+    public Double getAccountBalance() {
+        try {
+            Double accountBalance = repository.getAccountBalance();
+            
+            if(accountBalance == null) {
+                throw new NoEntityFoundException("Conta não encontrado");
+            } else {
+                return accountBalance;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+        }
     }
 }
