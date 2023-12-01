@@ -22,14 +22,12 @@ import java.util.logging.Logger;
 import java.util.logging.Level;
 import dev.utils.Status;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class ClientRepository implements DAO<Client> {
 
     private final DbConnector connection;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
 
     private final String table_name = "tb_client";
     private final String col_id = "id";
@@ -98,10 +96,10 @@ public class ClientRepository implements DAO<Client> {
                     client.setCep(result.getString(col_cep));
                     client.setEmail(result.getString(col_email));
                     client.setPassword(result.getString(col_password));
-                    client.setHouseNumber(Integer.valueOf(result.getString(col_houseNumber)));
+                    client.setHouseNumber(result.getInt(col_houseNumber));
                     Date birthDate = result.getDate(col_birthDate);
                     client.setBirthDate(birthDate);
-                    client.setBankAccountId(Long.valueOf(result.getString(col_bankAccountId)));
+                    client.setBankAccountId(result.getLong(col_bankAccountId));
                     client.setStatus(Status.valueOf(result.getString(col_status)));
                 }
             }
@@ -110,17 +108,18 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
     public ArrayList<Client> getAll() {
         ArrayList<Client> clientList = new ArrayList();
-        String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " != " + Status.DISACTIVATE.getValue();
+        String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " != ?";
         try {
             PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setString(1, Status.DISACTIVATE.getValue());
             ResultSet result = preparedStatement.executeQuery();
             if (result != null) {
                 while (result.next()) {
@@ -132,21 +131,20 @@ public class ClientRepository implements DAO<Client> {
                             result.getString(col_cep),
                             result.getString(col_email),
                             result.getString(col_password),
-                            Integer.valueOf(result.getString(col_houseNumber)),
-                            dateFormat.parse(result.getString(col_birthDate)),
+                            result.getInt(col_houseNumber),
+                            result.getDate(col_birthDate),
                             result.getLong(col_bankAccountId),
-                            Status.valueOf(result.getString(col_status)));
+                            Status.valueOf(result.getString(col_status))
+                    );
                     clientList.add(client);
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } catch (ParseException ex) {
-            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
         return clientList;
     }
 
@@ -257,11 +255,11 @@ public class ClientRepository implements DAO<Client> {
             return client;
 
         } catch (SQLException ex) {
-            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException();
-        } finally {
+            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw new RuntimeException("Erro ao buscar cliente. mensagem: " + ex.getMessage());
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
     
     public Double getAccountBalance() {
@@ -282,9 +280,13 @@ public class ClientRepository implements DAO<Client> {
 
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException();
-        } finally {
+            throw new RuntimeException("Erro ao selecionar o saldo do cliente. Mensagem: " + ex.getMessage());
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
+    }
+    
+    public void closeConnection() {
+        connection.closeConnection();
     }
 }
