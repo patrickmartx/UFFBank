@@ -24,7 +24,7 @@ import javax.servlet.RequestDispatcher;
  */
 @WebServlet(name = "Login", urlPatterns = {"/Login"})
 public class Login extends HttpServlet {
-    ClientServiceImpl service = new ClientServiceImpl();
+    ClientService service = new ClientServiceImpl();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

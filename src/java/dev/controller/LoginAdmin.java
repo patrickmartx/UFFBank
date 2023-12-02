@@ -4,9 +4,9 @@
  */
 package dev.controller;
 
-import dev.entity.Client;
-import dev.services.ClientService;
-import dev.services.impl.ClientServiceImpl;
+import dev.entity.Admin;
+import dev.services.AdminService;
+import dev.services.impl.AdminServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -22,9 +22,9 @@ import javax.servlet.RequestDispatcher;
  *
  * @author Patrick
  */
-@WebServlet(name = "Login", urlPatterns = {"/Login"})
-public class Login extends HttpServlet {
-    ClientServiceImpl service = new ClientServiceImpl();
+@WebServlet(name = "LoginAdmin", urlPatterns = {"/LoginAdmin"})
+public class LoginAdmin extends HttpServlet {
+    AdminService service = new AdminServiceImpl();
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,12 +32,12 @@ public class Login extends HttpServlet {
         try {
             // Verificar se já existe uma sessão
             HttpSession existingSession = request.getSession(false);
-            if (existingSession != null && existingSession.getAttribute("client") != null) {
+            if (existingSession != null && existingSession.getAttribute("admin") != null) {
                 // Se já estiver autenticado, redirecione para a página Home
-                response.sendRedirect(request.getContextPath() + "/views/Home.jsp");
+                response.sendRedirect(request.getContextPath() + "/views/AdminHome.jsp");
             } else {
                 // Caso contrário, encaminhe para a página de login
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/views/LoginAdmin.jsp");
                 rd.forward(request, response);
             }
         } catch (Exception e) {
@@ -54,33 +54,33 @@ public class Login extends HttpServlet {
             String cpf = request.getParameter("cpf");
             String password = request.getParameter("password");
             if (cpf.isEmpty() || password.isEmpty()) {
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/views/LoginAdmin.jsp");
                 request.setAttribute("errorMessage", "Cpf ou senha inválidos");
                 rd.forward(request, response);
             }
             
-            Client client = new Client();
+            Admin admin = new Admin();
             
             try{
-                client = service.getClientByLogin(cpf, password);
+                admin = service.getAdminByLogin(cpf, password);
             } catch(Exception ex) {
                 throw new NoEntityFoundException();
             }
             
-            if (client.getId() != 0) {
+            if (admin.getId() != 0 && admin.getId() != null) {
                 HttpSession session = request.getSession();
-                session.setAttribute("client", client);
+                session.setAttribute("admin", admin);
             
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Home.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/views/AdminHome.jsp");
                 rd.forward(request, response);
             } else {
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/views/LoginAdmin.jsp");
                 request.setAttribute("errorMessage", "Cpf ou senha inválidos");
                 rd.forward(request, response);
                 throw  new NoEntityFoundException();
             }
         } catch(NoEntityFoundException ex) {
-            RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/LoginAdmin.jsp");
             request.setAttribute("errorMessage", "Cpf ou senha inválidos");
             rd.forward(request, response);
         } catch(Exception ex) {
