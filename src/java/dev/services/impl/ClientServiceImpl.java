@@ -5,12 +5,10 @@
 package dev.services.impl;
 
 import dev.entity.Client;
-import dev.exceptions.NoConnectException;
 import dev.model.complements.ClientRepository;
 import dev.services.ClientService;
 import dev.utils.Status;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -69,20 +67,68 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void insert(String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+    try {
+            if (repository.getByCpf(cpf) == null) {
+                Client newClient = new Client();
+                
+                newClient.setCpf(cpf);
+                newClient.setName(name);
+                newClient.setPhone(phone);
+                newClient.setCep(cep);
+                newClient.setEmail(email);
+                newClient.setPassword(password);
+                newClient.setHouseNumber(houseNumber);
+                newClient.setBirthDate(birthDate);
+                newClient.setStatus(Status.ACTIVE);
+            
+                repository.insert(newClient);
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Administrador inserido com sucesso!");
+            } else {
+                throw new IllegalAccessError("Cliente já cadastrado no banco de dados.");
+            }
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
     }
 
     @Override
-    public void update(String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void update(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+        try {
+            if (repository.getByCpf(cpf) != null) {
+                Client existingClient = new Client();
+                
+                existingClient.setCpf(cpf);
+                existingClient.setName(name);
+                existingClient.setPhone(phone);
+                existingClient.setCep(cep);
+                existingClient.setEmail(email);
+                existingClient.setPassword(password);
+                existingClient.setHouseNumber(houseNumber);
+                existingClient.setBirthDate(birthDate);
+                existingClient.setBankAccountId(idBankAccount);
+                existingClient.setStatus(Status.ACTIVE);
+            
+                repository.update(existingClient);
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente atualizado com sucesso!");
+            } else {
+                throw new IllegalAccessError("Cliente não existe no banco de dados.");
+            }
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
     }
 
     @Override
     public void deleteById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            repository.delete(id);
+        } catch(Exception ex) {
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
     }
-
+    
+    @Override
     public Client getClientByLogin(String cpf, String password) {
         try {
             Client existingClient = repository.getByLogin(cpf, password);
@@ -101,7 +147,8 @@ public class ClientServiceImpl implements ClientService {
             throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
         }
     }
-
+    
+    @Override
     public Double getAccountBalance() {
         try {
             Double accountBalance = repository.getAccountBalance();
