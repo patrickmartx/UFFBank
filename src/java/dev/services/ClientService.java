@@ -19,7 +19,7 @@ public interface ClientService {
     public ArrayList<Client> getAll();
     public void insert(String cpf, String name, String phone, String cep, 
                        String email, String password, Integer houseNumber, 
-                       Date birthDate, Long idBankAccount, Status status);
+                       Date birthDate);
     public void update(String cpf, String name, String phone, String cep, 
                        String email, String password, Integer houseNumber, 
                        Date birthDate, Long idBankAccount, Status status);

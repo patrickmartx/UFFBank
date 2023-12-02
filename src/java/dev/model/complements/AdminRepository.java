@@ -99,9 +99,9 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -131,9 +131,9 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
         return adminList;
     }
 
@@ -164,9 +164,9 @@ public class AdminRepository implements DAO<Admin>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -192,9 +192,9 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -210,9 +210,9 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }  
+        }*/  
     }
     
     public Admin getByLogin(String cpf, String password) {
@@ -244,9 +244,9 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
     
     public Admin getByCpf(String cpf) {
@@ -277,8 +277,8 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 }

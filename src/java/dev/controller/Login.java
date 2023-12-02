@@ -40,9 +40,9 @@ public class Login extends HttpServlet {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
                 rd.forward(request, response);
             }
-        } catch (Exception e) {
+        } catch (Exception ex) {
             PrintWriter out = response.getWriter();
-            out.println("<h3>Erro não identificado. Cheque o log</h3>");
+            out.println("<h3>Erro não identificado. Cheque o log </h3> \n" + ex.getMessage());
         }
     }
 

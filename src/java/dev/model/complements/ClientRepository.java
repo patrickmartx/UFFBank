@@ -152,8 +152,8 @@ public class ClientRepository implements DAO<Client> {
     public void insert(Client client) {
         String insertionSQL = "INSERT INTO " + table_name + " (" + col_cpf + ", " + col_name + ", " + col_phone + ", " + col_cep
                 + ", " + col_email + ", " + col_password + ", " + col_houseNumber
-                + ", " + col_birthDate + ", " + col_bankAccountId + ", " + col_status + ") "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?)";
+                + ", " + col_birthDate + ", " + col_status + ") "
+                + "VALUES (?,?,?,?,?,?,?,?,?)";
         try {
             createClientTable();
 
@@ -165,9 +165,8 @@ public class ClientRepository implements DAO<Client> {
             sql.setString(5, client.getEmail());
             sql.setString(6, client.getPassword());
             sql.setInt(7, client.getHouseNumber());
-            sql.setDate(8, (java.sql.Date) client.getBirthDate());
-            sql.setLong(9, client.getBankAccountId());
-            sql.setString(10, client.getStatus().getValue());
+            sql.setDate(8, new java.sql.Date(client.getBirthDate().getTime()));
+            sql.setString(9, client.getStatus().getValue());
 
             sql.executeUpdate();
 
@@ -176,9 +175,9 @@ public class ClientRepository implements DAO<Client> {
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -223,9 +222,9 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
     
     public Client getByLogin(String cpf, String password) {

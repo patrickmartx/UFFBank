@@ -67,9 +67,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate) {
     try {
-            if (repository.getByCpf(cpf) == null) {
+            Client checkClient = repository.getByCpf(cpf);
+            if (checkClient.getCpf() == null) {
                 Client newClient = new Client();
                 
                 newClient.setCpf(cpf);
@@ -80,11 +81,12 @@ public class ClientServiceImpl implements ClientService {
                 newClient.setPassword(password);
                 newClient.setHouseNumber(houseNumber);
                 newClient.setBirthDate(birthDate);
-                newClient.setStatus(Status.ACTIVE);
+                newClient.setStatus(Status.INACTIVE);
             
                 repository.insert(newClient);
-                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Administrador inserido com sucesso!");
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente inserido com sucesso!");
             } else {
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente já existe no banco!");
                 throw new IllegalAccessError("Cliente já cadastrado no banco de dados.");
             }
         } catch(Exception ex) {
@@ -143,8 +145,8 @@ public class ClientServiceImpl implements ClientService {
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
             throw ex;
         } catch (Exception ex) {
-            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente. " + ex.getMessage());
         }
     }
     
