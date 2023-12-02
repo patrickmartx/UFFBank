@@ -107,9 +107,10 @@ public class AdminRepository implements DAO<Admin>{
     @Override
     public ArrayList<Admin> getAll() {
          ArrayList<Admin> adminList = new ArrayList();
-         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != " + Status.DISACTIVATE.getValue();
+         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+ " != ?";
         try {
             PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setString(1, Status.DISACTIVATE.getValue());
             ResultSet result = preparedStatement.executeQuery();
             if (result != null) {
                 while (result.next()) {
@@ -172,7 +173,7 @@ public class AdminRepository implements DAO<Admin>{
     public void update(Admin admin) {
         String updateSQL = "UPDATE "+table_name+" SET "+col_cpf+" = ?, "+col_name+" = ?, "+col_phone+" = ?, "+ col_cep
                                                            +" = ?, "+col_email+" = ?, "+col_password+" = ?, "+col_houseNumber
-                                                           +" = ?, "+col_birthDate+" = ?, "+col_status+" = ?";
+                                                           +" = ?, "+col_birthDate+" = ?, "+col_status+" = ? WHERE "+col_cpf+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setString(1, admin.getCpf());
@@ -184,6 +185,7 @@ public class AdminRepository implements DAO<Admin>{
             sql.setInt(7, admin.getHouseNumber());
             sql.setDate(8, (java.sql.Date) admin.getBirthDate());
             sql.setString(9, admin.getStatus().getValue());
+            sql.setString(10, admin.getCpf());
 
             sql.executeUpdate();
 
@@ -218,7 +220,7 @@ public class AdminRepository implements DAO<Admin>{
         try {
             PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
             sql.setString(1, cpf);
-            sql.setString(1, password);
+            sql.setString(2, password);
             ResultSet result = sql.executeQuery();
             Admin admin = new Admin();
 
@@ -241,6 +243,39 @@ public class AdminRepository implements DAO<Admin>{
 
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } finally {
+            connection.closeConnection();
+        }
+    }
+    
+    public Admin getByCpf(String cpf) {
+        String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_cpf+" = ?";
+        try {
+            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            sql.setString(1, cpf);
+            ResultSet result = sql.executeQuery();
+            Admin admin = new Admin();
+
+            if (result != null) {
+                while (result.next()) {
+                    admin.setId(result.getLong(col_id));
+                    admin.setCpf(result.getString(col_cpf));
+                    admin.setName(result.getString(col_name));
+                    admin.setPhone(result.getString(col_phone));
+                    admin.setCep(result.getString(col_cep));
+                    admin.setEmail(result.getString(col_email));
+                    admin.setPassword(result.getString(col_password));
+                    admin.setHouseNumber(result.getInt(col_houseNumber));
+                    Date birthDate = result.getDate(col_birthDate);
+                    admin.setBirthDate(birthDate);
+                    admin.setStatus(Status.valueOf(result.getString(col_status)));
+                }
+            }
+            return admin;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
             throw new RuntimeException();
         } finally {
             connection.closeConnection();

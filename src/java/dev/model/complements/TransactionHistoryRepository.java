@@ -28,7 +28,6 @@ import dev.utils.Status;
  */
 public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     private final DbConnector connection;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy 'at' HH:mm:ss");
     
     private final String table_name = "tb_transactionhistory";
     private final String col_id = "id";
@@ -104,9 +103,10 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     @Override
     public ArrayList getAll() {
         ArrayList<TransactionHistory> transactionHistoryList = new ArrayList();
-         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != " + Status.DISACTIVATE.getValue();
+         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != ?";
         try {
             PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setString(1, Status.DISACTIVATE.getValue());
             ResultSet result = preparedStatement.executeQuery();
             if (result != null) {
                 while (result.next()) {
@@ -163,7 +163,8 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     public void update(TransactionHistory transactionHistory) {
         
         String updateSQL = "UPDATE "+table_name+" SET "+col_value+" = ?, "+
-                           col_transaction_date+" = ?, "+col_transaction_type+" = ?, "+col_receiver_account_id+" = ?, "+col_status+" = ?";
+                           col_transaction_date+" = ?, "+col_transaction_type+" = ?, "+col_receiver_account_id+" = ?, "+col_status+" = ?"
+                           + " WHERE "+col_id+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setDouble(1, transactionHistory.getValue());
@@ -172,6 +173,7 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             sql.setLong(4, transactionHistory.getSenderAccountId());
             sql.setLong(5, transactionHistory.getReceiverAccountId());
             sql.setString(6, transactionHistory.getStatus().getValue());
+            sql.setLong(7, transactionHistory.getId());
             
             sql.executeUpdate();
         } catch (SQLException ex) {
@@ -198,5 +200,35 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } finally {
             connection.closeConnection();
         }  
+    }
+    
+    public ArrayList getAllHistoricOfOneAccount(Long id) {
+        ArrayList<TransactionHistory> transactionHistoryAccount = new ArrayList();
+         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != ? AND "+col_sender_account_id+" = ?";
+        try {
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setString(1, Status.DISACTIVATE.getValue());
+            preparedStatement.setLong(2, id);
+            ResultSet result = preparedStatement.executeQuery();
+            if (result != null) {
+                while (result.next()) {
+                    TransactionHistory transactionHistory = new TransactionHistory(
+                            result.getLong(col_id),
+                            result.getDouble(col_value),
+                            result.getDate(col_transaction_date),
+                            TransactionType.valueOf(result.getString(col_transaction_type)),
+                            result.getLong(col_sender_account_id),
+                            result.getLong(col_receiver_account_id),
+                            Status.valueOf(result.getString(col_status)));
+                    transactionHistoryAccount.add(transactionHistory);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } finally {
+            connection.closeConnection();
+        }
+        return transactionHistoryAccount;
     }
 }
