@@ -5,6 +5,12 @@
   position: relative;
 }
 
+.emp-clients {
+  font-size: 1.25rem;
+  color: var(--gray-500);
+  margin-top: 3rem;
+}
+
 .client-list {
   display: flex;
   flex-direction: column;

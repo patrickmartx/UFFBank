@@ -133,11 +133,11 @@
                         <a class="btn-login" href="/UFFBank/RegisterClient?userId=<%= inactiveClients.get(i).getId() %>">Cadastrar cliente</a>
                     </li>
                     
-                </ul>
+            </ul>
                     
         <% }
         } else { %>
-            <h3>Não há clientes para atualizar!</h3>
+            <h3 class="emp-clients">Não há clientes para atualizar!</h3>
         <%
         } %>
 
