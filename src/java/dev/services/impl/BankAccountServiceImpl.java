@@ -47,13 +47,14 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void insert(Integer bankNumber, String accountNumber) {
+    public void insert(Integer bankNumber, String accountNumber, Long investmentWalletId) {
         try{
             BankAccount bankAccount = new BankAccount();
         
             bankAccount.setAccountBalance(0.00);
             bankAccount.setAccountNumber(accountNumber);
             bankAccount.setBankNumber(bankNumber);
+            bankAccount.setInvestmentWalletId(investmentWalletId);
             bankAccount.setStatus(Status.ACTIVE);
         
             repository.insert(bankAccount);
@@ -70,6 +71,7 @@ public class BankAccountServiceImpl implements BankAccountService {
             bankAccount.setAccountBalance(accountBalance);
             bankAccount.setAccountNumber(bankAccount.getAccountNumber());
             bankAccount.setBankNumber(bankAccount.getBankNumber());
+            bankAccount.setInvestmentWalletId(bankAccount.getInvestmentWalletId());
             bankAccount.setStatus(Status.ACTIVE);
         
             repository.update(bankAccount);

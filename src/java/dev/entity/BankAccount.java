@@ -16,16 +16,18 @@ public class BankAccount {
     private Double accountBalance;
     private Integer bankNumber;
     private String accountNumber;
+    private Long investmentWalletId;
     private Status status;
 
     public BankAccount() {
     }
 
-    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber, Status status) {
+    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber, Long investmentWalletId, Status status) {
         this.id = id;
         this.accountBalance = accountBalance;
         this.bankNumber = bankNumber;
         this.accountNumber = accountNumber;
+        this.investmentWalletId = investmentWalletId;
         this.status = status;
     }
     
@@ -59,6 +61,14 @@ public class BankAccount {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public Long getInvestmentWalletId() {
+        return investmentWalletId;
+    }
+
+    public void setInvestmentWalletId(Long investmentWalletId) {
+        this.investmentWalletId = investmentWalletId;
     }
 
     public Status getStatus() {
