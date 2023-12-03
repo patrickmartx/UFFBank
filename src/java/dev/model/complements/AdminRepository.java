@@ -30,6 +30,7 @@ public class AdminRepository implements DAO<Admin>{
     private final String col_name = "name";
     private final String col_phone = "phone";
     private final String col_cep = "cep";
+    private final String col_address = "address";
     private final String col_email = "email";
     private final String col_password = "user_password";
     private final String col_houseNumber = "house_number";
@@ -53,6 +54,7 @@ public class AdminRepository implements DAO<Admin>{
                 + col_name + " VARCHAR(255) NOT NULL,"
                 + col_phone + " VARCHAR(15) NOT NULL UNIQUE,"
                 + col_cep + " VARCHAR(10) NOT NULL,"
+                + col_address + " VARCHAR(255) NOT NULL,"
                 + col_email + " VARCHAR(255) NOT NULL UNIQUE,"
                 + col_password + " VARCHAR(255) NOT NULL,"
                 + col_houseNumber + " INT NOT NULL,"
@@ -86,6 +88,7 @@ public class AdminRepository implements DAO<Admin>{
                     admin.setName(result.getString(col_name));
                     admin.setPhone(result.getString(col_phone));
                     admin.setCep(result.getString(col_cep));
+                    admin.setAddress(result.getString(getSQL));
                     admin.setEmail(result.getString(col_email));
                     admin.setPassword(result.getString(col_password));
                     admin.setHouseNumber(result.getInt(col_houseNumber));
@@ -120,6 +123,7 @@ public class AdminRepository implements DAO<Admin>{
                             result.getString(col_name),
                             result.getString(col_phone),
                             result.getString(col_cep),
+                            result.getString(col_address),
                             result.getString(col_email),
                             result.getString(col_password),
                             result.getInt(col_houseNumber),
@@ -140,9 +144,9 @@ public class AdminRepository implements DAO<Admin>{
     @Override
     public void insert(Admin admin) {
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_cpf+", "+col_name+", "+col_phone+", "+ col_cep
-                                                           +", "+col_email+", "+col_password+", "+col_houseNumber
+                                                           +", "+col_address+", "+col_email+", "+col_password+", "+col_houseNumber
                                                            +", "+col_birthDate+", "+col_status+") "
-                                                           + "VALUES (?,?,?,?,?,?,?,?,?)";
+                                                           + "VALUES (?,?,?,?,?,?,?,?,?,?)";
         try {
             createAdminTable();
             
@@ -151,11 +155,12 @@ public class AdminRepository implements DAO<Admin>{
             sql.setString(2, admin.getName());
             sql.setString(3, admin.getPhone());
             sql.setString(4, admin.getCep());
-            sql.setString(5, admin.getEmail());
-            sql.setString(6, admin.getPassword());
-            sql.setInt(7, admin.getHouseNumber());
-            sql.setDate(8, (java.sql.Date) admin.getBirthDate());
-            sql.setString(9, admin.getStatus().getValue());
+            sql.setString(5, admin.getAddress());
+            sql.setString(6, admin.getEmail());
+            sql.setString(7, admin.getPassword());
+            sql.setInt(8, admin.getHouseNumber());
+            sql.setDate(9, (java.sql.Date) admin.getBirthDate());
+            sql.setString(10, admin.getStatus().getValue());
             
             sql.executeUpdate();
 
@@ -172,7 +177,7 @@ public class AdminRepository implements DAO<Admin>{
     @Override
     public void update(Admin admin) {
         String updateSQL = "UPDATE "+table_name+" SET "+col_cpf+" = ?, "+col_name+" = ?, "+col_phone+" = ?, "+ col_cep
-                                                           +" = ?, "+col_email+" = ?, "+col_password+" = ?, "+col_houseNumber
+                                                           +" = ?, "+col_address+" = ?, "+col_email+" = ?, "+col_password+" = ?, "+col_houseNumber
                                                            +" = ?, "+col_birthDate+" = ?, "+col_status+" = ? WHERE "+col_cpf+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
@@ -180,12 +185,13 @@ public class AdminRepository implements DAO<Admin>{
             sql.setString(2, admin.getName());
             sql.setString(3, admin.getPhone());
             sql.setString(4, admin.getCep());
-            sql.setString(5, admin.getEmail());
-            sql.setString(6, admin.getPassword());
-            sql.setInt(7, admin.getHouseNumber());
-            sql.setDate(8, (java.sql.Date) admin.getBirthDate());
-            sql.setString(9, admin.getStatus().getValue());
-            sql.setString(10, admin.getCpf());
+            sql.setString(5, admin.getAddress());
+            sql.setString(6, admin.getEmail());
+            sql.setString(7, admin.getPassword());
+            sql.setInt(8, admin.getHouseNumber());
+            sql.setDate(9, (java.sql.Date) admin.getBirthDate());
+            sql.setString(10, admin.getStatus().getValue());
+            sql.setString(11, admin.getCpf());
 
             sql.executeUpdate();
 
@@ -231,6 +237,7 @@ public class AdminRepository implements DAO<Admin>{
                     admin.setName(result.getString(col_name));
                     admin.setPhone(result.getString(col_phone));
                     admin.setCep(result.getString(col_cep));
+                    admin.setAddress(result.getString(col_address));
                     admin.setEmail(result.getString(col_email));
                     admin.setPassword(result.getString(col_password));
                     admin.setHouseNumber(result.getInt(col_houseNumber));
@@ -242,7 +249,7 @@ public class AdminRepository implements DAO<Admin>{
             return admin;
 
         } catch (SQLException ex) {
-            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException();
         } /*finally {
             connection.closeConnection();
@@ -264,6 +271,7 @@ public class AdminRepository implements DAO<Admin>{
                     admin.setName(result.getString(col_name));
                     admin.setPhone(result.getString(col_phone));
                     admin.setCep(result.getString(col_cep));
+                    admin.setAddress(result.getString(col_address));
                     admin.setEmail(result.getString(col_email));
                     admin.setPassword(result.getString(col_password));
                     admin.setHouseNumber(result.getInt(col_houseNumber));

@@ -1,10 +1,25 @@
 <%-- 
-    Document   : Deposit
-    Created on : 7 de nov. de 2023, 20:55:05
+    Document   : Transfer
+    Created on : 3 de dez. de 2023, 01:47:35
     Author     : Patrick
 --%>
 
+<%@page import="dev.services.ClientService"%>
+<%@page import="dev.services.impl.ClientServiceImpl"%>
+<%@page import="dev.services.BankAccountService"%>
+<%@page import="dev.services.impl.BankAccountServiceImpl"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="dev.entity.Client"%>
+<%@page import="dev.entity.BankAccount"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
+<%! ClientService service = new ClientServiceImpl(); %>
+<%
+    Client client = new Client();
+    client = (Client) session.getAttribute("client");
+%>
+<% Double saldo = service.getAccountBalance(client.getBankAccountId()); %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -106,35 +121,46 @@
               <p>Bem-vindo, 
                 <span>Igor</span>
               </p>
-              <h1>R$ <span>542,26</span></h1>
+
+              <% if (!client.getBankAccountId().equals(null)) { %>
+                <h1>R$ <span><%=decimalFormat.format(saldo)%></span></h1>
+              <% } else {%>
+                  <h3>R$ 0,00</h3>
+              <% } %>
             </div>
       
-            <form class="form">
+            <form class="form"  action="Transfer" method="post">
               <h2 class="title">Transferências</h2>
       
               <div class="field">
-                <label for="deposit">Quanto você  deseja enviar?</label>
+                <label for="value">Quanto você  deseja enviar?</label>
                 <input 
-                  id="deposit" 
-                  name="deposit"
+                  id="value" 
+                  name="value"
                   required
                   type="number"
                   placeholder="0,00">
               </div>
       
               <div class="field">
-                <label for="deposit">Para quem você deseja enviar?</label>
+                <label for="otherAccountNumber">Número da agência a receber</label>
                 <input 
-                  id="deposit" 
-                  type="deposit" 
-                  name="deposit"
-                  required
-                  placeholder="Ex: John Doe">
+                  id="otherAccountNumber" 
+                  type="text" 
+                  name="otherAccountNumber"
+                  required >
+              </div>
+
+              <div class="field">
+                <label for="otherBankNumber">Número da conta a receber</label>
+                <input 
+                  id="otherBankNumber" 
+                  type="text" 
+                  name="otherBankNumber"
+                  required >
               </div>
       
-              <button class="primary-btn" type="submit">
-                Transferir 
-              </button>
+              <input class="primary-btn" type="submit" value="Transferir" />
             </form>
           </main>
         </div>

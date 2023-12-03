@@ -20,9 +20,9 @@ public interface AdminService {
     
     public Admin getById(Long id);
     public ArrayList<Admin> getAll();
-    public void insert(String cpf, String name, String phone, String cep, 
+    public void insert(String cpf, String name, String phone, String cep, String adress, 
                        String email, String password, Integer houseNumber, Date birthDate);
-    public void update(String cpf, String name, String phone, String cep, 
+    public void update(String cpf, String name, String phone, String cep, String adress,
                        String email, String password, Integer houseNumber, Date birthDate, Status status);
     public void deleteById(Long id);
     public Admin getAdminByLogin(String cpf, String password);

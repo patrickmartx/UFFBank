@@ -262,10 +262,11 @@ public class ClientRepository implements DAO<Client> {
         }*/
     }
     
-    public Double getAccountBalance() {
+    public Double getAccountBalance(Long id) {
         String getSQL = "SELECT a.account_balance \n" +
                         "FROM tb_bankaccount a \n" +
-                        "INNER JOIN "+table_name+" tc ON a.id = tc."+col_bankAccountId+" ";
+                        "INNER JOIN "+table_name+" tc ON a.id = tc."+col_bankAccountId+" " +
+                        "WHERE a.id = "+id+"";
         try {
             PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
             ResultSet result = sql.executeQuery();

@@ -17,6 +17,7 @@ public class Admin {
     private String name;
     private String phone;
     private String cep;
+    private String address;
     private String email;
     private String password;
     private Integer houseNumber;
@@ -27,13 +28,14 @@ public class Admin {
     }
 
     public Admin(Long id, String cpf, String name, 
-            String phone, String cep, String email, 
+            String phone, String cep, String adress,  String email, 
             String password, Integer houseNumber, Date birthDate, Status status) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
         this.phone = phone;
         this.cep = cep;
+        this.address = adress;
         this.email = email;
         this.password = password;
         this.houseNumber = houseNumber;
@@ -79,6 +81,14 @@ public class Admin {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
