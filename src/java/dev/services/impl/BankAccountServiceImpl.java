@@ -28,7 +28,17 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public BankAccount getById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try{
+            BankAccount searchedBankAccount = repository.get(id);
+            
+            if(searchedBankAccount.getBankNumber() == null || searchedBankAccount.getAccountNumber() == null) {
+                throw new NoEntityFoundException("Não existe essa conta no banco.");
+            }
+            return searchedBankAccount;
+        } catch(Exception ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+            throw ex;
+        }
     }
 
     @Override
@@ -53,8 +63,19 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public void update(Integer bankNumber, String accountNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void update(Double accountBalance, Integer bankNumber, String accountNumber) {
+        try{
+            BankAccount bankAccount = getAccountByBankNumberAndAccountNumber(bankNumber, accountNumber);
+        
+            bankAccount.setAccountBalance(accountBalance);
+            bankAccount.setAccountNumber(bankAccount.getAccountNumber());
+            bankAccount.setBankNumber(bankAccount.getBankNumber());
+            bankAccount.setStatus(Status.ACTIVE);
+        
+            repository.update(bankAccount);
+        } catch (Exception ex) {
+            Logger.getLogger(BankAccountServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
     }
 
     @Override
