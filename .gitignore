@@ -1,4 +1,5 @@
 /.idea
 
-# Pasta de build
+# Arquivos gerados pelo NetBeans
 build/
+nbproject/private/
