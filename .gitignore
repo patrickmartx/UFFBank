@@ -1,1 +1,5 @@
 /.idea
+
+# Arquivos gerados pelo NetBeans
+build/
+nbproject/private/
