@@ -27,6 +27,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="/UFFBank/Login" method="get">
+            <button type="submit">Home</button>
+        </form>
+        <form action="/UFFBank/Logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
         <h1>TRANSFERIR</h1>
         <% if (!client.getBankAccountId().equals(null)) { %>
             <h3>Seu saldo: R$<%=decimalFormat.format(saldo)%></h3>

@@ -38,6 +38,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="/UFFBank/Login" method="get">
+            <button type="submit">Home</button>
+        </form>
+        <form action="/UFFBank/Logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
         <h1>INVESTIR</h1>
             <h3>Valor investido: R$<%=decimalFormat.format(InvestmentWalletBallance)%></h3>
             <h3>Rendimento por mês: <%=decimalFormat.format(yieldPercentage)%>%</h3>

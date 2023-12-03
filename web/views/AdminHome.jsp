@@ -32,7 +32,14 @@
         <title>Home</title>
     </head>
     <body>
+        <form action="/UFFBank/LoginAdmin" method="get">
+            <button type="submit">Home</button>
+        </form>
+        <form action="/UFFBank/LogoutAdmin" method="post">
+            <button type="submit">Logout</button>
+        </form>
         <h1>Bem vindo, <%=admin.getName()%>!</h1>
+        
         <h2>Contas para ativar:</h2>
         
         

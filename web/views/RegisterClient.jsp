@@ -12,6 +12,12 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <form action="/UFFBank/LoginAdmin" method="get">
+            <button type="submit">Home</button>
+        </form>
+        <form action="/UFFBank/LogoutAdmin" method="post">
+            <button type="submit">Logout</button>
+        </form>
         <form action="RegisterClient" method="post">
             <label for="bankNumber">Número do banco</label>
             <input type="text" id="bankNumber" name="bankNumber" />
