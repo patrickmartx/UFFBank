@@ -110,9 +110,9 @@ public class BankAccountRepository implements DAO<BankAccount> {
         } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
         return bankAccountList;
     }
 
@@ -160,9 +160,9 @@ public class BankAccountRepository implements DAO<BankAccount> {
         } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -178,9 +178,9 @@ public class BankAccountRepository implements DAO<BankAccount> {
         } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }  
+        }*/
     }
     
     public BankAccount getAccountByBankNumberAndAccountNumber(Integer bankNumber, String accountNumber) {
@@ -201,6 +201,7 @@ public class BankAccountRepository implements DAO<BankAccount> {
                     bankAccount.setStatus(Status.valueOf(result.getString(col_status)));
                 }
             }
+            System.out.println("AQUI DO REPOSITORY: id = " + bankAccount.getId());
             return bankAccount;
 
         } catch (SQLException ex) {

@@ -95,9 +95,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -124,9 +124,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
         return transactionHistoryList;
     }
 
@@ -154,9 +154,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -179,9 +179,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 
     @Override
@@ -197,9 +197,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }  
+        }*/
     }
     
     public ArrayList getAllHistoricOfOneAccount(Long id) {
@@ -226,9 +226,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
         return transactionHistoryAccount;
     }
     
@@ -254,8 +254,8 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
+        } /*finally {
             connection.closeConnection();
-        }
+        }*/
     }
 }

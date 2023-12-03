@@ -197,4 +197,38 @@ public class ClientServiceImpl implements ClientService {
             throw new RuntimeException("Ocorreu algum erro ao depositar valor. " + ex.getClass() + " " + ex.getMessage());
         }
     }
+    
+    @Override
+    public void transferBetweenTwoAccounts(Long idSenderAccount, Long idReceiverAccount, Double value) {
+        try {
+            BankAccountService bankService = new BankAccountServiceImpl();
+            TransactionHistory transactionHistory = new TransactionHistory();
+            TransactionHistoryService transactionService = new TransactionHistoryServiceImpl();
+            Date currentDate = new Date();
+            
+            BankAccount bankAccountSender = bankService.getById(idSenderAccount);
+            BankAccount bankAccountReceiver = bankService.getById(idReceiverAccount);
+            
+            if (bankAccountSender.getAccountBalance() < value) {
+                throw new ArithmeticException("Você não tem valor suficiente para fazer transferência.");
+            }
+            if (bankAccountSender.getId() == bankAccountReceiver.getId()) {
+                throw new ArithmeticException("Você não pode transferir para si mesmo.");
+            }
+            
+            bankService.update((bankAccountSender.getAccountBalance() - value), bankAccountSender.getBankNumber(), bankAccountSender.getAccountNumber());
+            bankService.update((bankAccountReceiver.getAccountBalance() + value), bankAccountReceiver.getBankNumber(), bankAccountReceiver.getAccountNumber());
+            
+            System.out.println("conta 1 id: "+bankAccountSender.getId()+" saldo: "+bankAccountSender.getAccountBalance()+""
+                    + "conta 2 id: "+bankAccountReceiver.getId()+" saldo: "+bankAccountReceiver.getAccountBalance());
+
+            
+            transactionService.insert((value*-1), currentDate, idSenderAccount, idReceiverAccount);
+            transactionService.insert(value, currentDate, idSenderAccount, idReceiverAccount);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Ocorreu algum erro ao fazer transferência. " + ex.getMessage());
+        }
+    }
 }

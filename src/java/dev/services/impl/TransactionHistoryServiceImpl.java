@@ -34,16 +34,20 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService{
     }
 
     @Override
-    public void insert(Double value, Date transactionDate, TransactionType transactionType, Long idSenderAccount, Long idReceiverAccount, Status status) {
+    public void insert(Double value, Date transactionDate, Long idSenderAccount, Long idReceiverAccount) {
         try {
             TransactionHistory transactionHistory = new TransactionHistory();
             
             transactionHistory.setValue(value);
             transactionHistory.setTransactionDate(transactionDate);
-            transactionHistory.setTransactionType(transactionType);
+            transactionHistory.setTransactionType(TransactionType.TRANSFER);
             transactionHistory.setSenderAccountId(idSenderAccount);
             transactionHistory.setReceiverAccountId(idReceiverAccount);
             transactionHistory.setStatus(Status.ACTIVE);
+            
+            System.out.println(transactionHistory.getValue() + " " + transactionHistory.getTransactionDate().getTime() + " " +
+                    transactionHistory.getSenderAccountId() + " " + transactionHistory.getReceiverAccountId() + " " + transactionHistory.getTransactionType().getValue() + " " +
+                    transactionHistory.getStatus().getValue());
             
             repository.insert(transactionHistory);
         } catch (Exception ex) {

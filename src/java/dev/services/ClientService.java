@@ -27,4 +27,5 @@ public interface ClientService {
     public Client getClientByLogin(String cpf, String password);
     public Double getAccountBalance(Long id);
     public void depositInBankAccount(Long bankAccountId, Double value);
+    public void transferBetweenTwoAccounts(Long idSenderAccount, Long idReceiverAccount, Double value);
 }
