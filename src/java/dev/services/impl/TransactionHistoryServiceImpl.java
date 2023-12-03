@@ -80,7 +80,28 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService{
                     transactionHistory.getSenderAccountId() + transactionHistory.getTransactionType().getValue() +
                     transactionHistory.getStatus().getValue());
             
-            repository.deposit(transactionHistory);
+            repository.movimentation(transactionHistory);
+        } catch (Exception ex) {
+            throw new RuntimeException("Falha ao criar histórico de transação!" + ex.getClass() + " - " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public void investing(Double value, Date transactionDate, Long idSenderAccount) {
+        try {
+            TransactionHistory transactionHistory = new TransactionHistory();
+            
+            transactionHistory.setValue(value);
+            transactionHistory.setTransactionDate(transactionDate);
+            transactionHistory.setTransactionType(TransactionType.INVESTMENT);
+            transactionHistory.setSenderAccountId(idSenderAccount);
+            transactionHistory.setStatus(Status.ACTIVE);
+            
+            System.out.println(transactionHistory.getValue() + transactionHistory.getTransactionDate().getTime() +
+                    transactionHistory.getSenderAccountId() + transactionHistory.getTransactionType().getValue() +
+                    transactionHistory.getStatus().getValue());
+            
+            repository.movimentation(transactionHistory);
         } catch (Exception ex) {
             throw new RuntimeException("Falha ao criar histórico de transação!" + ex.getClass() + " - " + ex.getMessage());
         }

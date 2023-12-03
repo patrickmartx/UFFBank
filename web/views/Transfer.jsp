@@ -27,7 +27,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>DEPOSITAR</h1>
+        <h1>TRANSFERIR</h1>
         <% if (!client.getBankAccountId().equals(null)) { %>
             <h3>Seu saldo: R$<%=decimalFormat.format(saldo)%></h3>
         <% } else {%>

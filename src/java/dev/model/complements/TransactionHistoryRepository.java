@@ -232,7 +232,7 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         return transactionHistoryAccount;
     }
     
-    public void deposit(TransactionHistory transactionHistory) {
+    public void movimentation(TransactionHistory transactionHistory) {
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_value+", "+col_transaction_date+", "
                                                            +col_transaction_type+", "
                                                            +col_sender_account_id+", "+col_status+") "

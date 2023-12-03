@@ -15,7 +15,7 @@ public interface InvestmentWalletService {
     public InvestmentWallet getById(Long id);
     public ArrayList<InvestmentWallet> getAll();
     public void insert();
-    public void update(Double amountInvested);
+    public void update(Double amountInvested, Long id);
     public void deleteById(Long id);
     public InvestmentWallet getWalletWithLastId();
 }

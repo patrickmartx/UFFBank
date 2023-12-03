@@ -60,9 +60,9 @@ public class InvestmentWalletServiceImpl implements InvestmentWalletService {
     }
 
     @Override
-    public void update(Double amountInvested) {
+    public void update(Double amountInvested, Long id) {
         try{
-            InvestmentWallet newInvestmentWallet = new InvestmentWallet();
+            InvestmentWallet newInvestmentWallet = getById(id);
         
             newInvestmentWallet.setAmountInvested(amountInvested);
             newInvestmentWallet.setYieldPercentage(this.yieldPercentage);

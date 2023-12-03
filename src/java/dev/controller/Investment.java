@@ -4,9 +4,17 @@
  */
 package dev.controller;
 
-import dev.entity.*;
-import dev.services.*;
-import dev.services.impl.*;
+import dev.entity.BankAccount;
+import dev.entity.Client;
+import dev.entity.InvestmentWallet;
+import dev.services.BankAccountService;
+import dev.services.ClientService;
+import dev.services.TransactionHistoryService;
+import dev.services.InvestmentWalletService;
+import dev.services.impl.BankAccountServiceImpl;
+import dev.services.impl.ClientServiceImpl;
+import dev.services.impl.TransactionHistoryServiceImpl;
+import dev.services.impl.InvestmentWalletServiceImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -21,15 +29,16 @@ import javax.servlet.http.HttpSession;
  *
  * @author Patrick
  */
-@WebServlet(name = "Deposit", urlPatterns = {"/Deposit"})
-public class Deposit extends HttpServlet {
-    
+@WebServlet(name = "Investment", urlPatterns = {"/Investment"})
+public class Investment extends HttpServlet {
+
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             HttpSession session = request.getSession();
-            RequestDispatcher rd = request.getRequestDispatcher("/views/Deposit.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
             PrintWriter out = response.getWriter();
@@ -42,6 +51,7 @@ public class Deposit extends HttpServlet {
             throws ServletException, IOException {
         ClientService clientService = new ClientServiceImpl();
         BankAccountService bankAccountService = new BankAccountServiceImpl();
+        InvestmentWalletService investmentWalletService = new InvestmentWalletServiceImpl();
         TransactionHistoryService transactionHistoryService = new TransactionHistoryServiceImpl();
         
         try{
@@ -51,11 +61,12 @@ public class Deposit extends HttpServlet {
             if (existingSession != null && existingSession.getAttribute("client") != null) {
                 Client client = (Client) existingSession.getAttribute("client");
                 BankAccount bankAccount = bankAccountService.getById(client.getBankAccountId());
+                InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
 
-                clientService.depositInBankAccount(client.getBankAccountId(), value);
+                clientService.investing(bankAccount.getId(), investmentWallet.getId(), value);
 
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Deposit.jsp");
-                request.setAttribute("sucessMessege", "Valor R$"+value+" depositado!" );
+                RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
+                request.setAttribute("sucessMessege", "Valor R$"+value+" investido!" );
                 rd.forward(request, response);
             } else 
                 throw new RuntimeException("Cliente não está na sessao");
