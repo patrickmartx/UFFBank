@@ -16,13 +16,13 @@
 <%@ page import="dev.utils.Status" %>
 
 <%! SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy"); %>
-<%! DecimalFormat decimalFormat = new DecimalFormat("#,###.##"); %>
+<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientServiceImpl service = new ClientServiceImpl(); %>
 <%
     Client client = new Client();
     client = (Client) session.getAttribute("client");
 %>
-<%! Double saldo = service.getAccountBalance(); %>
+<% Double saldo = service.getAccountBalance(client.getBankAccountId()); %>
 
 <!DOCTYPE html>
 <html>

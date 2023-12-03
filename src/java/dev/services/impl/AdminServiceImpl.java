@@ -77,7 +77,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate) {
+    public void insert(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate) {
         try {
             if (repository.getByCpf(cpf) == null) {
                 Admin newAdmin = new Admin();
@@ -86,6 +86,7 @@ public class AdminServiceImpl implements AdminService {
                 newAdmin.setName(name);
                 newAdmin.setPhone(phone);
                 newAdmin.setCep(cep);
+                newAdmin.setAddress(address);
                 newAdmin.setEmail(email);
                 newAdmin.setPassword(password);
                 newAdmin.setHouseNumber(houseNumber);
@@ -103,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void update(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Status status) {
+    public void update(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate, Status status) {
         try {
             if (repository.getByCpf(cpf) != null) {
                 Admin updatedAdmin = repository.getByCpf(cpf);
@@ -112,6 +113,7 @@ public class AdminServiceImpl implements AdminService {
                 updatedAdmin.setName(name);
                 updatedAdmin.setPhone(phone);
                 updatedAdmin.setCep(cep);
+                updatedAdmin.setAddress(address);
                 updatedAdmin.setEmail(email);
                 updatedAdmin.setPassword(password);
                 updatedAdmin.setHouseNumber(houseNumber);
@@ -163,6 +165,7 @@ public class AdminServiceImpl implements AdminService {
         
         try {
             ArrayList<Client> inactiveClients = clientRepository.getAllInactiveClients();
+
             if(inactiveClients == null){
                 return inactiveClients;
             } else {
@@ -175,6 +178,7 @@ public class AdminServiceImpl implements AdminService {
         }
     }
     
+    @Override
     public ArrayList<TransactionHistory> generateTransactionHistory(Long clientAccountId) {
         TransactionHistoryRepository transactionHistoryRepository = new TransactionHistoryRepository();
         try {
@@ -223,7 +227,6 @@ public class AdminServiceImpl implements AdminService {
             if (clientToActivate.getCpf() == null || bankAccountForClient.getAccountNumber() == null) {
                 throw new NoEntityFoundException("Algum deles não existe.");
             }
-            System.out.println("====================" +String.valueOf(bankAccountForClient.getId())+ "========================");
             clientService.update(clientToActivate.getCpf(), clientToActivate.getName(), clientToActivate.getPhone(),
                     clientToActivate.getCep(), clientToActivate.getEmail(), clientToActivate.getPassword(), 
                     clientToActivate.getHouseNumber(), clientToActivate.getBirthDate(), bankAccountForClient.getId(),

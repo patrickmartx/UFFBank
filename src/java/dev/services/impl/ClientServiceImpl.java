@@ -151,9 +151,9 @@ public class ClientServiceImpl implements ClientService {
     }
     
     @Override
-    public Double getAccountBalance() {
+    public Double getAccountBalance(Long id) {
         try {
-            Double accountBalance = repository.getAccountBalance();
+            Double accountBalance = repository.getAccountBalance(id);
             
             if(accountBalance == null) {
                 throw new NoEntityFoundException("Conta não encontrado");
