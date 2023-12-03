@@ -140,8 +140,8 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             createTransactionHistoryTable();
             
             PreparedStatement sql = connection.getConnect().prepareStatement(insertionSQL);
-            sql.setDouble(1, transactionHistory.getValue());
-            sql.setDate(2, (java.sql.Date) transactionHistory.getTransactionDate());
+            sql.setDouble(1,  transactionHistory.getValue());
+            sql.setDate(2, new java.sql.Date(transactionHistory.getTransactionDate().getTime()));
             sql.setString(3, transactionHistory.getTransactionType().getValue());
             sql.setLong(4, transactionHistory.getSenderAccountId());
             sql.setLong(5, transactionHistory.getReceiverAccountId());
@@ -168,7 +168,7 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
             sql.setDouble(1, transactionHistory.getValue());
-            sql.setDate(2, (java.sql.Date) transactionHistory.getTransactionDate());
+            sql.setDate(2, new java.sql.Date(transactionHistory.getTransactionDate().getTime()));
             sql.setString(3, transactionHistory.getTransactionType().getValue());
             sql.setLong(4, transactionHistory.getSenderAccountId());
             sql.setLong(5, transactionHistory.getReceiverAccountId());
@@ -230,5 +230,32 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             connection.closeConnection();
         }
         return transactionHistoryAccount;
+    }
+    
+    public void deposit(TransactionHistory transactionHistory) {
+        String insertionSQL = "INSERT INTO "+table_name+" ("+col_value+", "+col_transaction_date+", "
+                                                           +col_transaction_type+", "
+                                                           +col_sender_account_id+", "+col_status+") "
+                                                           + "VALUES (?,?,?,?,?)";
+        try {
+            createTransactionHistoryTable();
+            
+            PreparedStatement sql = connection.getConnect().prepareStatement(insertionSQL);
+            sql.setDouble(1,  transactionHistory.getValue());
+            sql.setDate(2, new java.sql.Date(transactionHistory.getTransactionDate().getTime()));
+            sql.setString(3, transactionHistory.getTransactionType().getValue());
+            sql.setLong(4, transactionHistory.getSenderAccountId());
+            sql.setString(5, transactionHistory.getStatus().getValue());
+            
+            sql.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } catch (NoConnectException ex) {
+            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            connection.closeConnection();
+        }
     }
 }
