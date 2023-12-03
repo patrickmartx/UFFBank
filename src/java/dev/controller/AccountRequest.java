@@ -53,12 +53,13 @@ public class AccountRequest extends HttpServlet {
             String name = request.getParameter("name");
             String phone = request.getParameter("phone");
             String cep = request.getParameter("cep");
+            String address = request.getParameter("address");
             String email = request.getParameter("email");
             String password = request.getParameter("password");
             Integer houseNumber = Integer.valueOf(request.getParameter("houseNumber"));
             Date birthDate = dateFormat.parse(request.getParameter("birthDate"));
             
-            System.out.println(cpf + name + phone + cep + email + password + houseNumber + birthDate);
+            System.out.println(cpf + name + phone + cep + address + email + password + houseNumber + birthDate);
             
             if (cpf.isEmpty() || name.isEmpty() || phone.isEmpty() || cep.isEmpty() || email.isEmpty()
                     || password.isEmpty() || houseNumber == null || birthDate == null) {
@@ -69,7 +70,7 @@ public class AccountRequest extends HttpServlet {
             }
             
             try{
-                service.insert(cpf, name, phone, cep, email, password, houseNumber, birthDate);
+                service.insert(cpf, name, phone, cep, address, email, password, houseNumber, birthDate);
                 Client createdCLient = service.getClientByLogin(cpf, password);
                 if (createdCLient.getCpf() != null) {
                     Logger.getLogger(AccountRequest.class.getName()).log(Level.INFO, "Cliente inserido com sucesso!");

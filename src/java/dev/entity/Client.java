@@ -17,6 +17,7 @@ public class Client {
     private String name;
     private String phone;
     private String cep;
+    private String address;
     private String email;
     private String password;
     private Integer houseNumber;
@@ -28,7 +29,7 @@ public class Client {
     }
 
     public Client(Long id, String cpf, String name,
-            String phone, String cep, String email,
+            String phone, String cep, String address, String email,
             String password, Integer houseNumber, Date birthDate,
             Long bankAccountId, Status status) {
         this.id = id;
@@ -36,6 +37,7 @@ public class Client {
         this.name = name;
         this.phone = phone;
         this.cep = cep;
+        this.address = address;
         this.email = email;
         this.password = password;
         this.houseNumber = houseNumber;
@@ -82,6 +84,14 @@ public class Client {
 
     public void setCep(String cep) {
         this.cep = cep;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {

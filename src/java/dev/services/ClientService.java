@@ -17,10 +17,10 @@ public interface ClientService {
     
     public Client getById(Long id);
     public ArrayList<Client> getAll();
-    public void insert(String cpf, String name, String phone, String cep, 
+    public void insert(String cpf, String name, String phone, String cep, String address, 
                        String email, String password, Integer houseNumber, 
                        Date birthDate);
-    public void update(String cpf, String name, String phone, String cep, 
+    public void update(String cpf, String name, String phone, String cep, String address,
                        String email, String password, Integer houseNumber, 
                        Date birthDate, Long idBankAccount, Status status);
     public void deleteById(Long id);

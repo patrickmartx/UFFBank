@@ -35,6 +35,7 @@ public class ClientRepository implements DAO<Client> {
     private final String col_name = "name";
     private final String col_phone = "phone";
     private final String col_cep = "cep";
+    private final String col_address = "address";
     private final String col_email = "email";
     private final String col_password = "user_password";
     private final String col_houseNumber = "house_number";
@@ -59,6 +60,7 @@ public class ClientRepository implements DAO<Client> {
                 + col_name + " VARCHAR(255) NOT NULL,"
                 + col_phone + " VARCHAR(15) NOT NULL UNIQUE,"
                 + col_cep + " VARCHAR(10) NOT NULL,"
+                + col_address + " VARCHAR(255) NOT NULL,"
                 + col_email + " VARCHAR(255) NOT NULL UNIQUE,"
                 + col_password + " VARCHAR(255) NOT NULL,"
                 + col_houseNumber + " INT NOT NULL,"
@@ -94,6 +96,7 @@ public class ClientRepository implements DAO<Client> {
                     client.setName(result.getString(col_name));
                     client.setPhone(result.getString(col_phone));
                     client.setCep(result.getString(col_cep));
+                    client.setAddress(result.getString(col_address));
                     client.setEmail(result.getString(col_email));
                     client.setPassword(result.getString(col_password));
                     client.setHouseNumber(result.getInt(col_houseNumber));
@@ -129,6 +132,7 @@ public class ClientRepository implements DAO<Client> {
                             result.getString(col_name),
                             result.getString(col_phone),
                             result.getString(col_cep),
+                            result.getString(col_address),
                             result.getString(col_email),
                             result.getString(col_password),
                             result.getInt(col_houseNumber),
@@ -151,9 +155,9 @@ public class ClientRepository implements DAO<Client> {
     @Override
     public void insert(Client client) {
         String insertionSQL = "INSERT INTO " + table_name + " (" + col_cpf + ", " + col_name + ", " + col_phone + ", " + col_cep
-                + ", " + col_email + ", " + col_password + ", " + col_houseNumber
+                + ", " + col_address + ", " + col_email + ", " + col_password + ", " + col_houseNumber
                 + ", " + col_birthDate + ", " + col_status + ") "
-                + "VALUES (?,?,?,?,?,?,?,?,?)";
+                + "VALUES (?,?,?,?,?,?,?,?,?, ?)";
         try {
             createClientTable();
 
@@ -162,11 +166,12 @@ public class ClientRepository implements DAO<Client> {
             sql.setString(2, client.getName());
             sql.setString(3, client.getPhone());
             sql.setString(4, client.getCep());
-            sql.setString(5, client.getEmail());
-            sql.setString(6, client.getPassword());
-            sql.setInt(7, client.getHouseNumber());
-            sql.setDate(8, new java.sql.Date(client.getBirthDate().getTime()));
-            sql.setString(9, client.getStatus().getValue());
+            sql.setString(5, client.getAddress());
+            sql.setString(6, client.getEmail());
+            sql.setString(7, client.getPassword());
+            sql.setInt(8, client.getHouseNumber());
+            sql.setDate(9, new java.sql.Date(client.getBirthDate().getTime()));
+            sql.setString(10, client.getStatus().getValue());
 
             sql.executeUpdate();
 
@@ -183,7 +188,7 @@ public class ClientRepository implements DAO<Client> {
     @Override
     public void update(Client client) {
         String updateSQL = "UPDATE " + table_name + " SET " + col_cpf + " = ?, " + col_name + " = ?, " + col_phone + " = ?, " + col_cep
-                + " = ?, " + col_email + " = ?, " + col_password + " = ?, " + col_houseNumber
+                + " = ?, " + col_address + " = ?, " + col_email + " = ?, " + col_password + " = ?, " + col_houseNumber
                 + " = ?, " + col_birthDate + " = ?, " + col_bankAccountId + " = ?, " + col_status + " = ? WHERE "+col_cpf+" = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
@@ -191,13 +196,14 @@ public class ClientRepository implements DAO<Client> {
             sql.setString(2, client.getName());
             sql.setString(3, client.getPhone());
             sql.setString(4, client.getCep());
-            sql.setString(5, client.getEmail());
-            sql.setString(6, client.getPassword());
-            sql.setInt(7, client.getHouseNumber());
-            sql.setDate(8, (java.sql.Date) client.getBirthDate());
-            sql.setLong(9, client.getBankAccountId());
-            sql.setString(10, client.getStatus().getValue());
-            sql.setString(11, client.getCpf());
+            sql.setString(5, client.getAddress());
+            sql.setString(6, client.getEmail());
+            sql.setString(7, client.getPassword());
+            sql.setInt(8, client.getHouseNumber());
+            sql.setDate(9, (java.sql.Date) client.getBirthDate());
+            sql.setLong(10, client.getBankAccountId());
+            sql.setString(11, client.getStatus().getValue());
+            sql.setString(12, client.getCpf());
 
             sql.executeUpdate();
 
@@ -238,11 +244,12 @@ public class ClientRepository implements DAO<Client> {
 
             if (result != null) {
                 while (result.next()) {
-                    client.setId(result.getLong(col_id));
+                    client.setId(Long.valueOf(result.getString(col_id)));
                     client.setCpf(result.getString(col_cpf));
                     client.setName(result.getString(col_name));
                     client.setPhone(result.getString(col_phone));
                     client.setCep(result.getString(col_cep));
+                    client.setAddress(result.getString(col_address));
                     client.setEmail(result.getString(col_email));
                     client.setPassword(result.getString(col_password));
                     client.setHouseNumber(result.getInt(col_houseNumber));
@@ -306,6 +313,7 @@ public class ClientRepository implements DAO<Client> {
                             result.getString(col_name),
                             result.getString(col_phone),
                             result.getString(col_cep),
+                            result.getString(col_address),
                             result.getString(col_email),
                             result.getString(col_password),
                             result.getInt(col_houseNumber),
@@ -335,11 +343,12 @@ public class ClientRepository implements DAO<Client> {
 
             if (result != null) {
                 while (result.next()) {
-                    client.setId(result.getLong(col_id));
+                    client.setId(Long.valueOf(result.getString(col_id)));
                     client.setCpf(result.getString(col_cpf));
                     client.setName(result.getString(col_name));
                     client.setPhone(result.getString(col_phone));
                     client.setCep(result.getString(col_cep));
+                    client.setAddress(result.getString(col_address));
                     client.setEmail(result.getString(col_email));
                     client.setPassword(result.getString(col_password));
                     client.setHouseNumber(result.getInt(col_houseNumber));

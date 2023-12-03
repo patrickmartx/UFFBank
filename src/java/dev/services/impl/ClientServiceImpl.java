@@ -75,7 +75,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate) {
+    public void insert(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate) {
     try {
             Client checkClient = repository.getByCpf(cpf);
             if (checkClient.getCpf() == null) {
@@ -85,6 +85,7 @@ public class ClientServiceImpl implements ClientService {
                 newClient.setName(name);
                 newClient.setPhone(phone);
                 newClient.setCep(cep);
+                newClient.setAddress(address);
                 newClient.setEmail(email);
                 newClient.setPassword(password);
                 newClient.setHouseNumber(houseNumber);
@@ -103,7 +104,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void update(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+    public void update(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
         try {
             if (repository.getByCpf(cpf) != null) {
                 Client existingClient = new Client();
@@ -112,6 +113,7 @@ public class ClientServiceImpl implements ClientService {
                 existingClient.setName(name);
                 existingClient.setPhone(phone);
                 existingClient.setCep(cep);
+                existingClient.setAddress(address);
                 existingClient.setEmail(email);
                 existingClient.setPassword(password);
                 existingClient.setHouseNumber(houseNumber);
@@ -221,9 +223,7 @@ public class ClientServiceImpl implements ClientService {
             
             System.out.println("conta 1 id: "+bankAccountSender.getId()+" saldo: "+bankAccountSender.getAccountBalance()+""
                     + "conta 2 id: "+bankAccountReceiver.getId()+" saldo: "+bankAccountReceiver.getAccountBalance());
-
             
-            transactionService.insert((value*-1), currentDate, idSenderAccount, idReceiverAccount);
             transactionService.insert(value, currentDate, idSenderAccount, idReceiverAccount);
             
         } catch (Exception ex) {

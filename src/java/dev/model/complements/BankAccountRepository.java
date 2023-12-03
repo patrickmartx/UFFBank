@@ -47,7 +47,7 @@ public class BankAccountRepository implements DAO<BankAccount> {
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
                 + col_accountBalance + " DOUBLE NOT NULL,"
                 + col_bankNumber + " INT NOT NULL,"
-                + col_accountNumber + " VARCHAR(255) NOT NULL,"
+                + col_accountNumber + " VARCHAR(255) NOT NULL UNIQUE,"
                 + col_status + " VARCHAR(10) NOT NULL "
                 + ")";
 

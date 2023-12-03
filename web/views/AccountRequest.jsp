@@ -21,6 +21,8 @@
             <input type="text" id="phone" name="phone" /><br>
             <label for="cep">cep</label>
             <input type="text" id="cep" name="cep" /><br>
+            <label for="address">cep</label>
+            <input type="text" id="address" name="address" /><br>
             <label for="email">email</label>
             <input type="text" id="email" name="email" /><br>
             <label for="password">Password:</label>
