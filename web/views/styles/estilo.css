@@ -1,0 +1,243 @@
+/* CSS Variables */
+:root {
+  --green-700: #26413C;
+  --green-300: #35BBA2;
+  
+  --gray-500: #676767;
+  --gray-300: #B4B9BF;
+  --gray-100: #e5e4e4;
+
+  --white: #FAFAFA;
+  --black-600: #111928;
+
+  /* Color - Use cases*/
+  --placeholder-color: #9CA3AF;
+}
+
+.topbar {
+  display: flex;
+  padding: 1.25rem;
+  margin-top: 1rem;
+  width: 100%;
+  justify-content: space-between;
+  font-size: 2rem;
+
+  border-bottom: 1px solid #E3E2E2
+}
+
+.topbar p {
+  color: #000;
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 125%; /* 2.5rem */
+}
+
+.topbar span {
+  font-weight: 700;
+}
+
+.title {
+  color: #000;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 125%; 
+  margin-bottom: 1.25rem;
+}
+
+.form {
+  margin-top: 3.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  width: 28.375rem;
+  height: 5.5rem;
+  flex-direction: column;
+  gap: 0.3125rem;
+}
+
+.field label {
+  color: var(--black-600);
+
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 150%; 
+}
+
+
+.field input {
+  width: 100%;
+  max-width: 28.375rem;
+
+  border-radius: 8px;
+  height: 3.375rem;
+  border: 1px solid var(--gray-300);
+  padding-left: 1rem;
+
+}
+
+
+::placeholder {
+  color: var(--placeholder-color);
+  font-size: 1rem;
+}
+
+.primary-btn {
+  width: 100%;
+  max-width: 28.375rem;
+  height: 54px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  
+  border-radius: 8px;
+  background: var(--green-300);  
+  
+  font-family: 'Inter', sans-serif;
+  color: var(--white);
+  font-size: 1.5rem;
+  font-weight: 500;
+  
+}
+
+.primary-btn:hover {
+  filter: brightness(0.95);
+}
+
+
+/* Basic CSS Reset */
+* {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+
+/* Resetting margins, paddings, and borders */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+font,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* Remove default list styling */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Set default font styles */
+body {
+  background: #FAFAFA;
+  font-family: "Inter", sans-serif;
+}
+
+/* Remove hyperlink text decoration */
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Remove outline on focused elements */
+:focus {
+  outline: 0;
+}
+
+button {
+  background: none;
+  font: inherit;
+  border: 0;
+  color: inherit;
+  box-sizing: border-box;
+  line-height: normal;
+  overflow: visible;
+  text-transform: none;
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer; /* Adiciona cursor pointer para indicar que é um botão clicável */
+}
+
+/* Chrome, Safari, Edge, Opera
+/* input::-webkit-outer-spin-button, */
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+  appearance: textfield
+} 
