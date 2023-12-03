@@ -29,8 +29,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="styles/deposito.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Área do administrador | UFFBANK</title>
     </head>
     <div class="page">
@@ -117,7 +117,7 @@
     
           
 
-            <% if (!inactiveClients.isEmpty()) {
+            <% if (!inactiveClients.isEmpty()) { %>
                 <div class="table">
                     <div class="tb-head">
                       <p>Nome</p>
@@ -125,7 +125,7 @@
                     </div>
                  <ul class="client-list ">
 
-                for (int i = 0; i < inactiveClients.size(); i++) { %>
+            <%    for (int i = 0; i < inactiveClients.size(); i++) { %>
                     <li class="data-client">
                         <p><%= inactiveClients.get(i).getName() %></p>
                         <p><%= inactiveClients.get(i).getCpf()%></p>

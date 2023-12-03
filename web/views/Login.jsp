@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="styles/login.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/login.css" />
         <title>Login | UFFBANK</title>
     </head>
     <!-- <body>

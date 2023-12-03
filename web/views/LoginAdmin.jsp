@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="styles/login.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/login.css" />
         <title>Área do administrador | UFFBANK</title>
     </head>
 
@@ -87,11 +87,6 @@
 
             <input type="submit" value="LoginAdmin" />
             
-             <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <div style="color: red;"><%= errorMessage %></div>
-            <% } %>
         </form>
     </body> -->
 </html>

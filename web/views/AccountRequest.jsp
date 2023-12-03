@@ -9,8 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="styles/cadastro.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/cadastro.css" />
       
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -39,12 +39,6 @@
             
 
             <input type="submit" value="AccountRequest" />
-            
-             <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <div style="color: red;"><%= errorMessage %></div>
-            <% } %>
         </form>
     </body> -->
     <body>
