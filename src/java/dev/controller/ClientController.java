@@ -25,14 +25,7 @@ import javax.servlet.RequestDispatcher;
  * @author Patrick
  */
 @WebServlet(name = "ClientController", urlPatterns = {"/Client/*"})
-public class ClientController extends HttpServlet {
-    
-    private BankAccountRepository bankAccountRepository = new BankAccountRepository();
-    private BankAccountService bankService = new BankAccountServiceImpl(bankAccountRepository);
-    
-    private ClientRepository clientRepository = new ClientRepository();
-    private ClientService clientService = new ClientServiceImpl(clientRepository);
-            
+public class ClientController extends HttpServlet {            
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

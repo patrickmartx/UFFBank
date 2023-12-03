@@ -4,6 +4,8 @@
  */
 package dev.entity;
 
+import dev.utils.Status;
+
 /**
  *
  * @author Patrick
@@ -14,17 +16,18 @@ public class BankAccount {
     private Double accountBalance;
     private Integer bankNumber;
     private String accountNumber;
+    private Status status;
 
     public BankAccount() {
     }
 
-    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber) {
+    public BankAccount(Long id, Double accountBalance, Integer bankNumber, String accountNumber, Status status) {
         this.id = id;
         this.accountBalance = accountBalance;
         this.bankNumber = bankNumber;
         this.accountNumber = accountNumber;
+        this.status = status;
     }
-
     
     public Long getId() {
         return id;
@@ -57,7 +60,13 @@ public class BankAccount {
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
-    
-    
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
     
 }

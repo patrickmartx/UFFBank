@@ -1,6 +1,6 @@
 <%-- 
-    Document   : login.jsp
-    Created on : 7 de nov. de 2023, 19:56:25
+    Document   : RegisterClient
+    Created on : 2 de dez. de 2023, 15:54:19
     Author     : Patrick
 --%>
 
@@ -9,19 +9,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="estilo.css" />
-        
-        <title>Login| UFFBANK</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <form action="Login" method="post">
-            <label for="cpf">cpf</label>
-            <input type="text" id="cpf" name="cpf" />
+        <form action="RegisterClient" method="post">
+            <label for="bankNumber">Número do banco</label>
+            <input type="text" id="bankNumber" name="bankNumber" />
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
+            <label for="accountNumber">Número da conta</label>
+            <input type="text" id="accountNumber" name="accountNumber" />
 
-            <input type="submit" value="Login" />
+            <input type="submit" value="RegisterClient" />
             
              <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
             <% String errorMessage = (String) request.getAttribute("errorMessage"); %>

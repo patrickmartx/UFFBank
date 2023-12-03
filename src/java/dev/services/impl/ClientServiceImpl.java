@@ -5,13 +5,14 @@
 package dev.services.impl;
 
 import dev.entity.Client;
-import dev.exceptions.NoConnectException;
 import dev.model.complements.ClientRepository;
 import dev.services.ClientService;
 import dev.utils.Status;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import dev.exceptions.NoEntityFoundException;
 
 /**
  *
@@ -19,75 +20,152 @@ import java.util.logging.Logger;
  */
 public class ClientServiceImpl implements ClientService {
 
-    private static final Logger LOGGER = Logger.getLogger(ClientServiceImpl.class.getName());
+    private ClientRepository repository;
 
-    private final ClientRepository repository;
-
-    public ClientServiceImpl(ClientRepository clientRepository) {
-        this.repository = clientRepository;
+    public ClientServiceImpl() {
+        this.repository = new ClientRepository();
     }
 
     @Override
-    public void save(String cpf, String name, String phone,
-                     String cep, String email, String password,
-                     Integer houseNumber, Calendar birthDate, Long bankAccountId) {
-        try {
-            Client client = new Client();
-
-            if (cpf.length() < 11) {
-                throw new IllegalArgumentException("CPF inválido!");
+    public Client getById(Long id) {
+        try{
+            Client client = repository.get(id);
+            
+            if (client == null || client.getId() == 0) {
+                throw new NoEntityFoundException("Cliente não encontrado");
+            } else {
+//                repository.closeConnection();
+                return client;
             }
-            client.setCpf(cpf);
-            client.setName(name);
-            if (phone.length() < 11) {
-                throw new IllegalArgumentException("Telefone inválido!");
-            }
-            client.setPhone(phone);
-            client.setCep(cep);
-            client.setEmail(email);
-            client.setPassword(password);
-            client.setHouseNumber(houseNumber);
-            client.setBirthDate(birthDate);
-            client.setConta(bankAccountId);
-            client.setStatus(Status.INACTIVE);
-
-            repository.insertClient(client);
-        } catch (NoConnectException | IllegalArgumentException ex) {
-            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
-                    "Não foi possível criar Cliente. Mensagem: {0}", ex.getMessage());
-        }
-    }
-    
-    @Override
-    public Client findById(Long id) {
-        try {
-            return repository.findById(id);
-        } catch (NoConnectException ex) {
-            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
-                    "Erro ao buscar cliente por Id. Mensagem: {0}", ex.getMessage());
-        }
-        return null;
-    }
-    
-    @Override
-    public Client findByCpf(String cpf) {
-        try {
-            return repository.findByCpf(cpf);
-        } catch (NoConnectException ex) {
-            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, 
-                    "Erro ao buscar cliente por CPF. Mensagem: {0}", ex.getMessage());
-        }
-        return null;
-    }
-
-    @Override
-    public Client login(String cpf, String password) {
-        try {
-            return repository.Login(cpf, password);
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
         } catch (Exception ex) {
-            LOGGER.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE,
-                    "Erro durante o login do cliente. {0}", ex.getMessage());
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
         }
-        return null;
+    }
+
+    @Override
+    public ArrayList<Client> getAll() {
+        try{
+            ArrayList<Client> clientList = repository.getAll();
+            
+            if(clientList.isEmpty() || clientList == null){
+                throw new NoEntityFoundException("Não há clientes no banco.");
+            } else {
+//                repository.closeConnection();
+                return clientList;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+        }
+    }
+
+    @Override
+    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate) {
+    try {
+            Client checkClient = repository.getByCpf(cpf);
+            if (checkClient.getCpf() == null) {
+                Client newClient = new Client();
+                
+                newClient.setCpf(cpf);
+                newClient.setName(name);
+                newClient.setPhone(phone);
+                newClient.setCep(cep);
+                newClient.setEmail(email);
+                newClient.setPassword(password);
+                newClient.setHouseNumber(houseNumber);
+                newClient.setBirthDate(birthDate);
+                newClient.setStatus(Status.INACTIVE);
+            
+                repository.insert(newClient);
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente inserido com sucesso!");
+            } else {
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente já existe no banco!");
+                throw new IllegalAccessError("Cliente já cadastrado no banco de dados.");
+            }
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public void update(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+        try {
+            if (repository.getByCpf(cpf) != null) {
+                Client existingClient = new Client();
+                
+                existingClient.setCpf(cpf);
+                existingClient.setName(name);
+                existingClient.setPhone(phone);
+                existingClient.setCep(cep);
+                existingClient.setEmail(email);
+                existingClient.setPassword(password);
+                existingClient.setHouseNumber(houseNumber);
+                existingClient.setBirthDate(birthDate);
+                existingClient.setBankAccountId(idBankAccount);
+                existingClient.setStatus(Status.ACTIVE);
+            
+                repository.update(existingClient);
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.INFO, "Cliente atualizado com sucesso!");
+            } else {
+                throw new IllegalAccessError("Cliente não existe no banco de dados.");
+            }
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try {
+            repository.delete(id);
+        } catch(Exception ex) {
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+        }
+    }
+    
+    @Override
+    public Client getClientByLogin(String cpf, String password) {
+        try {
+            Client existingClient = repository.getByLogin(cpf, password);
+
+            if (existingClient == null || existingClient.getCpf() == null) {
+                throw new NoEntityFoundException("Cliente não encontrado");
+            } else {
+//                repository.closeConnection();
+                return existingClient;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente. " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public Double getAccountBalance() {
+        try {
+            Double accountBalance = repository.getAccountBalance();
+            
+            if(accountBalance == null) {
+                throw new NoEntityFoundException("Conta não encontrado");
+            } else {
+                return accountBalance;
+            }
+        } catch (NoEntityFoundException ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar o cliente.");
+        }
     }
 }

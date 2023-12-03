@@ -9,19 +9,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="estilo.css" />
-        
-        <title>Login| UFFBANK</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <form action="Login" method="post">
+        <form action="LoginAdmin" method="post">
             <label for="cpf">cpf</label>
             <input type="text" id="cpf" name="cpf" />
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" />
 
-            <input type="submit" value="Login" />
+            <input type="submit" value="LoginAdmin" />
             
              <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
             <% String errorMessage = (String) request.getAttribute("errorMessage"); %>

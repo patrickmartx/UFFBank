@@ -5,7 +5,7 @@
 package dev.entity;
 
 import dev.utils.Status;
-import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Admin {
     private String email;
     private String password;
     private Integer houseNumber;
-    private Calendar birthDate;
+    private Date birthDate;
     private Status status;
     
     public Admin() {
@@ -28,7 +28,7 @@ public class Admin {
 
     public Admin(Long id, String cpf, String name, 
             String phone, String cep, String email, 
-            String password, Integer houseNumber, Calendar birthDate, Status status) {
+            String password, Integer houseNumber, Date birthDate, Status status) {
         this.id = id;
         this.cpf = cpf;
         this.name = name;
@@ -105,11 +105,11 @@ public class Admin {
         this.houseNumber = houseNumber;
     }
 
-    public Calendar getBirthDate() {
+    public Date getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Calendar birthDate) {
+    public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 

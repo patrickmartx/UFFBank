@@ -6,6 +6,11 @@ package dev.services;
 
 import java.util.Calendar;
 import dev.entity.Admin;
+import dev.entity.Client;
+import dev.entity.TransactionHistory;
+import dev.utils.Status;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -13,16 +18,15 @@ import dev.entity.Admin;
  */
 public interface AdminService {
     
-    public void save(String cpf, String name, String phone, 
-            String cep, String email, String password, 
-            Integer houseNumber, Calendar birthDate, String status);
-    
-    public Admin findById(Long id);
-    
-    public Admin findByCpf(String Cpf);
-    
-    public void activateClient(Long id, Integer bankNumber, String accountNumber);
-    
-    public Admin login(String cpf, String password);
-    
+    public Admin getById(Long id);
+    public ArrayList<Admin> getAll();
+    public void insert(String cpf, String name, String phone, String cep, 
+                       String email, String password, Integer houseNumber, Date birthDate);
+    public void update(String cpf, String name, String phone, String cep, 
+                       String email, String password, Integer houseNumber, Date birthDate, Status status);
+    public void deleteById(Long id);
+    public Admin getAdminByLogin(String cpf, String password);
+    public ArrayList<Client> getInactiveClients();
+    public ArrayList<TransactionHistory> generateTransactionHistory(Long clientAccountId);
+    public void activateClient(Long clientId, Integer bankNumber, String accountNumber);
 }
