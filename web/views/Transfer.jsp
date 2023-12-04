@@ -31,28 +31,6 @@
         <title>Transferência | UFFBANK</title>
     </head>
     <body>
-        <!-- <form action="/UFFBank/Login" method="get">
-            <button type="submit">Home</button>
-        </form>
-        <form action="/UFFBank/Logout" method="post">
-            <button type="submit">Logout</button>
-        </form> -->
-        <!-- <h1>TRANSFERIR</h1>
-        <form action="Transfer" method="post">
-            <label for="otherBankNumber">Número do banco destino</label>
-            <input type="number" id="otherBankNumber" name="otherBankNumber" />
-
-            <label for="otherAccountNumber">Número da conta destino</label>
-            <input type="text" id="otherAccountNumber" name="otherAccountNumber" />
-            
-            <label for="pix">pix</label>
-            <input type="text" id="value" name="pix valido" />
-            
-            <label for="value">Valor:</label>
-            <input type="text" id="value" name="0,00" />
-
-            <input type="submit" value="Depositar" />
-        </form> --> 
         <div class="page">
           <%@ include file="/views/components/sidebar.jsp" %>
           <main>
@@ -98,6 +76,7 @@
             <% if (errorMessege != null) { %>
                 <div style="color: red;"><%= errorMessege %></div>
             <% } %>
+            
             <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
             <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
             <% if (sucessMessege != null) { %>

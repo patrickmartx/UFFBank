@@ -71,22 +71,10 @@
                 <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
                 <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
                 <% if (errorMessage != null) { %>
-                    <div style="color: red;"><%= errorMessage %></div>
+                    <div class="error-msg"><%= errorMessage %></div>
                 <% } %>
             </form>
           </main>
         </div>
       </body>
-    <!-- <body>
-        <form action="LoginAdmin" method="post">
-            <label for="cpf">cpf</label>
-            <input type="text" id="cpf" name="cpf" />
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
-
-            <input type="submit" value="LoginAdmin" />
-            
-        </form>
-    </body> -->
 </html>

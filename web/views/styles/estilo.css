@@ -12,6 +12,41 @@
 
   /* Color - Use cases*/
   --placeholder-color: #9CA3AF;
+  --error-toast: #FF4A4A;
+  --success-toast: #29A159;
+
+}
+
+.error-msg {
+  color: var(--white);
+  background-color: var(--error-toast);
+
+  width: 250px;
+  height: 100px;
+  border-radius: 8px;
+
+  padding: 20px;
+
+  position: fixed;
+
+  right: 2rem;
+  top: 3rem;
+}
+
+.success-msg {
+  color: var(--white);
+  background-color: var(--success-toast);
+
+  width: 250px;
+  height: 100px;
+  border-radius: 8px;
+
+  padding: 20px;
+
+  position: fixed;
+
+  right: 2rem;
+  top: 3rem;
 }
 
 .topbar {

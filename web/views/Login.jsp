@@ -13,18 +13,7 @@
         <link rel="stylesheet" type="text/css" href="views/styles/login.css" />
         <title>Login | UFFBANK</title>
     </head>
-    <!-- <body>
-        <form action="Login" method="post">
-            <label for="cpf">cpf</label>
-            <input type="text" id="cpf" name="cpf" />
 
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
-
-            <input type="submit" value="Login" />
-            
-        </form>
-    </body> -->
     <body>
       <div class="login-page">
         <aside class="hero">
@@ -77,11 +66,12 @@
                   <path d="M28.8 15.2L18.45 4.7C18 4.25 17.3 4.25 16.85 4.7C16.4 5.15 16.4 5.85 16.85 6.3L25.25 14.85H3.99999C3.39999 14.85 2.89999 15.35 2.89999 15.95C2.89999 16.55 3.39999 17.1 3.99999 17.1H25.35L16.85 25.75C16.4 26.2 16.4 26.9 16.85 27.35C17.05 27.55 17.35 27.65 17.65 27.65C17.95 27.65 18.25 27.55 18.45 27.3L28.8 16.8C29.25 16.35 29.25 15.65 28.8 15.2Z" fill="#FAFAFA"/>
                   </svg>
               </button>
+
              <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <div style="color: red;"><%= errorMessage %></div>
-            <% } %>
+             <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+             <% if (errorMessage != null) { %>
+                <div class="error-msg"><%= errorMessage %></div>
+             <% } %>
           </form>
         </main>
       </div>

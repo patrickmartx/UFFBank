@@ -29,19 +29,6 @@
         <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Depósito | UFFBANK</title>
     </head>
-    <!-- <body>
-        <h1>DEPOSITAR</h1>
-        
-        
-        <form action="Deposit" method="post">
-            <label for="value">Valor para depósito:</label>
-            <input type="number" min="0.00" step="0.01" id="value" name="value" />
-            <input type="submit" value="Deposit" />
-        </form>
-        
-        
-    </body> -->
-
     <body>
       <div class="page">
         <%@ include file="/views/components/sidebar.jsp" %>
@@ -65,18 +52,18 @@
               Sacar 
             </button>
           </form>
-          <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-            <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
-            <% if (sucessMessege != null) { %>
-                <div style="color: green;"><%= sucessMessege %></div>
-            <% } %>
-            <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-            <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
-            <% if (errorMessege != null) { %>
-                <div style="color: red;"><%= errorMessege %></div>
-            <% } %>
         </main>
       </div>
-          
+      <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+      <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+      <% if (errorMessage != null) { %>
+          <div class="error-msg"><%= errorMessage %></div>
+      <% } %>
+
+      <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+      <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+      <% if (sucessMessege != null) { %>
+          <div class="success-msg"><%= sucessMessege %></div>
+      <% } %>
     </body>
 </html>

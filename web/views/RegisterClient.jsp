@@ -28,12 +28,7 @@
             <input type="text" id="accountNumber" name="accountNumber" />
 
             <input type="submit" value="RegisterClient" />
-            
-            <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <div style="color: red;"><%= errorMessage %></div>
-            <% } %>
+          
         </form>  -->
         
         <div class="page">
@@ -76,5 +71,17 @@
               </form>
             </main>
           </div>
+
+          <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+          <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+          <% if (errorMessage != null) { %>
+              <div class="error-msg"><%= errorMessage %></div>
+          <% } %>
+
+          <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+          <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+          <% if (sucessMessege != null) { %>
+              <div class="success-msg"><%= sucessMessege %></div>
+          <% } %>
     </body>
 </html>

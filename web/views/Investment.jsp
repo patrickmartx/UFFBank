@@ -37,34 +37,6 @@
         <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Investimentos | UFFBANK</title>
     </head>
-    <!-- <body>
-        <form action="/UFFBank/Login" method="get">
-            <button type="submit">Home</button>
-        </form>
-        <form action="/UFFBank/Logout" method="post">
-            <button type="submit">Logout</button>
-        </form>
-        <h1>INVESTIR</h1>
-        
-        <form action="Investment" method="post">
-            <label for="value">Valor para investir:</label>
-            <input type="number" min="0.00" step="0.01" id="value" name="value" />
-            <input type="submit" value="Investment" />
-        </form>
-        
-    <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-    <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
-    <% if (sucessMessege != null) {%>
-        <div style="color: green;"><%= sucessMessege%></div>
-    <% } %>
-    
-    <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-    <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
-    <% if (errorMessege != null) {%>
-        <div style="color: green;"><%= errorMessege%></div>
-    <% }%>   
-</body> -->
-
     <body>
         <div class="page">
             <%@ include file="/views/components/sidebar.jsp" %>
@@ -110,6 +82,18 @@
                 </form>
             </main>
         </div>
+
+        <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+        <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+        <% if (errorMessage != null) { %>
+            <div class="error-msg"><%= errorMessage %></div>
+        <% } %>
+
+        <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+        <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+        <% if (sucessMessege != null) { %>
+            <div class="success-msg"><%= sucessMessege %></div>
+        <% } %>
 
         <script type="text/javascript">
             function openSidebar() {

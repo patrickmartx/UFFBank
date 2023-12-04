@@ -60,9 +60,6 @@
                           </svg>                            
                         </a>
                     </li>
-                    
-            
-                    
         <% }
         } else { %>
           <h3 class="emp-clients">Não há clientes cadastrados.</h3>
@@ -73,32 +70,5 @@
         </div>
         </main>
       </div>
-    <!-- <body>
-        <h1>Bem vindo, <%=admin.getName()%>!</h1>
-        <h2>Contas para ativar:</h2>
-        
-        
-        <br>
-        <br>
-        
-        <% if (!clients.isEmpty()) {
-                for (int i = 0; i < clients.size(); i++) { %>
-                    <h3>Nome do cliente: <%= clients.get(i).getName() %></h3>
-                    <h3>CPF do cliente: <%= clients.get(i).getCpf()%></h3>
-                    <a href="/UFFBank/RegisterClient?userId=<%= clients.get(i).getId() %>">
-                        <button>Cadastrar cliente</button>
-                    <br>
-        <% }
-        } else { %>
-            <h3>Não há clientes para atualizar!</h3>
-        <%
-        } %>
-        
-         <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String sucessMessage = (String) request.getAttribute("sucessMessage"); %>
-            <% if (sucessMessage != null) { %>
-                <div style="color: green;"><%= sucessMessage %></div>
-            <% } %>
-    </body> -->
     </body>
 </html>
