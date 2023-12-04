@@ -19,7 +19,7 @@
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 <%! BankAccountService bankService = new BankAccountServiceImpl();
-   %>
+%>
 <%
     Client client = new Client();
     client = (Client) session.getAttribute("client");
@@ -53,16 +53,7 @@
         </form>
         
     <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-    <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
-    <% if (sucessMessege != null) {%>
-        <div style="color: green;"><%= sucessMessege%></div>
-    <% } %>
     
-    <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-    <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
-    <% if (errorMessege != null) {%>
-        <div style="color: green;"><%= errorMessege%></div>
-    <% }%>   
 </body> -->
 
     <body>
@@ -108,6 +99,16 @@
 
                     <input class="primary-btn" type="submit" value="Investir">
                 </form>
+                <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+                <% if (sucessMessege != null) {%>
+                <div style="color: green;"><%= sucessMessege%></div>
+                <% } %>
+
+                <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+                <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
+                <% if (errorMessege != null) {%>
+                <div style="color: red;"><%= errorMessege%></div>
+                <% }%>   
             </main>
         </div>
 

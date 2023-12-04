@@ -313,11 +313,11 @@ public class ClientServiceImpl implements ClientService {
                 transactionService.investing(value, currentDate, bankAccountId);
             } catch (Exception ex) {
                 Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                throw new RuntimeException("Ocorreu algum erro ao setar serviços de investimento. " + ex.getClass() + " " + ex.getMessage());
+                throw new RuntimeException("Ocorreu algum erro ao setar serviços de investimento: " + ex.getMessage());
             }
         } catch (Exception ex) {
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RuntimeException("Ocorreu algum erro ao investir valor. " + ex.getClass() + " " + ex.getMessage());
+            throw new RuntimeException(ex.getMessage());
         }
     }
 }

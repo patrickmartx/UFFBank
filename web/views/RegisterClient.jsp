@@ -5,6 +5,20 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="dev.services.AdminService" %>
+<%@ page import="dev.services.impl.AdminServiceImpl" %>
+<%@ page import="dev.entity.Admin" %>
+<%@ page import="dev.entity.Client" %>
+<%@page import="dev.services.ClientService"%>
+<%@page import="dev.services.impl.ClientServiceImpl"%>
+
+<%
+    Admin admin = new Admin();
+    admin = (Admin) session.getAttribute("admin");
+%>
+<%! ClientService clientService = new ClientServiceImpl(); %>
+<!--% Client client = clientService.getById(id) %>-->
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -37,14 +51,9 @@
         </form>  -->
         
         <div class="page">
-          <%@ include file="/views/components/sidebar.html" %>
+          <%@ include file="/views/components/sidebarAdmin.jsp" %>
             <main>
-              <div class="topbar">
-                <p>Bem-vindo, 
-                  <span>Igor</span>
-                </p>
-                <h1>R$ <span>542,26</span></h1>
-              </div>
+              <%@ include file="/views/components/TopBarAdmin.jsp" %>
         
               <form class="form">
                 <h2 class="title">Criar conta</h2>

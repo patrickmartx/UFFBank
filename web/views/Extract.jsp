@@ -62,7 +62,7 @@
                       <p>Data da transferência</p>  
                       <p>Tipo de transferência</p>
                       <p>Valor</p>
-                      <p>Id da conta remetente</p>
+                      <p>(Agência) Número da conta</p>
                     </div>
                  <ul class="client-list ">
 
@@ -76,7 +76,13 @@
                         <% } else {%>
                             <p><%= decimalFormat.format(extract.get(i).getValue()) %></p>
                         <% } %>
-                        <p><%= extract.get(i).getReceiverAccountId() %></p>
+                        <% if ((extract.get(i).getReceiverAccountId() != 0)) { %>
+                        <p>
+                            (<%= bankService.getById(extract.get(i).getReceiverAccountId()).getBankNumber() %>) <%= bankService.getById(extract.get(i).getReceiverAccountId()).getAccountNumber()%>
+                        </p>
+                        <% } else { %>
+                        <p> </p>
+                        <% } %>
                     </li>
                     
             </ul>
