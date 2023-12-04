@@ -18,7 +18,7 @@
         <form action="/UFFBank/LogoutAdmin" method="post">
             <button type="submit">Logout</button>
         </form> -->
-        <form action="RegisterClient" method="post">
+        <!-- <form action="RegisterClient" method="post">
             <label for="bankNumber">Número do banco</label>
             <input type="text" id="bankNumber" name="bankNumber" />
 
@@ -32,7 +32,7 @@
             <% if (errorMessage != null) { %>
                 <div style="color: red;"><%= errorMessage %></div>
             <% } %>
-        </form> -->
+        </form>  -->
 
         <div class="page">
           <%@ include ﬁle=“components/sidebar.html” %>

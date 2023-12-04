@@ -55,21 +55,11 @@
             <input type="text" id="value" name="0,00" />
 
             <input type="submit" value="Depositar" />
-        </form> --> -->
+        </form> --> 
         <div class="page">
           <%@ include ﬁle=“components/sidebar.html” %>
           <main>
-            <div class="topbar">
-              <p>Bem-vindo, 
-                <span>Igor</span>
-              </p>
-
-              <% if (!client.getBankAccountId().equals(null)) { %>
-                <h1>R$ <span><%=decimalFormat.format(saldo)%></span></h1>
-              <% } else {%>
-                  <h3>R$ 0,00</h3>
-              <% } %>
-            </div>
+            <%@ include ﬁle=“components/topbar.jsp %>
       
             <form class="form"  action="Transfer" method="post">
               <h2 class="title">Transferências</h2>

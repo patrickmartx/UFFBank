@@ -53,17 +53,7 @@
       <div class="page">
         <%@ include ﬁle=“components/sidebar.html” %>
         <main>
-          <div class="topbar">
-            <p>Bem-vindo, 
-              <span>Igor</span>
-            </p>
-
-            <% if (!client.getBankAccountId().equals(null)) { %>
-              <h1>R$ <span><%=decimalFormat.format(saldo)%></span></h1>
-            <% } else {%>
-                <h3>R$ 0,00</h3>
-            <% } %>
-          </div>
+          <%@ include ﬁle=“components/topbar.jsp %>
     
           <form class="form">
             <h2 class="title">Saque</h2>
