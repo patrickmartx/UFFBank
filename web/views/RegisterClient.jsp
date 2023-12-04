@@ -10,7 +10,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="views/styles/login.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Criar conta | UFFBANK</title>
     </head>
     <body>
@@ -35,9 +35,9 @@
                 <div style="color: red;"><%= errorMessage %></div>
             <% } %>
         </form>  -->
-        <%@ include file="/views/components/sidebar.html" %>
+        
         <div class="page">
-          
+          <%@ include file="/views/components/sidebar.html" %>
             <main>
               <div class="topbar">
                 <p>Bem-vindo, 
@@ -57,7 +57,7 @@
                     required
                     autofocus
                     type="number"
-                    placeholder="0,00">
+                    placeholder="Ex: 22">
                 </div>
         
                 <div class="field">
@@ -67,7 +67,7 @@
                     type="text" 
                     name="accountNumber"
                     required
-                    placeholder="Ex: John Doe">
+                    placeholder="Ex: 2459488">
                 </div>
         
                 <button class="primary-btn" type="submit">
