@@ -39,7 +39,7 @@
           <div>
             <div class="logo">
               <img 
-                src="./logo.png" 
+                src="../contents/imgs/logo.png" 
                 alt="logo da UFFBANK"
               />
     

@@ -9,6 +9,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/login.css" />
         <title>Criar conta | UFFBANK</title>
     </head>
     <body>
@@ -33,9 +35,9 @@
                 <div style="color: red;"><%= errorMessage %></div>
             <% } %>
         </form>  -->
-
+        <%@ include file="/views/components/sidebar.html" %>
         <div class="page">
-          <%@ include file="/views/components/sidebar.html" %>
+          
             <main>
               <div class="topbar">
                 <p>Bem-vindo, 

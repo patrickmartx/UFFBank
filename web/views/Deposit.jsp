@@ -15,26 +15,23 @@
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 <%
-    Client client = new Client();
-    client = (Client) session.getAttribute("client");
+//    Client client = new Client();
+//    client = (Client) session.getAttribute("client");
 %>
-<% Double saldo = service.getAccountBalance(client.getBankAccountId()); %>
+<% //Double saldo = service.getAccountBalance(client.getBankAccountId()); %>
 
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" type="text/css" href="styles/estilo.css" />
-        <link rel="stylesheet" type="text/css" href="styles/deposito.css" />
+        <link rel="stylesheet" type="text/css" href="estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
+        <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Depósito | UFFBANK</title>
     </head>
     <!-- <body>
         <h1>DEPOSITAR</h1>
-        <% if (!client.getBankAccountId().equals(null)) { %>
-            <h3>Seu saldo: R$<%=decimalFormat.format(saldo)%></h3>
-        <% } else {%>
-            <h3>Conta desconhecida.</h3>
-        <% } %>
+        
         
         <form action="Deposit" method="post">
             <label for="value">Valor para depósito:</label>
@@ -42,18 +39,14 @@
             <input type="submit" value="Deposit" />
         </form>
         
-        <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
-            <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
-            <% if (sucessMessege != null) { %>
-                <div style="color: green;"><%= sucessMessege %></div>
-            <% } %>
+        
     </body> -->
 
     <body>
       <div class="page">
-        <%@ include ﬁle=“components/sidebar.html” %>
+        <%@ include file="/views/components/sidebar.html" %>
         <main>
-          <%@ include ﬁle=“components/topbar.jsp %>
+          <%@ include file="/views/components/TopBar.jsp" %>
     
           <form class="form" action="Deposit" method="post">
             <h2 class="title">Depósito</h2>
@@ -72,7 +65,13 @@
               Depositar 
             </button>
           </form>
+          <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+            <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+            <% if (sucessMessege != null) { %>
+                <div style="color: green;"><%= sucessMessege %></div>
+            <% } %>
         </main>
       </div>
+          
     </body>
 </html>

@@ -13,6 +13,9 @@
 <%--<%@page import="dev.entity.BankAccount"%>--%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
+<%! ClientService service = new ClientServiceImpl(); %>
+
 <%--<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 <%

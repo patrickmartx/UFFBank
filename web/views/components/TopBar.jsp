@@ -1,5 +1,5 @@
-<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
-<%! ClientService service = new ClientServiceImpl(); %>
+<%--<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
+<%! ClientService service = new ClientServiceImpl(); %>--%>
 <%
     Client client = new Client();
     client = (Client) session.getAttribute("client");
