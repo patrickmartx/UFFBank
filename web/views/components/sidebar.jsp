@@ -35,7 +35,7 @@
         Transferências
       </a>
 
-      <a class="link" href="">
+      <a class="link" href="/UFFBank/Withdrawal">
         <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <g clip-path="url(#clip0_48_366)">
           <path d="M25.3333 12H12C10.5272 12 9.33334 13.1939 9.33334 14.6667V22.6667C9.33334 24.1394 10.5272 25.3333 12 25.3333H25.3333C26.8061 25.3333 28 24.1394 28 22.6667V14.6667C28 13.1939 26.8061 12 25.3333 12Z" stroke="#676767"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

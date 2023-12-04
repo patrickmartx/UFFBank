@@ -204,6 +204,31 @@ public class ClientServiceImpl implements ClientService {
     }
     
     @Override
+    public void withdrawalInBankAccount(Long bankAccountId, Double value) {
+        try {
+            BankAccountService bankService = new BankAccountServiceImpl();
+            TransactionHistory transactionHistory = new TransactionHistory();
+            TransactionHistoryService transactionService = new TransactionHistoryServiceImpl();
+            Date currentDate = new Date();
+            
+            BankAccount bankAccount = bankService.getById(bankAccountId);
+            Double lastValue = bankAccount.getAccountBalance();
+            
+            if (bankAccount.getAccountBalance() < value) {
+                throw new ArithmeticException("Valor de saque maior do que o valor na conta.");
+            }
+            
+            bankService.update((bankAccount.getAccountBalance() - value), bankAccount.getBankNumber(), bankAccount.getAccountNumber());
+            
+            System.out.println(lastValue + " x " + bankAccount.getAccountNumber());
+            transactionService.withdrawal(value, currentDate, bankAccountId);
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao sacar valor: " + ex.getMessage());
+        }
+    }
+    
+    @Override
     public void transferBetweenTwoAccounts(Long idSenderAccount, Long idReceiverAccount, Double value) {
         try {
             BankAccountService bankService = new BankAccountServiceImpl();

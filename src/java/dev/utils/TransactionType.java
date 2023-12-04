@@ -11,7 +11,8 @@ package dev.utils;
 public enum TransactionType {
     TRANSFER("TRANSFER"),
     DEPOSIT("DEPOSIT"),
-    INVESTMENT("INVESTMENT");
+    INVESTMENT("INVESTMENT"),
+    WITHDRAWAL("WITHDRAWAL");
     
     private final String value;
 

@@ -88,6 +88,27 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService{
     }
     
     @Override
+    public void withdrawal(Double value, Date transactionDate, Long idSenderAccount) {
+        try {
+            TransactionHistory transactionHistory = new TransactionHistory();
+            
+            transactionHistory.setValue(value);
+            transactionHistory.setTransactionDate(transactionDate);
+            transactionHistory.setTransactionType(TransactionType.WITHDRAWAL);
+            transactionHistory.setSenderAccountId(idSenderAccount);
+            transactionHistory.setStatus(Status.ACTIVE);
+            
+            System.out.println(transactionHistory.getValue() + transactionHistory.getTransactionDate().getTime() +
+                    transactionHistory.getSenderAccountId() + transactionHistory.getTransactionType().getValue() +
+                    transactionHistory.getStatus().getValue());
+            
+            repository.movimentation(transactionHistory);
+        } catch (Exception ex) {
+            throw new RuntimeException("Falha ao criar histórico de saque!" + ex.getClass() + " - " + ex.getMessage());
+        }
+    }
+    
+    @Override
     public void investing(Double value, Date transactionDate, Long idSenderAccount) {
         try {
             TransactionHistory transactionHistory = new TransactionHistory();
