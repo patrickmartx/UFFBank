@@ -247,7 +247,7 @@ public class AdminServiceImpl implements AdminService {
                 throw new NoEntityFoundException("Algum deles não existe.");
             }
             clientService.update(clientToActivate.getCpf(), clientToActivate.getName(), clientToActivate.getPhone(),
-                    clientToActivate.getCep(), clientToActivate.getEmail(), clientToActivate.getPassword(), 
+                    clientToActivate.getCep(), clientToActivate.getAddress(), clientToActivate.getEmail(), clientToActivate.getPassword(), 
                     clientToActivate.getHouseNumber(), clientToActivate.getBirthDate(), bankAccountForClient.getId(),
                     Status.ACTIVE);
         } catch (Exception ex) {

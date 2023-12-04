@@ -29,9 +29,24 @@
         <title>Transferência | UFFBANK</title>
     </head>
     <body>
-        <!-- <form action="/UFFBank/Transfer/Send" method="post">
-            <label for="account">Conta no banco</label>
-            <input type="text" id="value" name="0000.0000.0000.0000" />
+        <!-- <form action="/UFFBank/Login" method="get">
+            <button type="submit">Home</button>
+        </form>
+        <form action="/UFFBank/Logout" method="post">
+            <button type="submit">Logout</button>
+        </form> -->
+        <!-- <h1>TRANSFERIR</h1>
+        <% if (!client.getBankAccountId().equals(null)) { %>
+            <h3>Seu saldo: R$<%=decimalFormat.format(saldo)%></h3>
+        <% } else {%>
+            <h3>Conta desconhecida.</h3>
+        <% } %>
+        <form action="Transfer" method="post">
+            <label for="otherBankNumber">Número do banco destino</label>
+            <input type="number" id="otherBankNumber" name="otherBankNumber" />
+
+            <label for="otherAccountNumber">Número da conta destino</label>
+            <input type="text" id="otherAccountNumber" name="otherAccountNumber" />
             
             <label for="pix">pix</label>
             <input type="text" id="value" name="pix valido" />
@@ -40,7 +55,7 @@
             <input type="text" id="value" name="0,00" />
 
             <input type="submit" value="Depositar" />
-        </form> -->
+        </form> --> -->
         <div class="page">
           <%@ include ﬁle=“components/sidebar.html” %>
           <main>

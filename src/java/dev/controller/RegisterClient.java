@@ -6,6 +6,7 @@ package dev.controller;
 
 import dev.entity.BankAccount;
 import dev.entity.Client;
+import dev.entity.InvestmentWallet;
 import dev.exceptions.NoEntityFoundException;
 import dev.services.AdminService;
 import java.io.IOException;
@@ -19,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dev.services.BankAccountService;
 import dev.services.ClientService;
+import dev.services.InvestmentWalletService;
 import dev.services.impl.AdminServiceImpl;
 import dev.services.impl.BankAccountServiceImpl;
 import dev.services.impl.ClientServiceImpl;
+import dev.services.impl.InvestmentWalletServiceImpl;
 import dev.utils.Status;
 
 /**
@@ -52,11 +55,20 @@ public class RegisterClient extends HttpServlet {
             throws ServletException, IOException {
         AdminService service = new AdminServiceImpl();
         BankAccountService bankService = new BankAccountServiceImpl();
+        InvestmentWalletService investmentWalletService = new InvestmentWalletServiceImpl();
         try{
             Integer bankNumber =Integer.valueOf(request.getParameter("bankNumber"));
             String accountNumber = request.getParameter("accountNumber");
             
-            bankService.insert(bankNumber, accountNumber);
+            investmentWalletService.insert();
+            try {
+            InvestmentWallet investmentWallet = investmentWalletService.getWalletWithLastId();
+            
+            bankService.insert(bankNumber, accountNumber, investmentWallet.getId());
+            } catch (Exception ex) {
+                throw new RuntimeException("Ocorreu um erro ao criar a conta ou carteira de investimento."
+                        + "\nClasse: " + ex.getClass() + " Mensagem: " + ex.getMessage());
+            }
             
             if (bankNumber == null || accountNumber.isEmpty()) {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/RegisterClient.jsp");

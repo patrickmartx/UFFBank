@@ -22,4 +22,5 @@ public interface TransactionHistoryService {
     public void update(Double value, Date transactionDate, TransactionType transactionType, Long idSenderAccount, Long idReceiverAccount, Status status);
     public void deleteById(Long id);
     public void deposit(Double value, Date transactionDate, Long idSenderAccount);
+    public void investing(Double value, Date transactionDate, Long idSenderAccount);
 }

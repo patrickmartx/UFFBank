@@ -42,7 +42,7 @@
             <input type="submit" value="Deposit" />
         </form>
         
-        <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+        <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
             <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
             <% if (sucessMessege != null) { %>
                 <div style="color: green;"><%= sucessMessege %></div>

@@ -15,7 +15,7 @@ public interface BankAccountService {
     
     public BankAccount getById(Long id);
     public ArrayList<BankAccount> getAll();
-    public void insert(Integer bankNumber, String accountNumber);
+    public void insert(Integer bankNumber, String accountNumber, Long investmentWalletId);
     public void update(Double accountBalance, Integer bankNumber, String accountNumber);
     public void deleteById(Long id);
     public BankAccount getAccountByBankNumberAndAccountNumber(Integer bankNumber, String accountNumber);

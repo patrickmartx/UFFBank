@@ -8,11 +8,14 @@ import dev.entity.Client;
 import dev.entity.BankAccount;
 import dev.model.complements.ClientRepository;
 import dev.entity.TransactionHistory;
+import dev.entity.InvestmentWallet;
 import dev.services.ClientService;
 import dev.services.BankAccountService;
 import dev.services.TransactionHistoryService;
+import dev.services.InvestmentWalletService;
 import dev.services.impl.BankAccountServiceImpl;
 import dev.services.impl.TransactionHistoryServiceImpl;
+import dev.services.impl.InvestmentWalletServiceImpl;
 import dev.utils.Status;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +78,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void insert(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate) {
+    public void insert(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate) {
     try {
             Client checkClient = repository.getByCpf(cpf);
             if (checkClient.getCpf() == null) {
@@ -85,6 +88,7 @@ public class ClientServiceImpl implements ClientService {
                 newClient.setName(name);
                 newClient.setPhone(phone);
                 newClient.setCep(cep);
+                newClient.setAddress(address);
                 newClient.setEmail(email);
                 newClient.setPassword(password);
                 newClient.setHouseNumber(houseNumber);
@@ -103,7 +107,7 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public void update(String cpf, String name, String phone, String cep, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
+    public void update(String cpf, String name, String phone, String cep, String address, String email, String password, Integer houseNumber, Date birthDate, Long idBankAccount, Status status) {
         try {
             if (repository.getByCpf(cpf) != null) {
                 Client existingClient = new Client();
@@ -112,6 +116,7 @@ public class ClientServiceImpl implements ClientService {
                 existingClient.setName(name);
                 existingClient.setPhone(phone);
                 existingClient.setCep(cep);
+                existingClient.setAddress(address);
                 existingClient.setEmail(email);
                 existingClient.setPassword(password);
                 existingClient.setHouseNumber(houseNumber);
@@ -221,14 +226,69 @@ public class ClientServiceImpl implements ClientService {
             
             System.out.println("conta 1 id: "+bankAccountSender.getId()+" saldo: "+bankAccountSender.getAccountBalance()+""
                     + "conta 2 id: "+bankAccountReceiver.getId()+" saldo: "+bankAccountReceiver.getAccountBalance());
-
             
-            transactionService.insert((value*-1), currentDate, idSenderAccount, idReceiverAccount);
             transactionService.insert(value, currentDate, idSenderAccount, idReceiverAccount);
             
         } catch (Exception ex) {
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException("Ocorreu algum erro ao fazer transferência. " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public Double getInvestmentWalletBallance(Long bankAccountId) {
+        InvestmentWalletService investmentWalletService = new InvestmentWalletServiceImpl();
+        BankAccountService bankAccountService = new BankAccountServiceImpl();
+        try {
+            BankAccount bankAccount = bankAccountService.getById(bankAccountId);
+            InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
+            
+            return investmentWallet.getAmountInvested();
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar saldo investido. " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public Double getYieldPercentage(Long bankAccountId) {
+        InvestmentWalletService investmentWalletService = new InvestmentWalletServiceImpl();
+        BankAccountService bankAccountService = new BankAccountServiceImpl();
+        try {
+            BankAccount bankAccount = bankAccountService.getById(bankAccountId);
+            InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
+            
+            return investmentWallet.getYieldPercentage();
+        } catch(Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            throw new RuntimeException("Ocorreu algum erro ao buscar porcentagem de rendimento. " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public void investing(Long bankAccountId, Long walletId, Double value) {
+        try {
+            BankAccountService bankService = new BankAccountServiceImpl();
+            TransactionHistory transactionHistory = new TransactionHistory();
+            TransactionHistoryService transactionService = new TransactionHistoryServiceImpl();
+            InvestmentWalletService investmentWalletService = new InvestmentWalletServiceImpl();
+            Date currentDate = new Date();
+            
+            try{ 
+                BankAccount bankAccount = bankService.getById(bankAccountId);
+                InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
+
+                bankService.update((bankAccount.getAccountBalance() - value), bankAccount.getBankNumber(), bankAccount.getAccountNumber());
+                investmentWalletService.update(investmentWallet.getAmountInvested() + value, investmentWallet.getId());
+
+                transactionService.investing(value, currentDate, bankAccountId);
+            } catch (Exception ex) {
+                Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                throw new RuntimeException("Ocorreu algum erro ao setar serviços de investimento. " + ex.getClass() + " " + ex.getMessage());
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao investir valor. " + ex.getClass() + " " + ex.getMessage());
         }
     }
 }
