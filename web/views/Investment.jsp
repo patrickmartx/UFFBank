@@ -21,10 +21,9 @@
 <%! BankAccountService bankService = new BankAccountServiceImpl();
    %>
 <%
-//    Client client = new Client();
-//    client = (Client) session.getAttribute("client");
-
-
+    Client client = new Client();
+    client = (Client) session.getAttribute("client");
+    Double saldo = service.getAccountBalance(client.getBankAccountId());
 %>
 
 
@@ -68,7 +67,7 @@
 
     <body>
         <div class="page">
-            <%@ include file="/views/components/sidebar.html" %>
+            <%@ include file="/views/components/sidebar.jsp" %>
 
             <main>
                 <div class="head">

@@ -6,6 +6,7 @@ package dev.controller;
 
 import dev.entity.BankAccount;
 import dev.entity.Client;
+import dev.exceptions.NoEntityFoundException;
 import dev.services.BankAccountService;
 import dev.services.ClientService;
 import dev.services.TransactionHistoryService;
@@ -56,18 +57,24 @@ public class Transfer extends HttpServlet {
 
             HttpSession existingSession = request.getSession(false);
             if (existingSession != null && existingSession.getAttribute("client") != null) {
-                Client client = (Client) existingSession.getAttribute("client");
-                BankAccount bankAccountSender = bankAccountService.getById(client.getBankAccountId());
-                BankAccount bankAccountReceiver = bankAccountService.getAccountByBankNumberAndAccountNumber(bankNumber, accountNumber);
+                try{
+                    Client client = (Client) existingSession.getAttribute("client");
+                    BankAccount bankAccountSender = bankAccountService.getById(client.getBankAccountId());
+                    BankAccount bankAccountReceiver = bankAccountService.getAccountByBankNumberAndAccountNumber(bankNumber, accountNumber);
 
-                System.out.println("ID 1: " + bankAccountSender.getId());
-                System.out.println("ID 2: " + bankAccountReceiver.getId());
+                    System.out.println("ID 1: " + bankAccountSender.getId());
+                    System.out.println("ID 2: " + bankAccountReceiver.getId());
 
-                clientService.transferBetweenTwoAccounts(bankAccountSender.getId(), bankAccountReceiver.getId(), value);
+                    clientService.transferBetweenTwoAccounts(bankAccountSender.getId(), bankAccountReceiver.getId(), value);
 
-                RequestDispatcher rd = request.getRequestDispatcher("/views/Transfer.jsp");
-                request.setAttribute("sucessMessege", "Valor R$"+value+" transferido!" );
-                rd.forward(request, response);
+                    RequestDispatcher rd = request.getRequestDispatcher("/views/Transfer.jsp");
+                    request.setAttribute("sucessMessege", "Valor R$"+value+" transferido!" );
+                    rd.forward(request, response);
+                } catch (NoEntityFoundException ex) {
+                    RequestDispatcher rd = request.getRequestDispatcher("/views/Transfer.jsp");
+                    request.setAttribute("errorMessege", "A conta para qual você está tentando transferir não existe." );
+                    rd.forward(request, response);
+                }
             } else 
                 throw new RuntimeException("Cliente não está na sessao");
         } catch (Exception ex) {

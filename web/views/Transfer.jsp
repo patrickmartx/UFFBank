@@ -16,14 +16,11 @@
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 
-<%--<%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
-<%! ClientService service = new ClientServiceImpl(); %>
 <%
     Client client = new Client();
     client = (Client) session.getAttribute("client");
+    Double saldo = service.getAccountBalance(client.getBankAccountId());
 %>
-<% Double saldo = service.getAccountBalance(client.getBankAccountId()); %>--%>
-<!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -57,7 +54,7 @@
             <input type="submit" value="Depositar" />
         </form> --> 
         <div class="page">
-          <%@ include file="/views/components/sidebar.html" %>
+          <%@ include file="/views/components/sidebar.jsp" %>
           <main>
               <%@ include file="/views/components/TopBar.jsp" %>
       
@@ -75,25 +72,37 @@
               </div>
       
               <div class="field">
-                <label for="otherAccountNumber">Número da agência a receber</label>
-                <input 
-                  id="otherAccountNumber" 
-                  type="text" 
-                  name="otherAccountNumber"
-                  required >
-              </div>
-
-              <div class="field">
-                <label for="otherBankNumber">Número da conta a receber</label>
+                <label for="otherBankNumber">Número da agência a receber</label>
                 <input 
                   id="otherBankNumber" 
                   type="text" 
                   name="otherBankNumber"
                   required >
               </div>
+
+              <div class="field">
+                <label for="otherAccountNumber">Número da conta a receber</label>
+                <input 
+                  id="otherAccountNumber" 
+                  type="text" 
+                  name="otherAccountNumber"
+                  required >
+              </div>
       
-              <input class="primary-btn" type="submit" value="Transferir" />
+              <button class="primary-btn" type="submit">
+              Transferir 
+            </button>
             </form>
+            <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+            <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
+            <% if (errorMessege != null) { %>
+                <div style="color: red;"><%= errorMessege %></div>
+            <% } %>
+            <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
+            <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+            <% if (sucessMessege != null) { %>
+                <div style="color: green;"><%= sucessMessege %></div>
+            <% } %>
           </main>
         </div>
     </body>

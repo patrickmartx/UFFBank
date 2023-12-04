@@ -277,6 +277,10 @@ public class ClientServiceImpl implements ClientService {
             try{ 
                 BankAccount bankAccount = bankService.getById(bankAccountId);
                 InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
+                
+                if (bankAccount.getAccountBalance() < value) {
+                    throw new ArithmeticException("Você não tem valor suficiente para fazer transferência.");
+                }
 
                 bankService.update((bankAccount.getAccountBalance() - value), bankAccount.getBankNumber(), bankAccount.getAccountNumber());
                 investmentWalletService.update(investmentWallet.getAmountInvested() + value, investmentWallet.getId());

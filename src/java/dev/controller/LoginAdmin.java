@@ -34,7 +34,8 @@ public class LoginAdmin extends HttpServlet {
             HttpSession existingSession = request.getSession(false);
             if (existingSession != null && existingSession.getAttribute("admin") != null) {
                 // Se já estiver autenticado, redirecione para a página Home
-                response.sendRedirect(request.getContextPath() + "/views/AdminHome.jsp");
+                RequestDispatcher rd = request.getRequestDispatcher("/views/AdminHome.jsp");
+                rd.forward(request, response);
             } else {
                 // Caso contrário, encaminhe para a página de login
                 RequestDispatcher rd = request.getRequestDispatcher("/views/LoginAdmin.jsp");

@@ -34,16 +34,11 @@
         <title>Área do administrador | UFFBANK</title>
     </head>
     <body>
-        <a href="/UFFBank/views/AdminUsers.jsp">Clica aqui!</a>
     <div class="page">
-        <%@ include file="/views/components/sidebar.html" %>
+        <%@ include file="/views/components/sidebarAdmin.jsp" %>
         <main>
-          <div class="topbar">
-            <p>Bem-vindo, 
-              <span><%=admin.getName()%></span>
-            </p>
-          </div>
-    
+          <%@ include file="/views/components/TopBarAdmin.jsp" %>
+          <div class="title">Clientes Inativos</div>
           
 
             <% if (!inactiveClients.isEmpty()) { %>
@@ -59,7 +54,7 @@
                         <p><%= inactiveClients.get(i).getName() %></p>
                         <p><%= inactiveClients.get(i).getCpf()%></p>
               
-                        <a class="btn-login" href="/UFFBank/RegisterClient?userId=<%= inactiveClients.get(i).getId() %>">Cadastrar cliente</a>
+                        <a class="primary-btn" href="/UFFBank/RegisterClient?userId=<%= inactiveClients.get(i).getId() %>">Cadastrar cliente</a>
                     </li>
                     
             </ul>

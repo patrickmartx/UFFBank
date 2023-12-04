@@ -15,10 +15,10 @@
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 <%
-//    Client client = new Client();
-//    client = (Client) session.getAttribute("client");
+    Client client = new Client();
+    client = (Client) session.getAttribute("client");
+    Double saldo = service.getAccountBalance(client.getBankAccountId());
 %>
-<% //Double saldo = service.getAccountBalance(client.getBankAccountId()); %>
 
 <!DOCTYPE html>
 <html>
@@ -44,7 +44,7 @@
 
     <body>
       <div class="page">
-        <%@ include file="/views/components/sidebar.html" %>
+        <%@ include file="/views/components/sidebar.jsp" %>
         <main>
           <%@ include file="/views/components/TopBar.jsp" %>
     
