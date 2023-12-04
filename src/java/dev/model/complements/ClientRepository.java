@@ -349,6 +349,7 @@ public class ClientRepository implements DAO<Client> {
                             result.getString(col_name),
                             result.getString(col_phone),
                             result.getString(col_cep),
+                            result.getString(col_address),
                             result.getString(col_email),
                             result.getString(col_password),
                             result.getInt(col_houseNumber),

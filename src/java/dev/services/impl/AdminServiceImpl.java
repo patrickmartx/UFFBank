@@ -178,14 +178,14 @@ public class AdminServiceImpl implements AdminService {
         }
     }
 
-        @Override
+    @Override
     public ArrayList<Client> getActiveClients() {
         ClientRepository clientRepository = new ClientRepository();
         
         try {
             ArrayList<Client> activeClients = clientRepository.getAllActiveClients();
 
-            if(inactiveClients == null){
+            if(activeClients == null){
                 return activeClients;
             } else {
 //                repository.closeConnection();
