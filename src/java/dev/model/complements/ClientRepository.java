@@ -324,6 +324,41 @@ public class ClientRepository implements DAO<Client> {
         }*/
         return clientList;
     }
+
+    public ArrayList<Client> getAllActiveClients() {
+        ArrayList<Client> clientList = new ArrayList();
+        String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " = ?";
+        try {
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setString(1, Status.ACTIVE.getValue());
+            ResultSet result = preparedStatement.executeQuery();
+
+            if (result != null) {
+                while (result.next()) {
+                    Client client = new Client(
+                            result.getLong(col_id),
+                            result.getString(col_cpf),
+                            result.getString(col_name),
+                            result.getString(col_phone),
+                            result.getString(col_cep),
+                            result.getString(col_email),
+                            result.getString(col_password),
+                            result.getInt(col_houseNumber),
+                            result.getDate(col_birthDate),
+                            result.getLong(col_bankAccountId),
+                            Status.valueOf(result.getString(col_status))
+                    );
+                    clientList.add(client);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } /*finally {
+            connection.closeConnection();
+        }*/
+        return clientList;
+    }
     
     public Client getByCpf(String cpf) {
         String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_cpf+" = ?";

@@ -27,6 +27,7 @@ public interface AdminService {
     public void deleteById(Long id);
     public Admin getAdminByLogin(String cpf, String password);
     public ArrayList<Client> getInactiveClients();
+    public ArrayList<Client> getActiveClients();
     public ArrayList<TransactionHistory> generateTransactionHistory(Long clientAccountId);
     public void activateClient(Long clientId, Integer bankNumber, String accountNumber);
 }

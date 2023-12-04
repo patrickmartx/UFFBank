@@ -177,6 +177,25 @@ public class AdminServiceImpl implements AdminService {
             throw ex;
         }
     }
+
+        @Override
+    public ArrayList<Client> getActiveClients() {
+        ClientRepository clientRepository = new ClientRepository();
+        
+        try {
+            ArrayList<Client> activeClients = clientRepository.getAllActiveClients();
+
+            if(inactiveClients == null){
+                return activeClients;
+            } else {
+//                repository.closeConnection();
+                return activeClients;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
+            throw ex;
+        }
+    }
     
     @Override
     public ArrayList<TransactionHistory> generateTransactionHistory(Long clientAccountId) {
