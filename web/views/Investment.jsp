@@ -35,9 +35,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Investimentos | UFFBANK</title>
     </head>
-    <body>
+    <!-- <body>
         <form action="/UFFBank/Login" method="get">
             <button type="submit">Home</button>
         </form>
@@ -65,5 +65,58 @@
             <% if (errorMessege != null) { %>
                 <div style="color: green;"><%= errorMessege %></div>
             <% } %>   
-    </body>
+    </body> -->
+
+    <body>
+        <div class="page">
+         <%@ include ﬁle=“components/sidebar.html” %>
+          
+          <main>
+            <div class="head">
+              <button type="button" onclick="openSidebar()">
+                <svg width="44px" height="44px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <line x1="5" y1="7" x2="19" y2="7" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line> <line x1="5" y1="12" x2="19" y2="12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line> <line x1="5" y1="17" x2="19" y2="17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line> </g></svg>
+              </button>
+              
+              <%@ include ﬁle=“components/topbar.jsp %>
+            </div>
+              
+            <form class="form">
+              <h2 class="title">Investimentos</h2>
+      
+              <div class="investiment">
+                <p>investidos</p>
+                <h1 class="value">
+                    R$<%=decimalFormat.format(InvestmentWalletBallance)%>
+                </h1>
+                <p><%=decimalFormat.format(yieldPercentage)%>% ao mês</p>
+              </div>
+      
+              <div class="field">
+                <label for="value">Quanto você deseja investir?</label>
+                <input 
+                  type="number" 
+                  min="0.00" 
+                  id="value" 
+                  name="value"
+                  required
+                  placeholder="0,00">
+              </div>
+      
+              <input class="primary-btn" type="submit" value="Investir">
+            </form>
+          </main>
+        </div>
+      
+        <script type="text/javascript">
+          function openSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.add("openSidebar");
+          }
+      
+          function closeSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.remove("openSidebar");
+          }
+        </script>
+      </body>
 </html>

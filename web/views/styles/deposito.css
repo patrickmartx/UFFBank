@@ -5,6 +5,37 @@
   position: relative;
 }
 
+.investiment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.investiment h1 {
+  color: var(--green-300);
+
+  font-size: 3rem;
+  line-height: 1.5rem; /* 50% */
+}
+
+
+.investiment p {
+  color: var(--black-600);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.5rem;
+}
+
+.investiment p:last-child {
+ 
+  font-size: 0.925rem;
+  font-weight: 700;
+  text-transform: none;
+}
+
 .emp-clients {
   font-size: 1.25rem;
   color: var(--gray-500);
