@@ -101,7 +101,7 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     }
 
     @Override
-    public ArrayList getAll() {
+    public ArrayList<TransactionHistory> getAll() {
         ArrayList<TransactionHistory> transactionHistoryList = new ArrayList();
          String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != ?";
         try {
@@ -257,5 +257,36 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } /*finally {
             connection.closeConnection();
         }*/
+    }
+    
+    public ArrayList<TransactionHistory> getExtractById(Long id) {
+        ArrayList<TransactionHistory> transactionHistoryList = new ArrayList();
+        String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_receiver_account_id+" == ? OR "+col_sender_account_id+" == ?";
+        try {
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(selectSQL);
+            preparedStatement.setLong(1, id);
+            preparedStatement.setLong(2, id);
+            
+            ResultSet result = preparedStatement.executeQuery();
+            if (result != null) {
+                while (result.next()) {
+                    TransactionHistory transactionHistory = new TransactionHistory(
+                            result.getLong(col_id),
+                            result.getDouble(col_value),
+                            result.getDate(col_transaction_date),
+                            TransactionType.valueOf(result.getString(col_transaction_type)),
+                            result.getLong(col_sender_account_id),
+                            result.getLong(col_receiver_account_id),
+                            Status.valueOf(result.getString(col_status)));
+                    transactionHistoryList.add(transactionHistory);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException();
+        } /*finally {
+            connection.closeConnection();
+        }*/
+        return transactionHistoryList;
     }
 }

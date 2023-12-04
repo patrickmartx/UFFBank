@@ -44,6 +44,11 @@
         </form>
     </body> -->
     <body>
+         <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+           <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
+           <% if (sucessMessege != null) { %>
+               <div style="color: green;"><%= sucessMessege %></div>
+           <% } %>
         <header>
           <div class="menu">
           <a class="logo">
@@ -93,7 +98,7 @@
                 <label for="nasc">Data de nascimento</label>
                 <input 
                   id="nasc" 
-                  name="house_number"
+                  name="birthDate"
                   required
                   type="date"
                   max="2005-12-31"
@@ -142,7 +147,7 @@
                   <label for="number">Número</label>
                   <input 
                     id="number" 
-                    name="number"
+                    name="houseNumber"
                     required
                     type="number"
                     placeholder="Ex: 345">
@@ -182,7 +187,7 @@
                 <input 
                   id="password" 
                   type="password" 
-                  name="user_password"
+                  name="password"
                   required
                   placeholder="Digite sua senha">
               </div>

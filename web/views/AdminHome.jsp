@@ -33,6 +33,8 @@
         <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Área do administrador | UFFBANK</title>
     </head>
+    <body>
+        <a href="/UFFBank/views/AdminUsers.jsp">Clica aqui!</a>
     <div class="page">
         <%@ include file="/views/components/sidebar.html" %>
         <main>
@@ -101,4 +103,5 @@
                 <div style="color: green;"><%= sucessMessage %></div>
             <% } %>
     </body> -->
+    </body>
 </html>

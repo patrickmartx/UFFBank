@@ -11,8 +11,10 @@ import dev.model.complements.BankAccountRepository;
 import dev.services.AdminService;
 import dev.services.ClientService;
 import dev.services.BankAccountService;
+import dev.services.TransactionHistoryService;
 import dev.services.impl.ClientServiceImpl;
 import dev.services.impl.BankAccountServiceImpl;
+import dev.services.impl.TransactionHistoryServiceImpl;
 import dev.entity.Admin;
 import dev.entity.Client;
 import dev.entity.TransactionHistory;
@@ -253,6 +255,19 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception ex) {
             Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Ocorreu algum erro ao ativar o cliente.");
+        }
+    }
+    
+    @Override
+    public ArrayList<TransactionHistory> getExtractById(Long id) {
+        TransactionHistoryService transactionService = new TransactionHistoryServiceImpl();
+        ArrayList<TransactionHistory> extract;
+        try {
+            extract = transactionService.getExtractById(id);
+            return extract;
+        } catch(Exception ex) {
+            Logger.getLogger(AdminServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RuntimeException("Ocorreu algum erro ao gerar histórico do cliente. " + ex.getMessage());
         }
     }
 }

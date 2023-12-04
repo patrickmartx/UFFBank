@@ -11,6 +11,7 @@ import dev.utils.Status;
 import dev.utils.TransactionType;
 import java.util.ArrayList;
 import java.util.Date;
+import dev.exceptions.NoEntityFoundException;
 
 /**
  *
@@ -104,6 +105,20 @@ public class TransactionHistoryServiceImpl implements TransactionHistoryService{
             repository.movimentation(transactionHistory);
         } catch (Exception ex) {
             throw new RuntimeException("Falha ao criar histórico de transação!" + ex.getClass() + " - " + ex.getMessage());
+        }
+    }
+    
+    @Override
+    public ArrayList<TransactionHistory> getExtractById(Long id) {
+        try{
+            ArrayList<TransactionHistory> extract = repository.getExtractById(id);
+            if (!extract.isEmpty()) {
+                return extract;
+            } else {
+                throw new NoEntityFoundException("Não há contas ativas");
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("Falha ao gerar extrato!" + ex.getClass() + " - " + ex.getMessage());
         }
     }
 }

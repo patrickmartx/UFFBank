@@ -23,4 +23,5 @@ public interface TransactionHistoryService {
     public void deleteById(Long id);
     public void deposit(Double value, Date transactionDate, Long idSenderAccount);
     public void investing(Double value, Date transactionDate, Long idSenderAccount);
+    public ArrayList<TransactionHistory> getExtractById(Long id);
 }

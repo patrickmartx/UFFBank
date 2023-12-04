@@ -23,11 +23,6 @@
 
             <input type="submit" value="Login" />
             
-             <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
-            <% if (errorMessage != null) { %>
-                <div style="color: red;"><%= errorMessage %></div>
-            <% } %>
         </form>
     </body> -->
     <body>
@@ -85,5 +80,10 @@
           </form>
         </main>
       </div>
+         <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+            <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+            <% if (errorMessage != null) { %>
+                <div style="color: red;"><%= errorMessage %></div>
+            <% } %>
     </body>
 </html>

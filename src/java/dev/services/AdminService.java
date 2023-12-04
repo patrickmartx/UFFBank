@@ -30,4 +30,5 @@ public interface AdminService {
     public ArrayList<Client> getActiveClients();
     public ArrayList<TransactionHistory> generateTransactionHistory(Long clientAccountId);
     public void activateClient(Long clientId, Integer bankNumber, String accountNumber);
+    public ArrayList<TransactionHistory> getExtractById(Long id);
 }

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import dev.exceptions.NoEntityFoundException;
+import dev.utils.Status;
 import javax.servlet.RequestDispatcher;
 
 /**
@@ -67,7 +68,7 @@ public class Login extends HttpServlet {
                 throw new NoEntityFoundException();
             }
             
-            if (client.getId() != 0) {
+            if (client.getId() != 0 && client.getStatus().getValue().equals(Status.ACTIVE.getValue())) {
                 HttpSession session = request.getSession();
                 session.setAttribute("client", client);
             
@@ -75,7 +76,7 @@ public class Login extends HttpServlet {
                 rd.forward(request, response);
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Login.jsp");
-                request.setAttribute("errorMessage", "Cpf ou senha inválidos");
+                request.setAttribute("errorMessage", "Sua conta ainda não foi validada.");
                 rd.forward(request, response);
                 throw  new NoEntityFoundException();
             }

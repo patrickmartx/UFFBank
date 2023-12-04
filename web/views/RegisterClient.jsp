@@ -35,7 +35,7 @@
         </form>  -->
 
         <div class="page">
-          <%@ include ﬁle=“components/sidebar.html” %>
+          <%@ include file="/views/components/sidebar.html" %>
             <main>
               <div class="topbar">
                 <p>Bem-vindo, 

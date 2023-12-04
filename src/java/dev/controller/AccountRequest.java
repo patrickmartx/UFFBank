@@ -78,7 +78,8 @@ public class AccountRequest extends HttpServlet {
             } catch(Exception ex) {
                 throw new RuntimeException("Cliente não pôde ser inserido. Erro" + ex.getClass() + "Mensagem: " + ex.getMessage());
             }
-            RequestDispatcher rd = request.getRequestDispatcher("index.html");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/AccountRequest.jsp");
+            request.setAttribute("sucessMessege", "Sua conta foi solicitada! Aguarde que um dos nossos administradores irá ativar e logo você poderá acessar sua conta :)");
             rd.forward(request, response);
             
         } catch(NoEntityFoundException ex) {
