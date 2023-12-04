@@ -1,6 +1,6 @@
 <div class="sidebar">
   <div>
-    <div class="logo">
+    <div class="logo" href="/UFFBank/LoginAdmin">
       <img 
         src="contents/imgs/logo.png" 
         alt="logo da UFFBANK"

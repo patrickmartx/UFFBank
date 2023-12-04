@@ -18,31 +18,7 @@
   
         <title>Cadastro | UFFBANK</title>
     </head>
-    <!-- <body>
-        <form action="AccountRequest" method="post">
-            <label for="cpf">cpf</label><br>
-            <input type="text" id="cpf" name="cpf" /><br>
-            <label for="name">nome</label><br>
-            <input type="text" id="name" name="name" /><br>
-            <label for="phone">telefone</label><br>
-            <input type="text" id="phone" name="phone" /><br>
-            <label for="cep">cep</label>
-            <input type="text" id="cep" name="cep" /><br>
-            <label for="address">cep</label>
-            <input type="text" id="address" name="address" /><br>
-            <label for="email">email</label>
-            <input type="text" id="email" name="email" /><br>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" /><br>
-            <label for="houseNumber">número da casa</label>
-            <input type="number" id="houseNumber" name="houseNumber" /><br>
-            <label for="birthDate">Data de nascimento</label>
-            <input type="date" id="birthDate" name="birthDate" /><br>
-            
-
-            <input type="submit" value="AccountRequest" />
-        </form>
-    </body> -->
+ 
     <body>
          <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
            <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
@@ -51,7 +27,7 @@
            <% } %>
         <header>
           <div class="menu">
-          <a class="logo">
+          <a class="logo" href="/UFFBank/">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
               <rect width="48" height="48" fill="url(#pattern0)"/>
               <defs>
@@ -64,9 +40,9 @@
           </a>
             
           <nav>
-            <a class="link" href="">Cadastro</a>
-            <a class="link" href="">Área do administrador</a>
-            <a class="btn-login" href="">Login</a>
+            <a class="link" href="/UFFBank/AccountRequest">Cadastro</a>
+            <a class="link" href="/UFFBank/LoginAdmin">Área do administrador</a>
+            <a class="btn-login" href="/UFFBank/Login">Login</a>
           </nav>
           
           </div>
