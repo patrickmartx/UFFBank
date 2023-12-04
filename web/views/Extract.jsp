@@ -39,7 +39,12 @@
     
     BankAccount bankAccount = bankService.getById(client.getBankAccountId());
     
-    ArrayList<TransactionHistory> extract = service.generateTransactionHistory(bankAccount.getId());
+    ArrayList<TransactionHistory> extract = new ArrayList<TransactionHistory>();
+    try {
+        extract = service.generateTransactionHistory(bankAccount.getId());
+    } catch (Exception ex) {
+        
+    }
 %>
 <!DOCTYPE html>
 <html>

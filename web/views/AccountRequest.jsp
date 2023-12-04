@@ -64,9 +64,9 @@
           </a>
             
           <nav>
-            <a class="link" href="">Cadastro</a>
-            <a class="link" href="">Área do administrador</a>
-            <a class="btn-login" href="">Login</a>
+            <a class="link" href="/UFFBank/AccountRequest">Cadastro</a>
+            <a class="link" href="/UFFBank/LoginAdmin">Área do administrador</a>
+            <a class="btn-login" href="/UFFBank/Login">Login</a>
           </nav>
           
           </div>
