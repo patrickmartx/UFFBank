@@ -36,31 +36,43 @@
             <main>
                 <%@ include file="/views/components/TopBarAdmin.jsp" %>
 
-                <p>
-                    <%= client.getCpf()%>
-                </p>
-                <p>
-                    <%= client.getName()%>
-                </p>
-                <p>
-                    <%= client.getPhone()%>
-                </p>
-                <p>
-                    <%= client.getCep()%>
-                </p>
-                <p>
-                    <%= client.getAddress()%>
-                </p>
-                <p>
-                    <%= client.getEmail()%>
-                </p>
-                <p>
-                    <%= dateFormat.format(client.getBirthDate())%>
-                </p>
+                  <h2 class="info-title">Geral</h2>
+                  <div class="register-info">
+                    <div>
+                      <p>Nome</p>
+                      <p><%= client.getName()%></p>
+                    </div>
+            
+                    <div>
+                      <p>CPF</p>
+                      <p><%= client.getCpf()%></p>
+                    </div>
+            
+                    <div>
+                      <p>Telefone</p>
+                      <p><%= client.getPhone()%></p>
+                    </div>
+            
+                    <div>
+                      <p>Email</p>
+                      <p><%= client.getEmail()%></p>
+                    </div>
+            
+                    <div>
+                      <p>Endereço</p>
+                      <p><%= client.getAddress()%></p>
+                    </div>
+            
+                    <div>
+                      <p>Data de nascimento</p>
+                      <p><%= client.getCep()%></p>
+                    </div>
+                  </div>
 
-                <form class="form" action="RegisterClient" method="post">
-                    <h2 class="title">Ativar conta</h2>
+      <h2 class="info-title">Ativar conta</h2>
 
+      
+                <form class="form create-account" action="RegisterClient" method="post">
                     <div class="field">
                         <label for="bankNumber">Número da agência</label>
                         <input 
@@ -83,7 +95,7 @@
                     </div>
 
                     <button class="primary-btn" type="submit">
-                        Transferir 
+                        Criar conta e ativar cliente 
                     </button>
                 </form>
             </main>

@@ -36,6 +36,33 @@
   text-transform: none;
 }
 
+register-info {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: start;
+  grid-row-gap: 40px;
+}
+
+.info-title {
+  margin: 3rem 0 2rem;
+  color: var(--gray-500);
+  font-size: 1.25rem;
+  font-weight: 500;
+  line-height: 125%;
+  width: 100%;
+
+  padding: 0rem 0rem 0.65rem 0.25rem;
+  border-bottom: 1px solid var(--gray-300);
+
+}
+
+
+.register-info p:first-child {
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
 .emp-clients {
   font-size: 1.25rem;
   color: var(--gray-500);
@@ -215,6 +242,10 @@ main {
 
 main .form button[type="submit"] {
   font-size: 1.25rem;
+}
+
+.create-account {
+  margin-top: 0px;
 }
 
 @media(max-width: 769px) {
