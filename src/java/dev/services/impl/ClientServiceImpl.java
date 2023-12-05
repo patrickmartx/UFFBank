@@ -146,18 +146,22 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client getClientByLogin(String cpf, String password) {
         try {
+            // Faz a chamada do DAO (Repository) para construir um cliente
             Client existingClient = repository.getByLogin(cpf, password);
 
             if (existingClient == null || existingClient.getCpf() == null) {
+                // Se o cliente não existir, chama essa exceção
                 throw new NoEntityFoundException("Cliente não encontrado");
             } else {
-//                repository.closeConnection();
+                // Agora existindo, o service retornará o cliente.
                 return existingClient;
             }
         } catch (NoEntityFoundException ex) {
+            // No caso de não existir, dizer isso no Log.
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, null, ex.getMessage());
             throw ex;
         } catch (Exception ex) {
+            // Caso qualquer outra exceção não planejada ocorra, retornar no Log.
             Logger.getLogger(ClientServiceImpl.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException("Ocorreu algum erro ao buscar o cliente. " + ex.getMessage());
         }
