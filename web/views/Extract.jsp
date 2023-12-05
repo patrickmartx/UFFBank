@@ -65,8 +65,8 @@
           <% if (!extract.isEmpty()) { %>
                 <div class="table">
                     <div class="tb-head-four-col">
-                      <p>Data da transferência</p>  
-                      <p>Tipo de transferência</p>
+                      <p>Data da transação</p>  
+                      <p>Tipo de transação</p>
                       <p>Valor</p>
                       <p>(Agência) Número da conta destino</p>
                     </div>
