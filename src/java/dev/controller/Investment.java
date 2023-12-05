@@ -62,8 +62,13 @@ public class Investment extends HttpServlet {
                 Client client = (Client) existingSession.getAttribute("client");
                 BankAccount bankAccount = bankAccountService.getById(client.getBankAccountId());
                 InvestmentWallet investmentWallet = investmentWalletService.getById(bankAccount.getInvestmentWalletId());
-
-                clientService.investing(bankAccount.getId(), investmentWallet.getId(), value);
+                try{
+                    clientService.investing(bankAccount.getId(), investmentWallet.getId(), value);
+                } catch(ArithmeticException ex) {
+                    RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
+                    request.setAttribute("errorMessege", ex.getMessage() );
+                    rd.forward(request, response);
+                }
 
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
                 request.setAttribute("sucessMessege", "Valor R$"+value+" investido!" );

@@ -56,7 +56,7 @@
         </main>
       </div>
       <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-      <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+      <% String errorMessage = (String) request.getAttribute("errorMessege"); %>
       <% if (errorMessage != null) { %>
           <div class="error-msg"><%= errorMessage %></div>
       <% } %>

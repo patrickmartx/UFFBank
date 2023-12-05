@@ -51,8 +51,13 @@ public class Withdrawal extends HttpServlet {
             if (existingSession != null && existingSession.getAttribute("client") != null) {
                 Client client = (Client) existingSession.getAttribute("client");
                 BankAccount bankAccount = bankAccountService.getById(client.getBankAccountId());
-
+                try {
                 clientService.withdrawalInBankAccount(client.getBankAccountId(), value);
+                } catch(ArithmeticException ex) {
+                    RequestDispatcher rd = request.getRequestDispatcher("/views/Withdrawal.jsp");
+                    request.setAttribute("errorMessege", ex.getMessage() );
+                    rd.forward(request, response);
+                }
 
                 RequestDispatcher rd = request.getRequestDispatcher("/views/Withdrawal.jsp");
                 request.setAttribute("sucessMessege", "Valor R$"+value+" sacado!" );

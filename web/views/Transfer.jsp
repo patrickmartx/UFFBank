@@ -74,13 +74,13 @@
             <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
             <% String errorMessege = (String) request.getAttribute("errorMessege"); %>
             <% if (errorMessege != null) { %>
-                <div style="color: red;"><%= errorMessege %></div>
+                <div class="error-msg"><%= errorMessege %></div>
             <% } %>
             
             <%-- Exibe a mensagem de sucesso apenas se ela estiver presente --%>
             <% String sucessMessege = (String) request.getAttribute("sucessMessege"); %>
             <% if (sucessMessege != null) { %>
-                <div style="color: green;"><%= sucessMessege %></div>
+                <div class="success-msg"><%= sucessMessege %></div>
             <% } %>
           </main>
         </div>
