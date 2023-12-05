@@ -19,7 +19,7 @@
 <%! DecimalFormat decimalFormat = new DecimalFormat("#,##0.00"); %>
 <%! ClientService service = new ClientServiceImpl(); %>
 <%! BankAccountService bankService = new BankAccountServiceImpl();
-   %>
+%>
 <%
     Client client = new Client();
     client = (Client) session.getAttribute("client");

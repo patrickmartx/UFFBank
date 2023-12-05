@@ -205,7 +205,7 @@ public class AdminServiceImpl implements AdminService {
         try {
             ArrayList<TransactionHistory> transactionsList = transactionHistoryRepository.getAllHistoricOfOneAccount(clientAccountId);
             if(transactionsList.isEmpty() || transactionsList == null){
-                throw new NoEntityFoundException("Não há clientes inativos no banco.");
+                throw new NoEntityFoundException("Cliente não fez nenhuma movimentação.");
             } else {
 //                repository.closeConnection();
                 return transactionsList;

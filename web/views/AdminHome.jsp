@@ -68,6 +68,11 @@
           
     
         </div>
+        <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
+            <% String sucessMessage = (String) request.getAttribute("sucessMessage"); %>
+            <% if (sucessMessage != null) { %>
+                <div style="color: green;"><%= sucessMessage %></div>
+            <% } %>
         </main>
       </div>
     <!-- <body>
@@ -92,11 +97,6 @@
         <%
         } %>
         
-         <%-- Exibe a mensagem de erro apenas se ela estiver presente --%>
-            <% String sucessMessage = (String) request.getAttribute("sucessMessage"); %>
-            <% if (sucessMessage != null) { %>
-                <div style="color: green;"><%= sucessMessage %></div>
-            <% } %>
     </body> -->
     </body>
 </html>

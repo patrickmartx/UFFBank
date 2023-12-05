@@ -71,7 +71,7 @@ public class Investment extends HttpServlet {
             } else 
                 throw new RuntimeException("Cliente não está na sessao");
         } catch(Exception ex) {
-            RequestDispatcher rd = request.getRequestDispatcher("/views/Deposit.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/views/Investment.jsp");
             request.setAttribute("errorMessege", ex.getMessage() );
             rd.forward(request, response);
         }

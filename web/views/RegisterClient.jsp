@@ -5,6 +5,23 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="dev.services.AdminService" %>
+<%@ page import="dev.services.impl.AdminServiceImpl" %>
+<%@ page import="dev.entity.Admin" %>
+<%@ page import="dev.entity.Client" %>
+<%@page import="dev.services.ClientService"%>
+<%@page import="dev.services.impl.ClientServiceImpl"%>
+<%@page import="java.text.SimpleDateFormat" %> 
+
+<%
+    Admin admin = new Admin();
+    admin = (Admin) session.getAttribute("admin");
+%>
+<%! ClientService clientService = new ClientServiceImpl();%>
+<% Long clientId = Long.valueOf(request.getParameter("userId"));%>
+<% Client client = clientService.getById(clientId);%>
+<%! SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,43 +32,60 @@
     </head>
     <body>
         <div class="page">
-          <%@ include file="/views/components/sidebar.html" %>
+            <%@ include file="/views/components/sidebarAdmin.jsp" %>
             <main>
-              <div class="topbar">
-                <p>Bem-vindo, 
-                  <span>Igor</span>
+                <%@ include file="/views/components/TopBarAdmin.jsp" %>
+
+                <p>
+                    <%= client.getCpf()%>
                 </p>
-                <h1>R$ <span>542,26</span></h1>
-              </div>
-        
-              <form class="form">
-                <h2 class="title">Criar conta</h2>
-        
-                <div class="field">
-                  <label for="bankNumber">Número da agência</label>
-                  <input 
-                    id="bankNumber" 
-                    name="bankNumber"
-                    required
-                    autofocus
-                    type="number"
-                    placeholder="Ex: 22">
-                </div>
-        
-                <div class="field">
-                  <label for="accountNumber">Número da conta</label>
-                  <input 
-                    id="accountNumber" 
-                    type="text" 
-                    name="accountNumber"
-                    required
-                    placeholder="Ex: 2459488">
-                </div>
-        
-                <button class="primary-btn" type="submit">
-                  Transferir 
-                </button>
-              </form>
+                <p>
+                    <%= client.getName()%>
+                </p>
+                <p>
+                    <%= client.getPhone()%>
+                </p>
+                <p>
+                    <%= client.getCep()%>
+                </p>
+                <p>
+                    <%= client.getAddress()%>
+                </p>
+                <p>
+                    <%= client.getEmail()%>
+                </p>
+                <p>
+                    <%= dateFormat.format(client.getBirthDate())%>
+                </p>
+
+                <form class="form" action="RegisterClient" method="post">
+                    <h2 class="title">Ativar conta</h2>
+
+                    <div class="field">
+                        <label for="bankNumber">Número da agência</label>
+                        <input 
+                            id="bankNumber" 
+                            name="bankNumber"
+                            required
+                            autofocus
+                            type="number"
+                            placeholder="Ex: 22">
+                    </div>
+
+                    <div class="field">
+                        <label for="accountNumber">Número da conta</label>
+                        <input 
+                            id="accountNumber" 
+                            type="text" 
+                            name="accountNumber"
+                            required
+                            placeholder="Ex: 2459488">
+                    </div>
+
+                    <button class="primary-btn" type="submit">
+                        Transferir 
+                    </button>
+                </form>
             </main>
           </div>
 
