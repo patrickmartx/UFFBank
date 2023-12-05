@@ -14,23 +14,6 @@
         <title>Criar conta | UFFBANK</title>
     </head>
     <body>
-        <!-- <form action="/UFFBank/LoginAdmin" method="get">
-            <button type="submit">Home</button>
-        </form>
-        <form action="/UFFBank/LogoutAdmin" method="post">
-            <button type="submit">Logout</button>
-        </form> -->
-        <!-- <form action="RegisterClient" method="post">
-            <label for="bankNumber">Número do banco</label>
-            <input type="text" id="bankNumber" name="bankNumber" />
-
-            <label for="accountNumber">Número da conta</label>
-            <input type="text" id="accountNumber" name="accountNumber" />
-
-            <input type="submit" value="RegisterClient" />
-          
-        </form>  -->
-        
         <div class="page">
           <%@ include file="/views/components/sidebar.html" %>
             <main>

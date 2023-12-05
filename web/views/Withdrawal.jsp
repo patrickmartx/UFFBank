@@ -27,7 +27,8 @@
         <link rel="stylesheet" type="text/css" href="estilo.css" />
         <link rel="stylesheet" type="text/css" href="views/styles/estilo.css" />
         <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
-        <title>Depósito | UFFBANK</title>
+        
+        <title>Saque | UFFBANK</title>
     </head>
     <body>
       <div class="page">
