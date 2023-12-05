@@ -64,8 +64,13 @@
                     </div>
             
                     <div>
-                      <p>Data de nascimento</p>
+                      <p>Cep</p>
                       <p><%= client.getCep()%></p>
+                    </div>
+                    
+                    <div>
+                      <p>Data de nascimento</p>
+                      <p><%= dateFormat.format(client.getBirthDate())%></p>
                     </div>
                   </div>
 
