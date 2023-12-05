@@ -60,23 +60,25 @@
         <main>
           <%@ include file="/views/components/TopBarAdmin.jsp" %>
           <div class="title">Extrato do cliente <b><%=client.getName()%></b></div>
+          <div class="title">Saldo: <b><%= decimalFormat.format(bankAccount.getAccountBalance()) %></b></div>
           
           <% if (!extract.isEmpty()) { %>
                 <div class="table">
-                    <div class="tb-head">
+                    <div class="tb-head-four-col">
                       <p>Data da transferência</p>  
                       <p>Tipo de transferência</p>
                       <p>Valor</p>
-                      <p>(Agência) Número da conta</p>
+                      <p>(Agência) Número da conta destino</p>
                     </div>
                  <ul class="client-list ">
 
             <%    for (int i = extract.size() - 1; i >= 0; i--) { %>
-                    <li class="data-client">
+                    <li class="data-client-four-col">
                         <p><%= dateFormat.format(extract.get(i).getTransactionDate())  %></p>
                         <p><%= extract.get(i).getTransactionType().getValue() %></p>
                         <% if (extract.get(i).getTransactionType().getValue() == TransactionType.WITHDRAWAL.getValue() || 
-                               (extract.get(i).getTransactionType().getValue() == TransactionType.TRANSFER.getValue() && extract.get(i).getSenderAccountId() == bankAccount.getId() )) { %>
+                               (extract.get(i).getTransactionType().getValue() == TransactionType.TRANSFER.getValue() && extract.get(i).getSenderAccountId() == bankAccount.getId() ) ||
+                               extract.get(i).getTransactionType().getValue() == TransactionType.INVESTMENT.getValue()  ) { %>
                             <p><%= decimalFormat.format(extract.get(i).getValue() * -1) %></p>
                         <% } else {%>
                             <p><%= decimalFormat.format(extract.get(i).getValue()) %></p>
