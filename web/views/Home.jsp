@@ -34,33 +34,27 @@
         <link rel="stylesheet" type="text/css" href="views/styles/deposito.css" />
         <title>Depósito | UFFBANK</title>
     </head>
-    <!-- <body>
-        <h1>DEPOSITAR</h1>
-        
-        
-        <form action="Deposit" method="post">
-            <label for="value">Valor para depósito:</label>
-            <input type="number" min="0.00" step="0.01" id="value" name="value" />
-            <input type="submit" value="Deposit" />
-        </form>
-        
-        
-    </body> -->
-
     <body>
       <div class="page">
         <%@ include file="/views/components/sidebar.jsp" %>
         <main>
           <%@ include file="/views/components/TopBar.jsp" %>
-          
-          <p>
-              <%= bankNumber %>
-          </p>
-          <p>
-              <%= accountNumber %>
-          </p>
     
-          
+          <h1 class="home-title">Nós somos o banco oficial do Uffiano</h1>
+          <p class="home-subtitle">Deposite, tranfira, saque e invista</p>
+          <p class="home-p">Comece agora</p>
+       
+          <div class="number-wrapper">
+             <div>
+               <p>Número da agência</p>
+               <p><%= bankNumber %></p>
+             </div>
+       
+             <div>
+               <p>Número da conta</p>
+               <p><%= accountNumber %></p>
+             </div>
+         </div>
         </main>
       </div>
           

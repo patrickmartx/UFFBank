@@ -5,6 +5,49 @@
   position: relative;
 }
 
+.home-title {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 125%;
+  color: var(--black-600);
+  margin-bottom: 12px;
+}
+
+.home-subtitle {
+  font-size: 1.255rem;
+  font-weight: 500;
+  line-height: 125%;
+  color: var(--gray-500)
+}
+
+.home-p {
+  margin-top: 2.25rem;
+  margin-bottom: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 125%;
+  color: var(--black-600);
+  text-decoration: var(--green-300) wavy underline;
+
+}
+
+.number-wrapper {
+  display: flex;
+  gap: 50px;
+}
+
+.number-wrapper > div {
+  background: var(--gray-100);
+  padding: 20px 30px;
+  border-radius: 8px; 
+  min-width: 15rem;
+}
+
+.number-wrapper > div p:first-child {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
 .investiment {
   display: flex;
   flex-direction: column;
@@ -36,7 +79,7 @@
   text-transform: none;
 }
 
-register-info {
+.register-info {
   display: grid;
   width: 100%;
   grid-template-columns: repeat(3, 1fr);
