@@ -22,7 +22,6 @@ import java.util.Date;
  * @author Patrick
  */
 public class AdminRepository implements DAO<Admin>{
-    private final DbConnector connection;
     
     private final String table_name = "tb_admin";
     private final String col_id = "id";
@@ -38,15 +37,10 @@ public class AdminRepository implements DAO<Admin>{
     private final String col_status = "status";
     
     public AdminRepository(){
-        try {
-            this.connection = new DbConnector();
-        } catch (NoConnectException ex) {
-            Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
-            throw new RuntimeException();
-        }
     }
 
     private void createAdminTable() throws NoConnectException {
+        DbConnector connection = new DbConnector();
         String createTableSQL
                 = "CREATE TABLE IF NOT EXISTS "+table_name+" ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
@@ -63,20 +57,23 @@ public class AdminRepository implements DAO<Admin>{
                 + ")";
 
         try {
-            PreparedStatement preparedStatement = this.connection.getConnect().prepareStatement(createTableSQL);
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(createTableSQL);
 
             preparedStatement.executeUpdate();
             Logger.getLogger(AdminRepository.class.getName()).log(Level.INFO, "Tabela já existe ou foi criada com sucesso!");
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
+        }finally {
+            connection.closeConnection();
         }
     }
     
     @Override
     public Admin get(Long id) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_id+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
             ResultSet result = sql.executeQuery();
             Admin admin = new Admin();
@@ -102,13 +99,14 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public ArrayList<Admin> getAll() {
+        DbConnector connection = new DbConnector();
          ArrayList<Admin> adminList = new ArrayList();
          String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+ " != ?";
         try {
@@ -135,14 +133,15 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return adminList;
     }
 
     @Override
     public void insert(Admin admin) {
+        DbConnector connection = new DbConnector();
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_cpf+", "+col_name+", "+col_phone+", "+ col_cep
                                                            +", "+col_address+", "+col_email+", "+col_password+", "+col_houseNumber
                                                            +", "+col_birthDate+", "+col_status+") "
@@ -169,13 +168,14 @@ public class AdminRepository implements DAO<Admin>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void update(Admin admin) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE "+table_name+" SET "+col_cpf+" = ?, "+col_name+" = ?, "+col_phone+" = ?, "+ col_cep
                                                            +" = ?, "+col_address+" = ?, "+col_email+" = ?, "+col_password+" = ?, "+col_houseNumber
                                                            +" = ?, "+col_birthDate+" = ?, "+col_status+" = ? WHERE "+col_cpf+" = ?";
@@ -198,13 +198,14 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void delete(Long id) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE "+table_name+" SET "+col_status+" = ? WHERE "+col_id+" = ?" ;
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
@@ -216,15 +217,16 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/  
+        }  
     }
     
     public Admin getByLogin(String cpf, String password) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setString(1, cpf);
             sql.setString(2, password);
             ResultSet result = sql.executeQuery();
@@ -251,15 +253,16 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
     public Admin getByCpf(String cpf) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_cpf+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setString(1, cpf);
             ResultSet result = sql.executeQuery();
             Admin admin = new Admin();
@@ -285,8 +288,8 @@ public class AdminRepository implements DAO<Admin>{
         } catch (SQLException ex) {
             Logger.getLogger(AdminRepository.class.getName()).log(Level.SEVERE, "Mensagem: " + ex.getMessage(), ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 }

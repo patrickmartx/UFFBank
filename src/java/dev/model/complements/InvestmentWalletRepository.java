@@ -21,24 +21,17 @@ import java.util.logging.Logger;
  *
  * @author Patrick
  */
-public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
-    private final DbConnector connection;
-    
+public class InvestmentWalletRepository implements DAO<InvestmentWallet> {    
     private final String table_name = "tb_investmentwallet";
     private final String col_id = "id";
     private final String col_amount_invested = "amount_invested";
     private final String col_yield_percentage = "yield_percentage";
     
     public InvestmentWalletRepository() {
-        try {
-            this.connection = new DbConnector();
-        } catch (NoConnectException ex) {
-            Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
-            throw new RuntimeException();
-        }
     }
     
     private void createInvestmentWalletTable() throws NoConnectException {
+        DbConnector connection = new DbConnector();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS "+table_name+" ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
                 + col_amount_invested + " DOUBLE NOT NULL,"
@@ -46,20 +39,23 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
                 + ")";
 
        try {
-            PreparedStatement preparedStatement = this.connection.getConnect().prepareStatement(createTableSQL);
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(createTableSQL);
 
             preparedStatement.executeUpdate();
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.INFO, "Tabela já existe ou foi criada com sucesso!");
         } catch (SQLException ex) {
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
+        } finally {
+            connection.closeConnection();
         }
     }
     
     @Override
     public InvestmentWallet get(Long id) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE ID = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
             ResultSet result = sql.executeQuery();
             InvestmentWallet investmentWallet = new InvestmentWallet();
@@ -76,13 +72,14 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
         } catch (SQLException ex) {
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public ArrayList<InvestmentWallet> getAll() {
+        DbConnector connection = new DbConnector();
         ArrayList<InvestmentWallet> investmentWalletList = new ArrayList();
          String selectSQL = "SELECT * FROM "+ table_name;
         try {
@@ -101,14 +98,15 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
         } catch (SQLException ex) {
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return investmentWalletList;
     }
 
     @Override
     public void insert(InvestmentWallet investmentWallet) {
+        DbConnector connection = new DbConnector();
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_amount_invested+", "+col_yield_percentage+") "
                                                            + "VALUES (?,?)";
         try {
@@ -125,13 +123,14 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void update(InvestmentWallet investmentWallet) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE "+table_name+" SET "+col_amount_invested+" = ?, "+
                            col_yield_percentage+" = ? WHERE "+col_id+" = ?";
         try {
@@ -145,13 +144,14 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
         } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void delete(Long id) {
+        DbConnector connection = new DbConnector();
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement("DELETE FROM "+table_name+" WHERE "+col_id+" = ? ");
             sql.setLong(1, id);
@@ -160,15 +160,16 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
         } catch (SQLException ex) {
             Logger.getLogger(BankAccountRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException();
-        } /*finally {
-            conexao.closeConexao();
-        }*/
+        } finally {
+            connection.closeConnection();
+        }
     }
     
     public InvestmentWallet getByLastId() {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE "+col_id+" = (SELECT MAX("+col_id+") FROM "+table_name+");";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             ResultSet result = sql.executeQuery();
             InvestmentWallet investmentWallet = new InvestmentWallet();
 
@@ -185,8 +186,8 @@ public class InvestmentWalletRepository implements DAO<InvestmentWallet> {
         } catch (SQLException ex) {
             Logger.getLogger(InvestmentWalletRepository.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
             throw new RuntimeException("\nClasse: " + ex.getClass() + "\nMensagem: " + ex.getMessage());
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 }

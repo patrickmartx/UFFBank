@@ -26,9 +26,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ClientRepository implements DAO<Client> {
-
-    private final DbConnector connection;
-
     private final String table_name = "tb_client";
     private final String col_id = "id";
     private final String col_cpf = "cpf";
@@ -44,15 +41,10 @@ public class ClientRepository implements DAO<Client> {
     private final String col_status = "status";
 
     public ClientRepository() {
-        try {
-            this.connection = new DbConnector();
-        } catch (NoConnectException ex) {
-            Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
-            throw new RuntimeException();
-        }
     }
 
     private void createClientTable() throws NoConnectException {
+        DbConnector connection = new DbConnector();
         String createTableSQL
                 = "CREATE TABLE IF NOT EXISTS " + table_name + " ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY,"
@@ -71,20 +63,23 @@ public class ClientRepository implements DAO<Client> {
                 + ")";
 
         try {
-            PreparedStatement preparedStatement = this.connection.getConnect().prepareStatement(createTableSQL);
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(createTableSQL);
 
             preparedStatement.executeUpdate();
             Logger.getLogger(ClientRepository.class.getName()).log(Level.INFO, "Tabela já existe ou foi criada com sucesso!");
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
+        } finally {
+            connection.closeConnection();
         }
     }
 
     @Override
     public Client get(Long id) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_id+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
             ResultSet result = sql.executeQuery();
             Client client = new Client();
@@ -111,13 +106,14 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public ArrayList<Client> getAll() {
+        DbConnector connection = new DbConnector();
         ArrayList<Client> clientList = new ArrayList();
         String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " != ?";
         try {
@@ -146,14 +142,15 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return clientList;
     }
 
     @Override
     public void insert(Client client) {
+        DbConnector connection = new DbConnector();
         String insertionSQL = "INSERT INTO " + table_name + " (" + col_cpf + ", " + col_name + ", " + col_phone + ", " + col_cep
                 + ", " + col_address + ", " + col_email + ", " + col_password + ", " + col_houseNumber
                 + ", " + col_birthDate + ", " + col_status + ") "
@@ -180,13 +177,14 @@ public class ClientRepository implements DAO<Client> {
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void update(Client client) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE " + table_name + " SET " + col_cpf + " = ?, " + col_name + " = ?, " + col_phone + " = ?, " + col_cep
                 + " = ?, " + col_address + " = ?, " + col_email + " = ?, " + col_password + " = ?, " + col_houseNumber
                 + " = ?, " + col_birthDate + " = ?, " + col_bankAccountId + " = ?, " + col_status + " = ? WHERE "+col_cpf+" = ?";
@@ -210,13 +208,14 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void delete(Long id) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE " + table_name + " SET " + col_status + " = ? WHERE " + col_id + " = ?";
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
@@ -228,15 +227,16 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
-    public Client getByLogin(String cpf, String password) {
+    public Client getByLogin(String cpf, String password) throws NoConnectException {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_cpf+" = ? AND "+col_password+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setString(1, cpf);
             sql.setString(2, password);
             ResultSet result = sql.executeQuery();
@@ -264,18 +264,19 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex.getMessage());
             throw new RuntimeException("Erro ao buscar cliente. mensagem: " + ex.getMessage());
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
     public Double getAccountBalance(Long id) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT a.account_balance \n" +
                         "FROM tb_bankaccount a \n" +
                         "INNER JOIN "+table_name+" tc ON a.id = tc."+col_bankAccountId+" " +
                         "WHERE a.id = "+id+"";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             ResultSet result = sql.executeQuery();
             Double saldo = 0.00;
 
@@ -289,16 +290,14 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao selecionar o saldo do cliente. Mensagem: " + ex.getMessage());
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
-    public void closeConnection() {
-        connection.closeConnection();
-    }
     
     public ArrayList<Client> getAllInactiveClients() {
+        DbConnector connection = new DbConnector();
         ArrayList<Client> clientList = new ArrayList();
         String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " = ?";
         try {
@@ -327,13 +326,14 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return clientList;
     }
 
     public ArrayList<Client> getAllActiveClients() {
+        DbConnector connection = new DbConnector();
         ArrayList<Client> clientList = new ArrayList();
         String selectSQL = "SELECT * FROM " + table_name + " WHERE " + col_status + " = ?";
         try {
@@ -363,16 +363,17 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return clientList;
     }
     
     public Client getByCpf(String cpf) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM " + table_name + " WHERE "+col_cpf+" = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setString(1, cpf);
             ResultSet result = sql.executeQuery();
             Client client = new Client();
@@ -399,8 +400,8 @@ public class ClientRepository implements DAO<Client> {
         } catch (SQLException ex) {
             Logger.getLogger(ClientRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException("Erro ao buscar cliente. mensagem: " + ex.getMessage());
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 }

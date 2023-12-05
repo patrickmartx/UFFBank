@@ -27,8 +27,6 @@ import dev.utils.Status;
  * @author Patrick
  */
 public class TransactionHistoryRepository implements DAO<TransactionHistory>{
-    private final DbConnector connection;
-    
     private final String table_name = "tb_transactionhistory";
     private final String col_id = "id";
     private final String col_value = "value";
@@ -40,15 +38,10 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
     
 
     public TransactionHistoryRepository() {
-        try {
-            this.connection = new DbConnector();
-        } catch (NoConnectException ex) {
-            Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
-            throw new RuntimeException();
-        }
     }
     
     private void createTransactionHistoryTable() throws NoConnectException {
+        DbConnector connection = new DbConnector();
         String createTableSQL = "CREATE TABLE IF NOT EXISTS "+table_name+" ("
                 + col_id + " INT AUTO_INCREMENT PRIMARY KEY, "
                 + col_value + " DOUBLE, "
@@ -60,20 +53,23 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
                 + ")";
 
         try {
-            PreparedStatement preparedStatement = this.connection.getConnect().prepareStatement(createTableSQL);
+            PreparedStatement preparedStatement = connection.getConnect().prepareStatement(createTableSQL);
 
             preparedStatement.executeUpdate();
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.INFO, "Tabela já existe ou foi criada com sucesso!");
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, "Erro de conexão. Mensagem: {0}", ex.getMessage());
+        } finally {
+            connection.closeConnection();
         }
     }
 
     @Override
     public TransactionHistory get(Long id) {
+        DbConnector connection = new DbConnector();
         String getSQL = "SELECT * FROM "+table_name+" WHERE ID = ?";
         try {
-            PreparedStatement sql = this.connection.getConnect().prepareStatement(getSQL);
+            PreparedStatement sql = connection.getConnect().prepareStatement(getSQL);
             sql.setLong(1, id);
             ResultSet result = sql.executeQuery();
             TransactionHistory transactionHistory = new TransactionHistory();
@@ -95,13 +91,14 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public ArrayList<TransactionHistory> getAll() {
+        DbConnector connection = new DbConnector();
         ArrayList<TransactionHistory> transactionHistoryList = new ArrayList();
          String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != ?";
         try {
@@ -124,14 +121,15 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return transactionHistoryList;
     }
 
     @Override
     public void insert(TransactionHistory transactionHistory) {
+        DbConnector connection = new DbConnector();
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_value+", "+col_transaction_date+", "
                                                            +col_transaction_type+", "+col_sender_account_id+", "
                                                            +col_receiver_account_id+", "+col_status+") "
@@ -154,14 +152,14 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void update(TransactionHistory transactionHistory) {
-        
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE "+table_name+" SET "+col_value+" = ?, "+
                            col_transaction_date+" = ?, "+col_transaction_type+" = ?, "+col_receiver_account_id+" = ?, "+col_status+" = ?"
                            + " WHERE "+col_id+" = ?";
@@ -179,13 +177,14 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
 
     @Override
     public void delete(Long id) {
+        DbConnector connection = new DbConnector();
         String updateSQL = "UPDATE "+table_name+" SET "+col_status+" = ? WHERE "+col_id+" = ?" ;
         try {
             PreparedStatement sql = connection.getConnect().prepareStatement(updateSQL);
@@ -197,12 +196,13 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
     public ArrayList getAllHistoricOfOneAccount(Long id) {
+        DbConnector connection = new DbConnector();
         ArrayList<TransactionHistory> transactionHistoryAccount = new ArrayList();
          String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_status+" != ? AND "+col_sender_account_id+" = ?";
         try {
@@ -226,13 +226,14 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return transactionHistoryAccount;
     }
     
     public void movimentation(TransactionHistory transactionHistory) {
+        DbConnector connection = new DbConnector();
         String insertionSQL = "INSERT INTO "+table_name+" ("+col_value+", "+col_transaction_date+", "
                                                            +col_transaction_type+", "
                                                            +col_sender_account_id+", "+col_status+") "
@@ -254,12 +255,13 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
             throw new RuntimeException();
         } catch (NoConnectException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
     }
     
     public ArrayList<TransactionHistory> getExtractById(Long id) {
+        DbConnector connection = new DbConnector();
         ArrayList<TransactionHistory> transactionHistoryList = new ArrayList();
         String selectSQL = "SELECT * FROM "+ table_name + " WHERE "+col_receiver_account_id+" == ? OR "+col_sender_account_id+" == ?";
         try {
@@ -284,9 +286,9 @@ public class TransactionHistoryRepository implements DAO<TransactionHistory>{
         } catch (SQLException ex) {
             Logger.getLogger(TransactionHistoryRepository.class.getName()).log(Level.SEVERE, null, ex);
             throw new RuntimeException();
-        } /*finally {
+        } finally {
             connection.closeConnection();
-        }*/
+        }
         return transactionHistoryList;
     }
 }

@@ -24,7 +24,7 @@ public class DbConnector {
     private Connection connection;
     private Properties properties;
 
-    public DbConnector() throws NoConnectException {
+    public DbConnector() {
         loadDatabaseProperties();
 
         Connection doConnection = null;
@@ -38,8 +38,7 @@ public class DbConnector {
             doConnection = DriverManager.getConnection(url, user, password);
             this.connection = doConnection;
         } catch (Exception e) {
-            throw new NoConnectException("Não é possível conectar ao banco de dados\n"
-                    + "Procure acertar a informação: " + e.getMessage());
+            throw new RuntimeException("Nao foi possivel efetuar uma conexao com o BD!");
         }
     }
 
