@@ -68,6 +68,20 @@
   line-height: 125%;
 }
 
+.tb-head-four-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 1rem;
+
+}
+
+.tb-head-four-col p {
+  color: var(--black-600);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 125%;
+}
+
 .data-client {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -78,6 +92,20 @@
 }
 
 .data-client a {
+  width: 100%;
+  max-width: 13rem;
+}
+
+.data-client-four-col {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.data-client-four-col a {
   width: 100%;
   max-width: 13rem;
 }

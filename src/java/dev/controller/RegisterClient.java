@@ -90,10 +90,12 @@ public class RegisterClient extends HttpServlet {
                 
                 HttpSession session = request.getSession();
                 session.setAttribute("bankAccount", bankAccount);
+                
+                response.sendRedirect(request.getContextPath() + "/ListActiveAccounts");
             
-                RequestDispatcher rd = request.getRequestDispatcher("/views/AdminHome.jsp");
-                request.setAttribute("sucessMessage", "Conta validado com sucesso!");
-                rd.forward(request, response);
+//                RequestDispatcher rd = request.getRequestDispatcher("/views/AdminHome.jsp");
+//                request.setAttribute("sucessMessage", "Conta validado com sucesso!");
+//                rd.forward(request, response);
             } else {
                 RequestDispatcher rd = request.getRequestDispatcher("/views/RegisterClient.jsp");
                 request.setAttribute("errorMessage", "conta no banco ou numero de conta inválido.");
